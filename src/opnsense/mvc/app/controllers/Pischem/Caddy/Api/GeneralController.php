@@ -39,11 +39,5 @@ class GeneralController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'caddy';
     protected static $internalModelClass = 'Pischem\Caddy\Caddy';
-
-    protected function getModel()
-    {
-        $model = parent::getModel(); // Get the full model
-        return $model->general; // Return only the 'general' part
-    }
 }
 
