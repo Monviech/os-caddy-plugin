@@ -1,0 +1,59 @@
+<?php
+
+namespace Pischem\Caddy\Api;
+
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
+
+class SettingsController extends ApiMutableModelControllerBase
+{
+    protected static $internalModelName = 'caddy';
+    protected static $internalModelClass = '\Pischem\Caddy\Caddy';
+
+    public function searchAction()
+    {
+        return $this->searchBase('reverseproxy.reverse', array("enabled", "FromDomain", "FromPort", "ToDomain", "ToPort", "Description"));
+    }
+
+    public function getAction($uuid = null)
+    {
+        $result = array("general" => array(), "reverse" => array());
+
+        // Fetch general settings directly
+        $mdlCaddy = new \Pischem\Caddy\Caddy();
+        $result["general"] = $mdlCaddy->general->getNodes();
+
+        // Fetch reverse proxy settings
+        if ($uuid != null) {
+            $result["reverse"] = $this->getBase('reverse', 'reverseproxy.reverse', $uuid);
+        } else {
+            foreach ($mdlCaddy->reverseproxy->reverse->iterateItems() as $reverseProxy) {
+                $result["reverse"][$reverseProxy->getAttributes()["uuid"]] = $reverseProxy->getNodes();
+            }
+        }
+
+        return $result;
+    }
+
+    public function addAction()
+    {
+        return $this->addBase('reverse', 'reverseproxy.reverse');
+    }
+
+    public function delAction($uuid)
+    {
+        return $this->delBase('reverseproxy.reverse', $uuid);
+    }
+
+    public function setAction($uuid)
+    {
+        return $this->setBase('reverse', 'reverseproxy.reverse', $uuid);
+    }
+
+    public function toggleAction($uuid)
+    {
+        return $this->toggleBase('reverseproxy.reverse', $uuid);
+    }
+}
+

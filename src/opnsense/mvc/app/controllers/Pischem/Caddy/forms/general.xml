@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>caddy.general.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable Caddy server.</help>
+    </field>
+</form>
