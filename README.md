@@ -5,9 +5,9 @@
 
 # License
 
-- This project is licensed under the Apache License, Version 2.0. See the LICENSE file for details. 
-- Caddy is also licensed under the Apache License, Version 2.0. 
-- OPNsense is licensed under the BSD 2-Clause “Simplified” license
+- This project is licensed under the BSD 2-Clause "Simplified" license. See the LICENSE file for details. 
+- Caddy is licensed under the Apache License, Version 2.0. 
+- OPNsense is licensed under the BSD 2-Clause “Simplified” license.
 
 # Acknowledgments
 
