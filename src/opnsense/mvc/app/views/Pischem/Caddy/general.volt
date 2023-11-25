@@ -37,21 +37,49 @@
 </div>
 
 <script type="text/javascript">
-    $( document ).ready(function() {
+    $(document).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
         mapDataToFormUI(data_get_map).done(function(data){
-            // place actions to run after load, for example update form styles.
+            // Actions to run after load
         });
 
-        // link save button to API set action
+        // Link save button to API set action
         $("#applyGeneralAct").click(function(){
-            saveFormToEndpoint(url="/api/caddy/general/set",formid='frm_GeneralSettings',callback_ok=function(){
-                // action to run after successful save, for example reconfigure service.
-                location.reload();
+            saveFormToEndpoint(url="/api/caddy/general/set", formid='frm_GeneralSettings', callback_ok=function(){
+                // Fetch the updated general settings
+                fetch('/api/caddy/General/get')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Check the updated status of Caddy
+                        if (data.caddy.general.enabled === "1") {
+                            // Caddy enabled, start the service
+                            $.ajax({
+                                url: "/api/caddy/service/start",
+                                method: "POST",
+                                success: function(data) {
+                                    console.log("Caddy service started successfully:", data);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error("Failed to start Caddy service:", error);
+                                }
+                            });
+                        } else {
+                            // Caddy disabled, stop the service
+                            $.ajax({
+                                url: "/api/caddy/service/stop",
+                                method: "POST",
+                                success: function(data) {
+                                    console.log("Caddy service stopped successfully:", data);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error("Failed to stop Caddy service:", error);
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error fetching updated Caddy general settings:', error));
             });
         });
-
-
     });
 </script>
 

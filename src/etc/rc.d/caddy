@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# PROVIDE: caddy
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="caddy"
+rcvar=caddy_enable
+
+load_rc_config $name
+
+: ${caddy_enable:=NO}
+: ${caddy_config_file:="/usr/local/etc/caddy/Caddyfile"}
+
+pidfile="/var/run/caddy.pid"
+command="/usr/sbin/daemon"
+command_args="-P ${pidfile} -r /usr/local/bin/caddy run --config ${caddy_config_file} > /dev/null 2>&1"
+
+run_rc_command "$1"
+

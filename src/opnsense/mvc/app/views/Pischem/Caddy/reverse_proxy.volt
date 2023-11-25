@@ -175,11 +175,39 @@
         
         // Event listener for the Apply button
         document.getElementById('globalApplyButton').addEventListener('click', function() {
-            // Placeholder for your action - perform your task here
-            console.log('Apply action triggered');
-            // After action is complete, reload the page
-            window.location.reload();
+            // Fetch the general settings first
+            fetch('/api/caddy/General/get')
+                .then(response => response.json())
+                .then(data => {
+                    // Check if Caddy is enabled
+                    if (data.caddy.general.enabled === "1") {
+                        // Trigger the restart service action if enabled
+                        $.ajax({
+                            url: "/api/caddy/service/restart",
+                            method: "POST",
+                            success: function(data) {
+                                console.log("Service action successful:", data);
+                                // Optionally, display a success message or handle the response further
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Service action failed:", error);
+                                // Optionally, handle the error, display a message, etc.
+                            }
+                        }).done(function() {
+                            // Reload the page after the operation completes
+                            location.reload();
+                        });
+                    } else {
+                        console.log("Caddy service is not enabled. Skipping restart.");
+                        // Optionally, display a message indicating that the service won't be restarted
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching Caddy general settings:', error);
+                    // Optionally, handle the error, display a message, etc.
+                });
         });
+
     });
 </script>
 
