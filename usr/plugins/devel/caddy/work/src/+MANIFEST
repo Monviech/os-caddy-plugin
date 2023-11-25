@@ -1,0 +1,24 @@
+name: os-caddy
+version: "1.0"
+origin: opnsense/os-caddy
+comment: "Caddy Web Server configuration plugin"
+maintainer: "cedrik@pischem.com"
+categories: [ "devel" ]
+www: "https://opnsense.org/"
+prefix: "/usr/local"
+licenselogic: "single"
+licenses: [ "BSD2CLAUSE" ]
+deps: {
+  caddy: { version: "2.7.5", origin: "www/caddy" }
+}
+annotations {
+    "product_abi": "23.7",
+    "product_arch": "amd64",
+    "product_email": "cedrik@pischem.com",
+    "product_hash": "a3d9795c3",
+    "product_id": "os-caddy",
+    "product_name": "caddy",
+    "product_tier": "3",
+    "product_version": "1.0",
+    "product_website": "https://opnsense.org/"
+}

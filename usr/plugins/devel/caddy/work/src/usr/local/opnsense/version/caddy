@@ -1,0 +1,11 @@
+{
+    "product_abi": "23.7",
+    "product_arch": "amd64",
+    "product_email": "cedrik@pischem.com",
+    "product_hash": "a3d9795c3",
+    "product_id": "os-caddy",
+    "product_name": "caddy",
+    "product_tier": "3",
+    "product_version": "1.0",
+    "product_website": "https://opnsense.org/"
+}

@@ -1,0 +1,67 @@
+#!/usr/local/bin/python3
+
+{#
+ # Copyright (c) 2023 Cedrik Pischem
+ # All rights reserved.
+ #
+ # Redistribution and use in source and binary forms, with or without modification,
+ # are permitted provided that the following conditions are met:
+ #
+ # 1. Redistributions of source code must retain the above copyright notice,
+ #    this list of conditions and the following disclaimer.
+ #
+ # 2. Redistributions in binary form must reproduce the above copyright notice,
+ #    this list of conditions and the following disclaimer in the documentation
+ #    and/or other materials provided with the distribution.
+ #
+ # THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ # AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ # AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ # OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ # INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ # POSSIBILITY OF SUCH DAMAGE.
+ #}
+
+
+import subprocess
+import json
+import sys
+
+def run_service_command(action, action_message):
+    result = {"message": action_message}
+    if action == "test":
+        # For the test action, just return a test message
+        result["status"] = "ok"
+        result["message"] = "Test action executed successfully"
+        return json.dumps(result)
+    
+    try:
+        subprocess.run(["service", "caddy", action], check=True)
+        result["status"] = "ok"
+    except subprocess.CalledProcessError as e:
+        result["status"] = "failed"
+        result["message"] = str(e)
+
+    return json.dumps(result)
+
+# Add 'test' to actions
+actions = {
+    "start": "onestart",
+    "stop": "onestop",
+    "restart": "onerestart",
+    "test": "test"  # Test action
+}
+
+if __name__ == "__main__":
+    action = sys.argv[1]  # Get the action from the command-line argument
+    if action in actions:
+        service_action = actions[action]
+        message = f"{action.capitalize()}ing Caddy service"
+        print(run_service_command(service_action, message))
+    else:
+        print(json.dumps({"status": "failed", "message": f"Unknown action: {action}"}))
+
