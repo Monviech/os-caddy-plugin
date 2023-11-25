@@ -58,6 +58,8 @@
                                 method: "POST",
                                 success: function(data) {
                                     console.log("Caddy service started successfully:", data);
+                                    // Reload the page after the operation completes
+                                    location.reload();
                                 },
                                 error: function(xhr, status, error) {
                                     console.error("Failed to start Caddy service:", error);
@@ -70,6 +72,8 @@
                                 method: "POST",
                                 success: function(data) {
                                     console.log("Caddy service stopped successfully:", data);
+                                    // Reload the page after the operation completes
+                                    location.reload();
                                 },
                                 error: function(xhr, status, error) {
                                     console.error("Failed to stop Caddy service:", error);

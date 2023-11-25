@@ -45,8 +45,15 @@ class ServiceController extends ApiControllerBase
         $status = "failed";
         if ($this->request->isPost()) {
             $backend = new Backend();
+
+            // Reload the template
+            $templateResult = trim($backend->configdRun("template reload Pischem/Caddy"));
+            if ($templateResult !== "OK") {
+                return array("status" => "failed", "message" => "Failed to reload template");
+            }
+
+            // Restart the service
             $bckresult = trim($backend->configdRun('caddy restart'));
-            error_log("Backend response: " . $bckresult); // Log for debugging
             if ($bckresult == "OK") {
                 $status = "ok";
             }
@@ -78,6 +85,14 @@ class ServiceController extends ApiControllerBase
         $status = "failed";
         if ($this->request->isPost()) {
             $backend = new Backend();
+
+            // Reload the template
+            $templateResult = trim($backend->configdRun("template reload Pischem/Caddy"));
+            if ($templateResult !== "OK") {
+                return array("status" => "failed", "message" => "Failed to reload template");
+            }
+
+            // Start the service
             $bckresult = trim($backend->configdRun('caddy start'));
             if ($bckresult == "OK") {
                 $status = "ok";
