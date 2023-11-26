@@ -18,5 +18,14 @@ pidfile="/var/run/caddy.pid"
 command="/usr/sbin/daemon"
 command_args="-P ${pidfile} -r /usr/local/bin/caddy run --config ${caddy_config_file} > /dev/null 2>&1"
 
+# Path to setup script
+caddy_setup_script="/usr/local/opnsense/scripts/Pischem/Caddy/setup.sh"
+
+caddy_start_precmd()
+{
+    # Call the setup script before starting the service
+    sh ${caddy_setup_script}
+}
+
 run_rc_command "$1"
 
