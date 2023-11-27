@@ -4,6 +4,9 @@
         root /usr/local/etc/caddy
     }
 
+    # Include all .conf files from caddy.d directory
+    import /usr/local/etc/caddy/caddy.d/*.conf
+
     # Global logging
     log {
         output file /var/log/caddy/caddy.log {
@@ -19,8 +22,8 @@
 {% set reverse = item %}
 {% if reverse.Enabled|default("0") == "1" %}
 # Reverse proxy entry "{{ reverse.Description|default("") }}":
-{{ reverse.FromDomain|default("") }}{% if reverse.FromPort|default("") %}:{{ reverse.FromPort }}{% endif %} {
-    reverse_proxy {{ reverse.ToDomain|default("") }}:{{ reverse.ToPort|default("") }}
+{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+    reverse_proxy {{ reverse.ToDomain|default("") }}{% if reverse.ToPort %}:{{ reverse.ToPort }}{% endif %}
 }
 {% endif %}
 {% endfor %}

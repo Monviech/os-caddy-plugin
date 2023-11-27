@@ -28,7 +28,7 @@
       "checksum": "dacb6125deafe8a4019f21ff0cac159626e3936870e76f9126a11e5327f39d4f"
     },
     "/usr/local/etc/rc.d/caddy": {
-      "checksum": "9dbf66de80e38af0f76059a0c465b823037f32d25339fd920b5c854a476124a4"
+      "checksum": "0cb65aa5f7ba0c979701d0a1696097ff43b0eb6475811765f75a332a67444018"
     }
   }
 }

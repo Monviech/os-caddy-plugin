@@ -21,6 +21,9 @@ command_args="-P ${pidfile} -r /usr/local/bin/caddy run --config ${caddy_config_
 # Path to setup script
 caddy_setup_script="/usr/local/opnsense/scripts/Pischem/Caddy/setup.sh"
 
+start_precmd=caddy_start_precmd
+restart_precmd=caddy_start_precmd
+
 caddy_start_precmd()
 {
     # Call the setup script before starting the service
