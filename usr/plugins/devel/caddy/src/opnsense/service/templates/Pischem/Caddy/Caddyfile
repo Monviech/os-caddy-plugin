@@ -22,10 +22,9 @@
 {% set reverse = item %}
 {% if reverse.Enabled|default("0") == "1" %}
 # Reverse proxy entry "{{ reverse.Description|default("") }}":
-{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
-    reverse_proxy {{ reverse.ToDomain|default("") }}{% if reverse.ToPort %}:{{ reverse.ToPort }}{% endif %}
+{{ reverse.FromDomain|default("") }}{% if reverse.FromPort|default("") %}:{{ reverse.FromPort }}{% endif %} {
+    reverse_proxy {{ reverse.ToDomain|default("") }}:{{ reverse.ToPort|default("") }}
 }
 {% endif %}
 {% endfor %}
 {% endif %}
-

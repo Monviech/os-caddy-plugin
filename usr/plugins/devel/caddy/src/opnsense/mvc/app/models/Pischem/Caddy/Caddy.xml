@@ -24,7 +24,7 @@
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </FromDomain>
                 <FromPort type="PortField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
                     <ValidationMessage>Please enter a valid 'from' port number.</ValidationMessage>
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>N</EnableRanges>
@@ -38,7 +38,7 @@
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </ToDomain>
                 <ToPort type="PortField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
                     <ValidationMessage>Please enter a valid 'to' port number.</ValidationMessage>
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>N</EnableRanges>
