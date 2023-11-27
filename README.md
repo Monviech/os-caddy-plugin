@@ -21,6 +21,14 @@
 - Afterwards the "os-caddy" plugin can be installed from the GUI.
 - Make sure the Firewall doesn't listen on port 80/443, since Caddy uses 80 for ACME, and you need 443 to create a proper Reverse Proxy entry.
 
+# How to build from source:
+- As build system use a FreeBSD 13.2 - https://github.com/opnsense/tools
+- Use xcaddy to build your own caddy binary
+- Check the +MANIFEST file and put all dependant files into the right paths on your build system. 
+- Use ```pkg-create -M ./+MANIFEST``` in the folder of the +MANIFEST file, make sure to check your own file hashes with ```sha256 /path/to/file```
+- For os-caddy.pkg make sure you have the OPNsense tools build system properly set up. 
+- Build the os-caddy.pkg by going into /usr/plugins/devel/caddy/ and invoking ```make package``` 
+
 # Using the REST API to control the plugin:
 REST API:
 - /api/caddy/ReverseProxy/add
@@ -75,5 +83,4 @@ curl -v -X POST "https://192.168.3.1/api/caddy/service/restart" \
      --data '{}' \
      --insecure
 ```
-
 
