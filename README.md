@@ -29,6 +29,9 @@
 - For os-caddy.pkg make sure you have the OPNsense tools build system properly set up. 
 - Build the os-caddy.pkg by going into /usr/plugins/devel/caddy/ and invoking ```make package``` 
 
+# Custom configuration files
+- The Caddyfile has an additional import from ```/usr/local/etc/caddy/caddy.d/*.conf```. You can place your own custom configuration files inside that adhere to the Caddyfile syntax and end with ```.conf``` and they will be imported.
+
 # Using the REST API to control the plugin:
 REST API:
 - /api/caddy/ReverseProxy/add
