@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Trigger a reload of the Caddy template to ensure all necessary files are generated
+configctl template reload Pischem/Caddy
+
+# Define the path to the setup script
+SETUP_SCRIPT="/usr/local/opnsense/scripts/Pischem/Caddy/setup.sh"
+
+# Execute the setup script
+if [ -f "$SETUP_SCRIPT" ]; then
+    sh "$SETUP_SCRIPT"
+else
+    echo "Setup script not found: $SETUP_SCRIPT"
+fi
