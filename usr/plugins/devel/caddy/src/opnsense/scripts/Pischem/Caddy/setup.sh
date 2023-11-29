@@ -8,6 +8,7 @@ CADDY_OCSP_DIR="${CADDY_DIR}/ocsp"
 CADDY_LOCKS_DIR="${CADDY_DIR}/locks"
 CADDY_LOG_DIR="/var/log/caddy"
 CADDY_CONF_DIR="${CADDY_DIR}/caddy.d"
+CADDY_CONFIG_DIR="${CADDY_DIR}/.config/caddy" # Additional config directory
 
 # Create Caddy configuration directories with appropriate permissions
 mkdir -p "${CADDY_DIR}"
@@ -16,6 +17,7 @@ mkdir -p "${CADDY_CERTS_DIR}"
 mkdir -p "${CADDY_OCSP_DIR}"
 mkdir -p "${CADDY_LOCKS_DIR}"
 mkdir -p "${CADDY_CONF_DIR}"
+mkdir -p "${CADDY_CONFIG_DIR}"
 
 # Set permissions for Caddy configuration directories
 chown -R root:wheel "${CADDY_DIR}"
@@ -28,3 +30,5 @@ mkdir -p "${CADDY_LOG_DIR}"
 chown -R root:wheel "${CADDY_LOG_DIR}"
 chmod -R 750 "${CADDY_LOG_DIR}"
 
+# Ensure the Caddy service script is executable
+chmod +x /usr/local/etc/rc.d/caddy
