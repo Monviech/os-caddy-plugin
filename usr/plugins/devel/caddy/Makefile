@@ -1,5 +1,5 @@
 PLUGIN_NAME=     caddy
-PLUGIN_VERSION=  1.0.4a
+PLUGIN_VERSION=  1.0.5a
 PLUGIN_COMMENT=  Caddy Web Server configuration plugin
 PLUGIN_DEPENDS=  caddy
 PLUGIN_MAINTAINER= cedrik@pischem.com
