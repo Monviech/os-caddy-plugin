@@ -76,7 +76,7 @@
                         if (data.caddy.general.enabled === "1") {
                             // Caddy enabled, start the service
                             $.ajax({
-                                url: "/api/caddy/service/start",
+                                url: "/api/caddy/service/restart",
                                 method: "POST",
                                 success: function(data) {
                                     console.log("Caddy service started successfully:", data);
