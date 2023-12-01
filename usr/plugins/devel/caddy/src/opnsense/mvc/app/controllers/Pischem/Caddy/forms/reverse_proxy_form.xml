@@ -35,4 +35,10 @@
         <type>text</type>
         <help>Enter a description for this reverse proxy entry.</help>
     </field>
+    <field>
+        <id>caddy.reverseproxy.reverse.DnsChallenge</id>
+        <label>DNS-01 challenge</label>
+        <type>checkbox</type>
+        <help>Enable DNS-01 challenge for ACME, please configure DNS Provider and API Key in General Settings.</help>
+    </field>
 </form>

@@ -5,4 +5,28 @@
         <type>checkbox</type>
         <help>This will enable or disable Caddy server.</help>
     </field>
+    <field>
+        <id>caddy.general.TlsEmail</id>
+        <label>ACME Email</label>
+        <type>text</type>
+        <help>Enter the email address for ACME certificate notifications.</help>
+    </field>
+    <field>
+        <id>caddy.general.TlsAutoHttps</id>
+        <label>Auto HTTPS</label>
+        <type>dropdown</type>
+        <help>Select the auto HTTPS option. On (default) creates automatic certificates using Let's Encrypt without needing any configuration.</help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsProvider</id>
+        <label>DNS Provider</label>
+        <type>dropdown</type>
+        <help>Select the DNS provider for the ACME DNS01 Challenge.</help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>DNS API Key</label>
+        <type>text</type>
+        <help>Enter the API key for the selected DNS provider.</help>
+    </field>
 </form>

@@ -32,3 +32,9 @@ chmod -R 750 "${CADDY_LOG_DIR}"
 
 # Ensure the Caddy service script is executable
 chmod +x /usr/local/etc/rc.d/caddy
+
+# Ensure the Caddy binary is executable
+chmod +x /usr/local/bin/caddy
+
+# Format and overwrite the Caddyfile
+cd "${CADDY_DIR}" && /usr/local/bin/caddy fmt --overwrite

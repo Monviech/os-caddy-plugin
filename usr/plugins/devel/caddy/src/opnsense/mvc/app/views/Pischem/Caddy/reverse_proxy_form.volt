@@ -27,7 +27,7 @@
 
 <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
     <h1 id="formHeadline">
-        <!-- Dynamically popualted with Javascript -->    
+        <!-- Dynamically popualted with Javascript -->
     </h1>
     {{ partial("layout_partials/base_form", ['fields': reverseProxyForm, 'id': 'frm_ReverseProxy']) }}
     <div id="formErrors" style="color: red;"></div> <!-- Container for general form errors -->
@@ -73,6 +73,7 @@
                         $('#caddy\\.reverseproxy\\.reverse\\.ToDomain').val(entry.ToDomain);
                         $('#caddy\\.reverseproxy\\.reverse\\.ToPort').val(entry.ToPort);
                         $('#caddy\\.reverseproxy\\.reverse\\.Description').val(entry.Description);
+                        $('#caddy\\.reverseproxy\\.reverse\\.DnsChallenge').prop('checked', entry.DnsChallenge === "1");
                     }
                 })
                 .catch(function(error) {
@@ -96,12 +97,17 @@
                 }
             }
 
-            populateField('#caddy\\.reverseproxy\\.reverse\\.Enabled', getQueryVariable("Enabled") === "1");
+            function populateCheckboxField(id, value) {
+                $(id).prop('checked', value === "1");
+            }
+
+            populateCheckboxField('#caddy\\.reverseproxy\\.reverse\\.Enabled', getQueryVariable("Enabled"));
             populateField('#caddy\\.reverseproxy\\.reverse\\.FromDomain', getQueryVariable("FromDomain"));
             populateField('#caddy\\.reverseproxy\\.reverse\\.FromPort', getQueryVariable("FromPort"));
             populateField('#caddy\\.reverseproxy\\.reverse\\.ToDomain', getQueryVariable("ToDomain"));
             populateField('#caddy\\.reverseproxy\\.reverse\\.ToPort', getQueryVariable("ToPort"));
             populateField('#caddy\\.reverseproxy\\.reverse\\.Description', getQueryVariable("Description"));
+            populateCheckboxField('#caddy\\.reverseproxy\\.reverse\\.DnsChallenge', getQueryVariable("DnsChallenge"));
         }
 
         // Event listener for the Save button
@@ -115,6 +121,7 @@
             formData['ToDomain'] = $('#caddy\\.reverseproxy\\.reverse\\.ToDomain').val();
             formData['ToPort'] = $('#caddy\\.reverseproxy\\.reverse\\.ToPort').val();
             formData['Description'] = $('#caddy\\.reverseproxy\\.reverse\\.Description').val();
+            formData['DnsChallenge'] = $('#caddy\\.reverseproxy\\.reverse\\.DnsChallenge').is(':checked') ? "1" : "0";
 
             console.log("Structured Form Data:", formData);
 
@@ -176,4 +183,3 @@
         });
     });
 </script>
-

@@ -23,13 +23,13 @@
  # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  # POSSIBILITY OF SUCH DAMAGE.
  #}
- 
+
 
 <style>
-    #reverseProxyGrid th:last-child, 
+    #reverseProxyGrid th:last-child,
     #reverseProxyGrid td:last-child {
         text-align: right;
-    } 
+    }
 </style>
 
 <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
@@ -39,6 +39,7 @@
             <thead>
                 <tr>
                     <th data-column-id="enabled">Enabled</th>
+                    <th data-column-id="DnsChallenge">DNS-01</th>
                     <th data-column-id="fromDomain">From Domain</th>
                     <th data-column-id="fromPort">From Port</th>
                     <th data-column-id="toDomain">To Domain</th>
@@ -78,13 +79,23 @@
                 Object.keys(reverseProxies).forEach(uuid => {
                     const entry = reverseProxies[uuid];
                     const row = tbody.insertRow();
+
+                    // Enabled checkbox
                     const enabledCell = row.insertCell();
                     const enabledCheckbox = document.createElement('input');
                     enabledCheckbox.type = 'checkbox';
                     enabledCheckbox.checked = entry.Enabled === "1";
-                    enabledCheckbox.disabled = true; // Disable the checkbox to make it read-only
+                    enabledCheckbox.disabled = true;
                     enabledCell.appendChild(enabledCheckbox);
-    
+
+                    // DNS-01 checkbox
+                    const dnsChallengeCell = row.insertCell();
+                    const dnsChallengeCheckbox = document.createElement('input');
+                    dnsChallengeCheckbox.type = 'checkbox';
+                    dnsChallengeCheckbox.checked = entry.DnsChallenge === "1";
+                    dnsChallengeCheckbox.disabled = true; // Making it read-only
+                    dnsChallengeCell.appendChild(dnsChallengeCheckbox);
+
                     row.insertCell().textContent = entry.FromDomain;
                     row.insertCell().textContent = entry.FromPort;
                     row.insertCell().textContent = entry.ToDomain;
@@ -128,12 +139,12 @@
         // Function to clone an entry
         function cloneEntry(uuid) {
             console.log('Cloning entry', uuid);
-    
+
             fetch('/api/caddy/ReverseProxy/get/' + uuid)
                 .then(response => response.json())
                 .then(data => {
                     const entry = data.reverse[uuid];
-            
+
                     // Construct the query string with the entry data but without the UUID
                     const queryString = Object.keys(entry)
                         .filter(key => key !== 'UUID') // Exclude the UUID
@@ -172,7 +183,7 @@
         document.getElementById('addReverseProxyBtn').addEventListener('click', function() {
             window.location.href = '/ui/caddy/reverse_proxy_form';
         });
-        
+
         // Event listener for the Apply button
         document.getElementById('globalApplyButton').addEventListener('click', function() {
             // Fetch the general settings first
@@ -210,4 +221,3 @@
 
     });
 </script>
-
