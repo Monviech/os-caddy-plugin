@@ -40,7 +40,7 @@
     $(document).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
         mapDataToFormUI(data_get_map).done(function(data){
-            console.log("Fetched data:", data); // Log the fetched data
+            // console.log("Fetched data:", data); // Log the fetched data
             var generalSettings = data.frm_GeneralSettings.caddy.general;
 
             // Populate TlsAutoHttps dropdown
@@ -79,7 +79,7 @@
                                 url: "/api/caddy/service/restart",
                                 method: "POST",
                                 success: function(data) {
-                                    console.log("Caddy service started successfully:", data);
+                                    // console.log("Caddy service started successfully:", data);
                                     // Reload the page after the operation completes
                                     location.reload();
                                 },
@@ -93,7 +93,7 @@
                                 url: "/api/caddy/service/stop",
                                 method: "POST",
                                 success: function(data) {
-                                    console.log("Caddy service stopped successfully:", data);
+                                    // console.log("Caddy service stopped successfully:", data);
                                     // Reload the page after the operation completes
                                     location.reload();
                                 },
