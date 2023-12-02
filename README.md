@@ -16,7 +16,7 @@
 - Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
 
 # How to install:
-- #### DISCLAIMER: This plugin is in need of independant testing. Please contribute by testing it and give feedback. Especially the new DNS-01 challenge for Cloudflare.
+- #### DISCLAIMER: Don't use this plugin in production enviroments. This plugin has been created with AI Assistance in some parts (mostly the Javascript sections). Other parts have been cloned from public examples like the "Hello World" Plugin. There haven't been any independant reviews. It's a personal project created as learning experience.
 - ##### BETA VERSION 1.0.6b. Tested by myself on DEC740 Hardware and OPNsense 23.7.9-amd64. I can't test the DNS-01 challenge myself.
 - ```fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.pischem.com/repo-config/os-caddy-plugin.conf```
 - ```pkg update```
