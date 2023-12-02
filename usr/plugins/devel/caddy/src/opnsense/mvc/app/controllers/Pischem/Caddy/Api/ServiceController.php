@@ -3,7 +3,7 @@
 /**
  *    Copyright (C) 2015 Deciso B.V.
  *    Copyright (C) 2023 Cedrik Pischem
- * 
+ *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -41,90 +41,32 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'caddy';
 
-    /**
-     * Reload Caddy configuration
-     */
-    public function restartAction()
+    private function reloadTemplate()
     {
-        $status = "failed";
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-
-            // Reload the template
-            $templateResult = trim($backend->configdRun("template reload Pischem/Caddy"));
-            if ($templateResult !== "OK") {
-                return array("status" => "failed", "message" => "Failed to reload template");
-            }
-
-            // Restart the service
-            $bckresult = trim($backend->configdRun('caddy restart'));
-            if ($bckresult == "OK") {
-                $status = "ok";
-            }
-        }
-        return array("status" => $status, "message" => "Reloading Caddy configuration");
+        $backend = new Backend();
+        $backend->configdRun("template reload " . static::$internalServiceTemplate);
     }
 
-    /**
-     * Stop Caddy service
-     */
-    public function stopAction()
-    {
-        $status = "failed";
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-
-            // Reload the template before stopping the service
-            $templateResult = trim($backend->configdRun("template reload Pischem/Caddy"));
-            if ($templateResult !== "OK") {
-                return array("status" => "failed", "message" => "Failed to reload template");
-            }
-
-            // Stop the service
-            $bckresult = trim($backend->configdRun('caddy stop'));
-            if ($bckresult == "OK") {
-                $status = "ok";
-            }
-        }
-        return array("status" => $status, "message" => "Stopping Caddy service");
-    }
-
-    /**
-     * Start Caddy service
-     */
     public function startAction()
     {
-        $status = "failed";
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-
-            // Reload the template
-            $templateResult = trim($backend->configdRun("template reload Pischem/Caddy"));
-            if ($templateResult !== "OK") {
-                return array("status" => "failed", "message" => "Failed to reload template");
-            }
-
-            // Start the service
-            $bckresult = trim($backend->configdRun('caddy start'));
-            if ($bckresult == "OK") {
-                $status = "ok";
-            }
-        }
-        return array("status" => $status, "message" => "Starting Caddy service");
+        $this->reloadTemplate();
+        return parent::startAction();
     }
-    
-    /**
-    * Test Action for Caddy service
-    */
-        public function testAction()
+
+    public function stopAction()
     {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $response = json_decode(trim($backend->configdRun("caddy test")), true);
-            return $response;
-        } else {
-            return array("status" => "failed");
-        }
+        $this->reloadTemplate();
+        return parent::stopAction();
+    }
+
+    public function restartAction()
+    {
+        $this->reloadTemplate();
+        return parent::restartAction();
+    }
+
+    protected function reconfigureForceRestart()
+    {
+        return 0;
     }
 }
-
