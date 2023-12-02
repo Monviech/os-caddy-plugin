@@ -13,6 +13,7 @@
 
 - Thanks to the Caddy community/developers for creating a fantastic open source web server.
 - Thanks to the OPNsense community/developers for creating a powerful and flexible open source firewall and routing platform.
+- Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
 
 # How to install:
 - #### DISCLAIMER: This plugin is in need of independant testing. Please contribute by testing it and give feedback. Especially the new DNS-01 challenge for Cloudflare.
