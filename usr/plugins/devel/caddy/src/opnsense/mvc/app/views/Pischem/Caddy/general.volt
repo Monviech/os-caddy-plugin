@@ -24,7 +24,6 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
-
 <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
     <div class="content">
         <h1>Caddy General Settings</h1>
@@ -33,10 +32,17 @@
 </div>
 
 <div style="margin-top: 20px; width: 100%; background-color: white; padding: 5px; border: 1px solid #ddd;">
-    <button id="applyGeneralAct" class="btn btn-primary" type="button" style="margin-left: 4px;"><b>Apply</b></button>
+    <!-- Reconfigure Button with Pre-Action -->
+    <button class="btn btn-primary" id="reconfigureAct"
+            data-endpoint="/api/caddy/service/reconfigure"
+            data-label="{{ lang._('Apply') }}"
+            data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
+            type="button"
+    ><b>Reconfigure</b></button>
 </div>
 
 <script type="text/javascript">
+
     $(document).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
         mapDataToFormUI(data_get_map).done(function(data){
@@ -63,48 +69,27 @@
 
             // Refresh selectpicker for these dropdowns
             $('.selectpicker').selectpicker('refresh');
-        });
 
-        // Link save button to API set action
-        $("#applyGeneralAct").click(function(){
-            saveFormToEndpoint(url="/api/caddy/general/set", formid='frm_GeneralSettings', callback_ok=function(){
-                // Fetch the updated general settings
-                fetch('/api/caddy/General/get')
-                    .then(response => response.json())
-                    .then(data => {
-                        // Check the updated status of Caddy
-                        if (data.caddy.general.enabled === "1") {
-                            // Caddy enabled, start the service
-                            $.ajax({
-                                url: "/api/caddy/service/restart",
-                                method: "POST",
-                                success: function(data) {
-                                    console.log("Caddy service started successfully:", data);
-                                    // Reload the page after the operation completes
-                                    location.reload();
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error("Failed to start Caddy service:", error);
-                                }
-                            });
-                        } else {
-                            // Caddy disabled, stop the service
-                            $.ajax({
-                                url: "/api/caddy/service/stop",
-                                method: "POST",
-                                success: function(data) {
-                                    console.log("Caddy service stopped successfully:", data);
-                                    // Reload the page after the operation completes
-                                    location.reload();
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error("Failed to stop Caddy service:", error);
-                                }
-                            });
-                        }
-                    })
-                    .catch(error => console.error('Error fetching updated Caddy general settings:', error));
+            // Initialize the Reconfigure button with a pre-action
+            $("#reconfigureAct").SimpleActionButton({
+                onPreAction: function() {
+                    const dfd = $.Deferred();
+
+                    // Save the form data
+                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function(){
+                        dfd.resolve();  // Resolve the Deferred object after successful save
+                    }, function() {
+                        dfd.reject();   // Reject the Deferred object on failure
+                    });
+
+                    return dfd.promise();  // Return the promise
+                },
+                onAction: function(data, status) {
+                    // This function is called after the pre-action is successful
+                    console.log("Reconfigure action initiated");
+                }
             });
         });
     });
+
 </script>
