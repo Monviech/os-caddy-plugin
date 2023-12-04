@@ -41,30 +41,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'caddy';
 
-    private function reloadTemplate()
-    {
-        $backend = new Backend();
-        $backend->configdRun("template reload " . static::$internalServiceTemplate);
-    }
-
-    public function startAction()
-    {
-        $this->reloadTemplate();
-        return parent::startAction();
-    }
-
-    public function stopAction()
-    {
-        $this->reloadTemplate();
-        return parent::stopAction();
-    }
-
-    public function restartAction()
-    {
-        $this->reloadTemplate();
-        return parent::restartAction();
-    }
-
     protected function reconfigureForceRestart()
     {
         return 0;
