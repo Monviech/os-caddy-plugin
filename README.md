@@ -13,6 +13,7 @@
 
 - Thanks to the Caddy community/developers for creating a fantastic open source web server.
 - Thanks to the OPNsense community/developers for creating a powerful and flexible open source firewall and routing platform.
+- Thanks for answering programming questions and being very helpful: [AdShellevis](https://github.com/Adschellevis)
 - Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
 
 # How to install:
