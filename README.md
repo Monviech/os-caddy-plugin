@@ -17,12 +17,44 @@
 - Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
 
 # How to install:
-- #### DISCLAIMER: Don't use this plugin in production enviroments. This plugin has been created with AI Assistance in some parts (mostly the Javascript sections). Other parts have been cloned from public examples like the "Hello World" Plugin. There haven't been any independant reviews. It's a personal project created as learning experience.
-- ##### BETA VERSION 1.0.6b. Tested by myself on DEC740 Hardware and OPNsense 23.7.9-amd64. I can't test the DNS-01 challenge myself.
+- ##### DISCLAIMER: Please don't use this in any productive enviroments (yet), it was developed with the use of AI assistance for Javascript and more complex PHP code (ChatGPT4 and Copilot). It was a learning experience from an Administrator to understand the concepts around the OPNsense Firewall better. 
+- ##### BETA VERSION 1.0.7b. Tested by myself on DEC740 Hardware and OPNsense 23.7.9-amd64.
 - ```fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.pischem.com/repo-config/os-caddy-plugin.conf```
 - ```pkg update```
 - Afterwards the "os-caddy" plugin can be installed from the GUI.
 - Make sure the Firewall doesn't listen on port 80/443, since Caddy uses 80 for ACME, and you need 443 to create a proper Reverse Proxy entry.
+
+# How to use Caddy after the installation:
+
+##### Attention:
+Make sure that port 80 and 443 aren't occupied on the Firewall. You have to change the default listen port to 8443 for example. Go to "System: Settings: Administration" to change the "TCP Port". Then also enable "HTTP Redirect - Disable web GUI redirect rule". If you have already HA-Proxy, opnwaf, nginx or the ACME plugin installed, make sure they don't use the same ports as Caddy. Create Firewall rules that allow 80 and 443 TCP to "This Firewall" on WAN.
+
+
+##### In Services - Caddy Web Server - General Settings:
+
+- Enable Caddy
+- Set "ACME E-Mail" address: e.g. info@example.com
+- Leave "Auto HTTPS" on "On (default)"
+- "DNS Provider" - Choose either "none (default)" for normal HTTP ACME or a DNS Provider - e.g. "Cloudflare" - to enable the DNS-01 ACME Challenge. If your provider is missing, just open an issue on github and I will add it over time.
+- "DNS API Key" - Leave empty if you don't use a DNS Provider, or put your API Key here.
+- Press "Apply" to enable and start Caddy.
+
+##### In Services - Caddy Web Server - Reverse Proxy:
+
+- Press + to create a new Reverse Proxy Entry
+- "Enable" or "disable" this new entry
+- "From Domain" can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the "To Domain" Server in the backend.
+- "From Port" should be 443 or a different port like 7443 etc... it's the port the OPNsense will listen on. Don't forget to create Firewall rules that allow Traffic to this port on WAN or LAN to "This Firewall".
+- "To Domain" should be an internal domain name or an IP Address of the Backend Server that should receive the traffic of the "From Domain".
+- "To Port" should be the port the Backend Server listens on, for example 443 or 7443. It doesn't have to be the same port as the "From Port".
+- "Description" should be a description. It's mandatory because the generated Caddyfile uses it to list the entries.
+- "DNS-01 challenge", enable this if you want to use the DNS-01 ACME Challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the "General Settings" - "DNS Provider" and "API KEY" set.
+- Press Save if you want to save, or Cancel. You will be redirected back to the previous page.
+- Hit apply and the new Configuration will be active. After 1 to 2 minutes the Certificate will be installed and everything works.
+
+##### Troubleshooting:
+- Check the /var/log/caddy/caddy.log file to find errors. In a later Version I plan to implement Logging into the GUI.
+- Check the Service Widget and the "General Settings" Service Control buttons. If everything works they should show a green "Play" sign. If Caddy is stopped there is a red "Stop" sign. If Caddy is disabled, there is no widget and no control buttons.
 
 # How to build from source:
 - As build system use a FreeBSD 13.2 - https://github.com/opnsense/tools
