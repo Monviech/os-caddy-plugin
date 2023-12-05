@@ -123,7 +123,7 @@
             formData['Description'] = $('#caddy\\.reverseproxy\\.reverse\\.Description').val();
             formData['DnsChallenge'] = $('#caddy\\.reverseproxy\\.reverse\\.DnsChallenge').is(':checked') ? "1" : "0";
 
-            console.log("Structured Form Data:", formData);
+            // console.log("Structured Form Data:", formData);
 
             // Determine the correct API endpoint and method
             var apiEndpoint = '/api/caddy/ReverseProxy/';

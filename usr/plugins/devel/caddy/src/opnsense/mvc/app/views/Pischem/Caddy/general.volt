@@ -45,7 +45,7 @@
     $(document).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
         mapDataToFormUI(data_get_map).done(function(data){
-            console.log("Fetched data:", data); // Log the fetched data
+            // console.log("Fetched data:", data); // Log the fetched data
             var generalSettings = data.frm_GeneralSettings.caddy.general;
 
             // Populate TlsAutoHttps dropdown

@@ -144,7 +144,7 @@
 
         // Function to clone an entry
         function cloneEntry(uuid) {
-            console.log('Cloning entry', uuid);
+            // console.log('Cloning entry', uuid);
 
             fetch('/api/caddy/ReverseProxy/get/' + uuid)
                 .then(response => response.json())
@@ -165,14 +165,14 @@
 
         // Function to delete an entry
         function deleteEntry(uuid) {
-            console.log('Deleting entry', uuid);
+            // console.log('Deleting entry', uuid);
             if (confirm('Are you sure you want to delete this entry?')) {
                 $.ajax({
                     url: '/api/caddy/ReverseProxy/del/' + uuid, // Include UUID in the URL
                     method: 'POST',
                     contentType: 'application/json',
                     success: function(data) {
-                        console.log('Delete response:', data);
+                        // console.log('Delete response:', data);
                         // Handle the response
                     },
                     error: function(xhr, status, error) {
