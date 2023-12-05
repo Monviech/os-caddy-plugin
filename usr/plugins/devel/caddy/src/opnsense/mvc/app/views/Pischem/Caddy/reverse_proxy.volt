@@ -68,7 +68,7 @@
             data-label="{{ lang._('Apply') }}"
             data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
             type="button"
-    ><b>Reconfigure</b></button>
+    ><b>Apply</b></button>
 </div>
 
 <script type="text/javascript">
@@ -190,7 +190,8 @@
             window.location.href = '/ui/caddy/reverse_proxy_form';
         });
 
-        // Initialize the Reconfigure button
+        // Initialize the Apply button using SimpleActionButton
         $("#reconfigureAct").SimpleActionButton();
+
     });
 </script>
