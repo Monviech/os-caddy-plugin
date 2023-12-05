@@ -38,11 +38,10 @@
             data-label="{{ lang._('Apply') }}"
             data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
             type="button"
-    ><b>Reconfigure</b></button>
+    ><b>Apply</b></button>
 </div>
 
 <script type="text/javascript">
-
     $(document).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
         mapDataToFormUI(data_get_map).done(function(data){
@@ -85,11 +84,19 @@
                     return dfd.promise();  // Return the promise
                 },
                 onAction: function(data, status) {
-                    // This function is called after the pre-action is successful
-                    console.log("Reconfigure action initiated");
+                    if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
+                    // Reload the page if the action was successful
+                        location.reload();
+                    } else {
+                    // Handle any errors or unsuccessful actions
+                        console.error("Action was not successful or an error occurred:", data);
+                    }
                 }
             });
+
+            // Initialize the service control UI for 'caddy'
+            updateServiceControlUI('caddy');
+
         });
     });
-
 </script>
