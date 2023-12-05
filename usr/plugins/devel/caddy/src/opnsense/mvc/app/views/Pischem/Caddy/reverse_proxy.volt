@@ -62,7 +62,13 @@
 </div>
 
 <div style="margin-top: 20px; width: 100%; background-color: white; padding: 5px; border: 1px solid #ddd;">
-    <button id="globalApplyButton" class="btn btn-primary" type="button" style="margin-left: 4px;">Apply</button>
+    <!-- Reconfigure Button with Pre-Action -->
+    <button class="btn btn-primary" id="reconfigureAct"
+            data-endpoint="/api/caddy/service/reconfigure"
+            data-label="{{ lang._('Apply') }}"
+            data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
+            type="button"
+    ><b>Apply</b></button>
 </div>
 
 <script type="text/javascript">
@@ -184,40 +190,8 @@
             window.location.href = '/ui/caddy/reverse_proxy_form';
         });
 
-        // Event listener for the Apply button
-        document.getElementById('globalApplyButton').addEventListener('click', function() {
-            // Fetch the general settings first
-            fetch('/api/caddy/General/get')
-                .then(response => response.json())
-                .then(data => {
-                    // Check if Caddy is enabled
-                    if (data.caddy.general.enabled === "1") {
-                        // Trigger the restart service action if enabled
-                        $.ajax({
-                            url: "/api/caddy/service/restart",
-                            method: "POST",
-                            success: function(data) {
-                                console.log("Service action successful:", data);
-                                // Optionally, display a success message or handle the response further
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("Service action failed:", error);
-                                // Optionally, handle the error, display a message, etc.
-                            }
-                        }).done(function() {
-                            // Reload the page after the operation completes
-                            location.reload();
-                        });
-                    } else {
-                        console.log("Caddy service is not enabled. Skipping restart.");
-                        // Optionally, display a message indicating that the service won't be restarted
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching Caddy general settings:', error);
-                    // Optionally, handle the error, display a message, etc.
-                });
-        });
+        // Initialize the Apply button using SimpleActionButton
+        $("#reconfigureAct").SimpleActionButton();
 
     });
 </script>
