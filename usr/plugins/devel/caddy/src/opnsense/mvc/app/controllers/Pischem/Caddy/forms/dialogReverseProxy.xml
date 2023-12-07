@@ -1,42 +1,42 @@
 <form>
     <field>
-        <id>caddy.reverseproxy.reverse.Enabled</id>
+        <id>reverse.enabled</id>
         <label>enabled</label>
         <type>checkbox</type>
         <help>Enable this reverse proxy entry</help>
     </field>
     <field>
-        <id>caddy.reverseproxy.reverse.FromDomain</id>
+        <id>reverse.FromDomain</id>
         <label>From Domain</label>
         <type>text</type>
         <help><![CDATA[Enter the domain name for the reverse proxy source (e.g., 'example.com').]]></help>
     </field>
     <field>
-        <id>caddy.reverseproxy.reverse.FromPort</id>
+        <id>reverse.FromPort</id>
         <label>From Port</label>
         <type>text</type>
         <help><![CDATA[Enter the port number for the reverse proxy source (e.g., '8000').]]></help>
     </field>
     <field>
-        <id>caddy.reverseproxy.reverse.ToDomain</id>
+        <id>reverse.ToDomain</id>
         <label>To Domain</label>
         <type>text</type>
         <help><![CDATA[Enter the domain name for the reverse proxy destination (e.g., 'example.com').]]></help>
     </field>
     <field>
-        <id>caddy.reverseproxy.reverse.ToPort</id>
+        <id>reverse.ToPort</id>
         <label>To Port</label>
         <type>text</type>
         <help><![CDATA[Enter the port number for the reverse proxy destination (e.g., '9000').]]></help>
     </field>
     <field>
-        <id>caddy.reverseproxy.reverse.Description</id>
+        <id>reverse.Description</id>
         <label>Description</label>
         <type>text</type>
         <help>Enter a description for this reverse proxy entry.</help>
     </field>
     <field>
-        <id>caddy.reverseproxy.reverse.DnsChallenge</id>
+        <id>reverse.DnsChallenge</id>
         <label>DNS-01 challenge</label>
         <type>checkbox</type>
         <help>Enable DNS-01 challenge for ACME, please configure DNS Provider and API Key in General Settings.</help>

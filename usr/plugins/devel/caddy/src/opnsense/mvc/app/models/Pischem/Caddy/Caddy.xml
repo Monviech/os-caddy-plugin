@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a basic reverse proxy in Caddy Web Server.</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -37,10 +37,10 @@
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
-                <Enabled type="BooleanField">
+                <enabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
-                </Enabled>
+                </enabled>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
                     <ValidationMessage>Please enter a valid 'from' domain.</ValidationMessage>
