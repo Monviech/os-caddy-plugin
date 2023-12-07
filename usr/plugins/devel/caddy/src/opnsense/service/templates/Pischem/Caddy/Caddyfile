@@ -32,7 +32,7 @@
 {% if helpers.exists('Pischem.caddy.reverseproxy.reverse') %}
 {% for item in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
 {% set reverse = item %}
-{% if reverse.Enabled|default("0") == "1" %}
+{% if reverse.enabled|default("0") == "1" %}
 # Reverse proxy entry "{{ reverse.Description|default("") }}":
 {{ reverse.FromDomain|default("") }}{% if reverse.FromPort|default("") %}:{{ reverse.FromPort }}{% endif %} {
     reverse_proxy {{ reverse.ToDomain|default("") }}:{{ reverse.ToPort|default("") }}
