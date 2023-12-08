@@ -35,6 +35,15 @@
             toggle:'/api/caddy/ReverseProxy/toggleReverseProxy/',
         });
 
+        $("#reverseHandleGrid").UIBootgrid({
+            search:'/api/caddy/ReverseProxy/searchHandle/',
+            get:'/api/caddy/ReverseProxy/getHandle/',
+            set:'/api/caddy/ReverseProxy/setHandle/',
+            add:'/api/caddy/ReverseProxy/addHandle/',
+            del:'/api/caddy/ReverseProxy/delHandle/',
+            toggle:'/api/caddy/ReverseProxy/toggleHandle/',
+        });
+
         // Initialize the Apply button using SimpleActionButton
         $("#reconfigureAct").SimpleActionButton();
 
@@ -49,6 +58,7 @@
 </ul>
 
 <div class="tab-content content-box">
+
     <!-- Reverse Proxy Tab -->
     <div id="reverseProxyTab" class="tab-pane fade in active">
         <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
@@ -86,9 +96,37 @@
 
     <!-- Handle Tab -->
     <div id="handleTab" class="tab-pane fade">
-        <!-- Placeholder content for Handle tab -->
-        <h2>Handle Content Goes Here</h2>
-        <!-- ... -->
+        <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
+            <h1>Handle</h1>
+            <div style="display: block;"> <!-- Common container -->
+                <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle">
+                    <thead>
+                        <tr>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
+                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
+                            <th data-column-id="reverse" data-type="string">Reverse Proxy</th>
+                            <th data-column-id="HandleType" data-type="string">Handle Type</th>
+                            <th data-column-id="HandlePath" data-type="string">Handle Path</th>
+                            <th data-column-id="ToDomain" data-type="string">To Domain</th>
+                            <th data-column-id="ToPort" data-type="string">To Port</th>
+                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button id="addReverseHandleBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -103,3 +141,4 @@
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':'DialogReverseProxy','label':lang._('Edit Reverse Proxy')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit Handle')])}}
