@@ -39,6 +39,9 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'caddy';
     protected static $internalModelClass = 'Pischem\Caddy\Caddy';
 
+
+    /*ReverseProxy Section*/
+
     public function searchReverseProxyAction()
     {
         return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'ToDomain', 'ToPort', 'Description', 'DnsChallenge']);
@@ -67,5 +70,38 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function toggleReverseProxyAction($uuid, $enabled = null)
     {
         return $this->toggleBase("reverseproxy.reverse", $uuid, $enabled);
+    }
+
+
+    /*Handle Section*/
+
+        public function searchHandleAction()
+    {
+        return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'Description']);
+    }
+
+    public function setHandleAction($uuid)
+    {
+        return $this->setBase("handle", "reverseproxy.handle", $uuid);
+    }
+
+    public function addHandleAction()
+    {
+        return $this->addBase("handle", "reverseproxy.handle");
+    }
+
+    public function getHandleAction($uuid = null)
+    {
+        return $this->getBase("handle", "reverseproxy.handle", $uuid);
+    }
+
+    public function delHandleAction($uuid)
+    {
+        return $this->delBase("reverseproxy.handle", $uuid);
+    }
+
+    public function toggleHandleAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.handle", $uuid, $enabled);
     }
 }
