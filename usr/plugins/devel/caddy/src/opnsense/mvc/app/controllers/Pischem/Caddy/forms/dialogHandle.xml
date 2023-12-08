@@ -1,0 +1,44 @@
+<form>
+    <field>
+        <id>handle.enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help>Enable this handle entry</help>
+    </field>
+    <field>
+        <id>handle.reverse</id>
+        <label>Reverse Proxy</label>
+        <type>dropdown</type>
+        <help>Select a Reverse Proxy, to which the handle should be added.</help>
+    </field>
+    <field>
+        <id>handle.HandleType</id>
+        <label>Handle Type</label>
+        <type>dropdown</type>
+        <help>Select the handle type.</help>
+    </field>
+    <field>
+        <id>handle.HandlePath</id>
+        <label>Handle Path</label>
+        <type>text</type>
+        <help><![CDATA[Enter the handle, e.g. '/*' or '/example/*' or leave empty for a catch all handle]]></help>
+    </field>
+    <field>
+        <id>handle.ToDomain</id>
+        <label>To Domain</label>
+        <type>text</type>
+        <help><![CDATA[Enter the domain name for the reverse proxy destination of this handle (e.g., 'example.com').]]></help>
+    </field>
+    <field>
+        <id>handle.ToPort</id>
+        <label>To Port</label>
+        <type>text</type>
+        <help><![CDATA[Enter the port number for the reverse proxy destination of this handle (e.g., '9000').]]></help>
+    </field>
+    <field>
+        <id>handle.Description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Enter a description for this handle entry.</help>
+    </field>
+</form>
