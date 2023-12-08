@@ -38,5 +38,6 @@ class ReverseProxyController extends IndexController {
     public function indexAction() {
         $this->view->pick('Pischem/Caddy/reverse_proxy');
         $this->view->formDialogReverseProxy = $this->getForm("dialogReverseProxy");
+        $this->view->formDialogHandle = $this->getForm("dialogHandle");
     }
 }
