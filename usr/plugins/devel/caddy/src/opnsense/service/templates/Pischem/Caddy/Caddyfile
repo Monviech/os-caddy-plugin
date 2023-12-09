@@ -11,7 +11,10 @@
         }
     }
     email {{ helpers.toList('Pischem.caddy.general.TlsEmail') | first }}
-    auto_https {{ helpers.toList('Pischem.caddy.general.TlsAutoHttps') | first }}
+    {% set autoHttpsValue = helpers.toList('Pischem.caddy.general.TlsAutoHttps') | first %}
+    {% if autoHttpsValue != "on" %}
+    auto_https {{ autoHttpsValue }}
+    {% endif %}
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
