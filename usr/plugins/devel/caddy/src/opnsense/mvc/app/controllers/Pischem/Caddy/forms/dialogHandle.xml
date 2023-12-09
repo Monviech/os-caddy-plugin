@@ -7,9 +7,15 @@
     </field>
     <field>
         <id>handle.reverse</id>
-        <label>Reverse Proxy</label>
+        <label>Domain</label>
         <type>dropdown</type>
-        <help>Select a Reverse Proxy, to which the handle should be added.</help>
+        <help>Select a Domain, to which the handle should be added.</help>
+    </field>
+    <field>
+        <id>handle.subdomain</id>
+        <label>Subdomain</label>
+        <type>dropdown</type>
+        <help>Optionally, select a Subdomain, to which the handle should be added.</help>
     </field>
     <field>
         <id>handle.HandleType</id>
@@ -27,13 +33,13 @@
         <id>handle.ToDomain</id>
         <label>To Domain</label>
         <type>text</type>
-        <help><![CDATA[Enter the domain name for the reverse proxy destination of this handle (e.g., 'example.com').]]></help>
+        <help><![CDATA[Enter the domain name or IP address to the backend server destination of this handle (e.g., 'example.com').]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
         <label>To Port</label>
         <type>text</type>
-        <help><![CDATA[Enter the port number for the reverse proxy destination of this handle (e.g., '9000').]]></help>
+        <help><![CDATA[Enter the port number to the backend server destination of this handle (e.g., '9000').]]></help>
     </field>
     <field>
         <id>handle.Description</id>
