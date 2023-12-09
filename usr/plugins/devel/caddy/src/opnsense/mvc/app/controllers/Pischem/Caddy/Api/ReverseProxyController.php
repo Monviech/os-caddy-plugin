@@ -75,7 +75,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*Subdomain Section*/
 
-        public function searchSubdomainAction()
+    public function searchSubdomainAction()
     {
         return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'Description']);
     }
