@@ -39,9 +39,12 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'caddy';
     protected static $internalModelClass = 'Pischem\Caddy\Caddy';
 
+
+    /*ReverseProxy Section*/
+
     public function searchReverseProxyAction()
     {
-        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'ToDomain', 'ToPort', 'Description', 'DnsChallenge']);
+        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'Description', 'DnsChallenge']);
     }
 
     public function setReverseProxyAction($uuid)
@@ -67,5 +70,71 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function toggleReverseProxyAction($uuid, $enabled = null)
     {
         return $this->toggleBase("reverseproxy.reverse", $uuid, $enabled);
+    }
+
+
+    /*Subdomain Section*/
+
+    public function searchSubdomainAction()
+    {
+        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'Description']);
+    }
+
+    public function setSubdomainAction($uuid)
+    {
+        return $this->setBase("subdomain", "reverseproxy.subdomain", $uuid);
+    }
+
+    public function addSubdomainAction()
+    {
+        return $this->addBase("subdomain", "reverseproxy.subdomain");
+    }
+
+    public function getSubdomainAction($uuid = null)
+    {
+        return $this->getBase("subdomain", "reverseproxy.subdomain", $uuid);
+    }
+
+    public function delSubdomainAction($uuid)
+    {
+        return $this->delBase("reverseproxy.subdomain", $uuid);
+    }
+
+    public function toggleSubdomainAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.subdomain", $uuid, $enabled);
+    }
+
+
+    /*Handle Section*/
+
+        public function searchHandleAction()
+    {
+        return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'subdomain', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'Description']);
+    }
+
+    public function setHandleAction($uuid)
+    {
+        return $this->setBase("handle", "reverseproxy.handle", $uuid);
+    }
+
+    public function addHandleAction()
+    {
+        return $this->addBase("handle", "reverseproxy.handle");
+    }
+
+    public function getHandleAction($uuid = null)
+    {
+        return $this->getBase("handle", "reverseproxy.handle", $uuid);
+    }
+
+    public function delHandleAction($uuid)
+    {
+        return $this->delBase("reverseproxy.handle", $uuid);
+    }
+
+    public function toggleHandleAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.handle", $uuid, $enabled);
     }
 }

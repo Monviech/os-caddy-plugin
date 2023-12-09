@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>subdomain.enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help>Enable this Subdomain entry</help>
+    </field>
+    <field>
+        <id>subdomain.reverse</id>
+        <label>Reverse Proxy</label>
+        <type>dropdown</type>
+        <help>Select a Domain, to which this Subdomain should be added.</help>
+    </field>
+    <field>
+        <id>subdomain.FromDomain</id>
+        <label>From Subdomain</label>
+        <type>text</type>
+        <help><![CDATA[Enter the subdomain name (e.g., 'foo.example.com' if your wildcard domain is '*.example.com').]]></help>
+    </field>
+    <field>
+        <id>subdomain.FromPort</id>
+        <label>From Port</label>
+        <type>text</type>
+        <help><![CDATA[Enter the port number for this Subdomain reverse proxy source (e.g., '8000').]]></help>
+    </field>
+    <field>
+        <id>subdomain.Description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Enter a description for this Subdomain entry.</help>
+    </field>
+</form>

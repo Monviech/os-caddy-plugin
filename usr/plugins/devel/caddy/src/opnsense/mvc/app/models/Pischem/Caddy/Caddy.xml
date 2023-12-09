@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a basic reverse proxy in Caddy Web Server.</description>
-    <version>1.0.2</version>
+    <version>1.0.6</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -9,11 +9,9 @@
                 <Required>Y</Required>
             </enabled>
             <TlsEmail type="EmailField">
-                <Required>N</Required>
                 <ValidationMessage>Please enter a valid email address.</ValidationMessage>
             </TlsEmail>
             <TlsAutoHttps type="OptionField">
-                <Required>N</Required>
                 <Default>on</Default>
                 <OptionValues>
                     <on>On (default)</on>
@@ -28,10 +26,8 @@
                     <none>None (default)</none>
                     <cloudflare>Cloudflare</cloudflare>
                 </OptionValues>
-                <Required>N</Required>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField">
-                <Required>N</Required>
                 <ValidationMessage>Please enter a valid API key.</ValidationMessage>
             </TlsDnsApiKey>
         </general>
@@ -43,42 +39,109 @@
                 </enabled>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
-                    <ValidationMessage>Please enter a valid 'from' domain.</ValidationMessage>
+                    <ValidationMessage>Please enter a valid 'from' domain or IP address.</ValidationMessage>
                     <IpAllowed>Y</IpAllowed>
                     <HostWildcardAllowed>Y</HostWildcardAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </FromDomain>
                 <FromPort type="PortField">
-                    <Required>Y</Required>
                     <ValidationMessage>Please enter a valid 'from' port number.</ValidationMessage>
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>N</EnableRanges>
                 </FromPort>
+                <Description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
+                </Description>
+                <DnsChallenge type="BooleanField">
+                    <default>0</default>
+                </DnsChallenge>
+            </reverse>
+            <subdomain type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <reverse type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.reverse</items>
+                            <display>FromDomain</display>
+                        </reverseproxy>
+                    </Model>
+                </reverse>
+                <FromDomain type="HostnameField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid 'from' Subdomain that is based upon the wildcard domain.</ValidationMessage>
+                    <ZoneRootAllowed>N</ZoneRootAllowed>
+                </FromDomain>
+                <FromPort type="PortField">
+                    <ValidationMessage>Please enter a valid 'from' port number.</ValidationMessage>
+                    <EnableWellKnown>Y</EnableWellKnown>
+                    <EnableRanges>N</EnableRanges>
+                </FromPort>
+                <Description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
+                </Description>
+            </subdomain>
+            <handle type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <reverse type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.reverse</items>
+                            <display>FromDomain</display>
+                        </reverseproxy>
+                    </Model>
+                </reverse>
+                <subdomain type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.subdomain</items>
+                            <display>FromDomain</display>
+                        </reverseproxy>
+                    </Model>
+                </subdomain>
+                <HandleType type="OptionField">
+                    <Required>Y</Required>
+                    <Default>handle</Default>
+                    <OptionValues>
+                        <handle>handle</handle>
+                    </OptionValues>
+                </HandleType>
+                <HandlePath type="TextField">
+                    <mask>/^(\/([^\/\*]+\/)*\*)?$/u</mask>
+                    <ValidationMessage>Please enter a valid 'Handle Path'.</ValidationMessage>
+                </HandlePath>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
-                    <ValidationMessage>Please enter a valid 'to' domain.</ValidationMessage>
+                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
                     <IpAllowed>Y</IpAllowed>
                     <HostWildcardAllowed>Y</HostWildcardAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </ToDomain>
                 <ToPort type="PortField">
-                    <Required>Y</Required>
                     <ValidationMessage>Please enter a valid 'to' port number.</ValidationMessage>
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>N</EnableRanges>
                 </ToPort>
                 <Description type="TextField">
-                    <Required>Y</Required>
-                    <default></default>
-                    <ValidationMessage>Please provide a description.</ValidationMessage>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
-                <DnsChallenge type="BooleanField">
-                    <default>0</default>
-                    <Required>N</Required>
-                </DnsChallenge>
-            </reverse>
+            </handle>
         </reverseproxy>
     </items>
 </model>

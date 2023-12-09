@@ -17,8 +17,8 @@
 - Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
 
 # How to install:
-- ##### DISCLAIMER: Please don't use this in any productive enviroments (yet), it was developed with the use of AI assistance for Javascript and more complex PHP code (ChatGPT4 and Copilot). It was a learning experience from an Administrator to understand the concepts around the OPNsense Firewall better. 
-- ##### BETA VERSION 1.0.7b. Tested by myself on DEC740 Hardware and OPNsense 23.7.9-amd64.
+- ##### DISCLAIMER: Please don't use this in any productive enviroments (yet). As of version 1.1.0b, all code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
+- ##### BETA VERSION 1.1.0b. Tested by myself on DEC740 Hardware and OPNsense 23.7.9-amd64.
 - ```fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.pischem.com/repo-config/os-caddy-plugin.conf```
 - ```pkg update```
 - Afterwards the "os-caddy" plugin can be installed from the GUI.
@@ -39,18 +39,36 @@ Make sure that port 80 and 443 aren't occupied on the Firewall. You have to chan
 - "DNS API Key" - Leave empty if you don't use a DNS Provider, or put your API Key here.
 - Press "Apply" to enable and start Caddy.
 
+#### How to create an easy reverse proxy:
 ##### In Services - Caddy Web Server - Reverse Proxy:
 
-- Press + to create a new Reverse Proxy Entry
+##### Tab Reverse Proxy - Reverse Proxy Domains:
+- Press + to create a new Reverse Proxy Domain
 - "Enable" or "disable" this new entry
-- "From Domain" can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the "To Domain" Server in the backend.
-- "From Port" should be 443 or a different port like 7443 etc... it's the port the OPNsense will listen on. Don't forget to create Firewall rules that allow Traffic to this port on WAN or LAN to "This Firewall".
-- "To Domain" should be an internal domain name or an IP Address of the Backend Server that should receive the traffic of the "From Domain".
-- "To Port" should be the port the Backend Server listens on, for example 443 or 7443. It doesn't have to be the same port as the "From Port".
-- "Description" should be a description. It's mandatory because the generated Caddyfile uses it to list the entries.
+- "From Domain" can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the "Handle" Server in the backend.
+- "From Port" should be 443 or a different port like 7443 etc... it's the port the OPNsense will listen on. Don't forget to create Firewall rules that allow Traffic to this port on WAN or LAN to "This Firewall". You can leave this empty if you want to use the default ports of Caddy (443).
 - "DNS-01 challenge", enable this if you want to use the DNS-01 ACME Challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the "General Settings" - "DNS Provider" and "API KEY" set.
-- Press Save if you want to save, or Cancel. You will be redirected back to the previous page.
-- Hit apply and the new Configuration will be active. After 1 to 2 minutes the Certificate will be installed and everything works.
+
+##### Tab Handle - Handle:
+- Press + to create a new Handle. A handle is like a "location" in nginx.
+- "Enable" or "disable" this new entry
+- "Domain" Select the domain you have created in "Reverse Proxy Domains"
+- "Subdomain" leave this on None. It is not needed without having a wildcard certificate, and a *.example.com Domain.
+- "Handle Type" Only handle can be chosen as of now. It's the most common option.
+- "Handle Path" Leave this empty if you want to create a "catch all". The catch all will always be generated at the last spot of the Caddyfile. That means, you can create multiple handle entries, and have each of them point at different locations like /example/* or /foo/* or /foo/bar/*. There is input validation here.
+- "To Domain" should be an internal domain name or an IP Address of the Backend Server that should receive the traffic of the "Domain".
+- "To Port" should be the port the Backend Server listens on, for example 443 or 7443. It doesn't have to be the same port as the "From Port".
+
+Press - Apply - and the new configuration will be active. After 1 to 2 minutes the Certificate will be installed.
+
+#### How to create a wildcard subdomain reverse proxy:
+- Do everything the same as above, but create your Reverse Proxy Domain like this "*.example.com" and activate the DNS-01 Challenge.
+- Go to the Subdomain Tab and create all subdomains that you need in relation to the "*.example.com" domain. So for example "foo.example.com" and "bar.example.com". But NOT "foo.bar.example.com", since for that you would need the "*.bar.example.com" domain and certificate.
+- In the Handle Tab you can now select your "*.example.com" domain, and if Subdomain is "None", the handles are added to the base domain, for example if you want a catch all for all non referenced subdomains.
+- If you create a Handle with "*.example.com" and "foo.example.com" as Subdomain, a nested handle will be generated. You can do all the same configurations as if the subdomain is a normal domain, with multiple handles and handle paths.
+
+For inspiration, check this Caddyfile:
+https://github.com/Monviech/os-caddy-plugin/pull/32
 
 ##### Troubleshooting:
 - Check the /var/log/caddy/caddy.log file to find errors. In a later Version I plan to implement Logging into the GUI.
@@ -75,56 +93,10 @@ curl -L "https://caddyserver.com/api/download?os=freebsd&arch=amd64&p=github.com
 You don't have to make the binary chmod +x, the setup script does that automatically on service start and restart.
 
 # Using the REST API to control the plugin:
-REST API:
-- /api/caddy/ReverseProxy/add
-- /api/caddy/ReverseProxy/set
-- /api/caddy/ReverseProxy/get
-- /api/caddy/ReverseProxy/del
-- /api/caddy/General/set
-- /api/caddy/General/get
+The Rest API is now fully integreated with the OPNsense syntax.
+https://docs.opnsense.org/development/api.html
 
-After changing something, please use the ServiceController API down below to restart the service, so that the template reloads.
+All API Actions can be found in the API controller files.
 
-Examples:
-
-- add
-```
-curl -v -k -X POST "https://192.168.3.1/api/caddy/ReverseProxy/add" \
-     -H "Authorization: Basic API-KEY" \
-     -H "Content-Type: application/json" \
-     -d '{"reverse": {"Enabled": "1", "FromDomain": "example.com", "FromPort": "443", "ToDomain": "192.168.1.2", "ToPort": "443", "Description": "Test"}}' \
-     --insecure
-```
-- del
-```
-curl -X POST "https://192.168.3.1/api/caddy/ReverseProxy/del/a34e1497-121e-46a5-9e88-bdb51534eae1" \
-     -H "Authorization: Basic API-SECRET" \
-     -H "Content-Type: application/json" \
-     -d '{}' \
-     --insecure 
-```
-- set
-```
-curl -X PUT "https://192.168.3.1/api/caddy/ReverseProxy/set/a34e1497-121e-46a5-9e88-bdb51534eae1" \
-     -H "Authorization: Basic API-SECRET" \
-     -H "Content-Type: application/json" \
-     -d '{"reverse":{"Enabled": "1","FromDomain": "example.com","FromPort": "443","ToDomain": "192.168.1.2","ToPort": "443","Description": "Test"}}' \
-     --insecure
-```
-
-Controlling the Service:
-
-- /api/caddy/service/start
-- /api/caddy/service/stop
-- /api/caddy/service/restart
-
-Examples:
-
-- restart
-```
-curl -v -X POST "https://192.168.3.1/api/caddy/service/restart" \
-     -H "Authorization: Basic API-KEY" \
-     -H "Content-Type: application/json" \
-     --data '{}' \
-     --insecure
-```
+Example:
+/api/caddy/ReverseProxy/get
