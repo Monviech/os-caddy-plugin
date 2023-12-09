@@ -18,18 +18,6 @@
         <help><![CDATA[Enter the port number for the reverse proxy source (e.g., '8000').]]></help>
     </field>
     <field>
-        <id>reverse.ToDomain</id>
-        <label>To Domain</label>
-        <type>text</type>
-        <help><![CDATA[Enter the domain name for the reverse proxy destination (e.g., 'example.com').]]></help>
-    </field>
-    <field>
-        <id>reverse.ToPort</id>
-        <label>To Port</label>
-        <type>text</type>
-        <help><![CDATA[Enter the port number for the reverse proxy destination (e.g., '9000').]]></help>
-    </field>
-    <field>
         <id>reverse.Description</id>
         <label>Description</label>
         <type>text</type>
