@@ -3,7 +3,7 @@
         <Caddy VisibleName="Caddy Web Server" cssClass="fa fa-globe fa-fw">
             <General VisibleName="General Settings" order="10" url="/ui/caddy/general"/>
             <ReverseProxy VisibleName="Reverse Proxy" order="20" url="/ui/caddy/reverse_proxy"/>
+            <Log VisibleName="Log File" order="30" url="/ui/caddy/log"/>
         </Caddy>
     </Services>
 </menu>
-
