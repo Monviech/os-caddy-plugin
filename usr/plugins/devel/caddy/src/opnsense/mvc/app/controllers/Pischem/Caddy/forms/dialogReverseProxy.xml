@@ -29,4 +29,11 @@
         <type>checkbox</type>
         <help>Enable DNS-01 challenge for ACME, please configure DNS Provider and API Key in General Settings.</help>
     </field>
+    <field>
+        <id>reverse.CustomCertificate</id>
+        <label>Custom Certificate</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Choose your own certificate for this reverse proxy entry from System Trust Certificates</help>
+    </field>
 </form>

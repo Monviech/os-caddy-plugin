@@ -17,8 +17,8 @@
 - Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
 
 # How to install:
-- ##### DISCLAIMER: Please don't use this in any productive enviroments (yet). As of version 1.1.0b, all code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-- ##### BETA VERSION 1.1.0b. Tested by myself on DEC740 Hardware and OPNsense 23.7.9-amd64.
+- ##### DISCLAIMER: Please don't use this in any productive enviroments (yet). As of version 1.1.2b, most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
+- ##### BETA VERSION 1.1.2b. Tested by myself on DEC740 Hardware and OPNsense 23.7.9-amd64.
 - ```fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.pischem.com/repo-config/os-caddy-plugin.conf```
 - ```pkg update```
 - Afterwards the "os-caddy" plugin can be installed from the GUI.
@@ -48,6 +48,7 @@ Make sure that port 80 and 443 aren't occupied on the Firewall. You have to chan
 - "From Domain" can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the "Handle" Server in the backend.
 - "From Port" should be 443 or a different port like 7443 etc... it's the port the OPNsense will listen on. Don't forget to create Firewall rules that allow Traffic to this port on WAN or LAN to "This Firewall". You can leave this empty if you want to use the default ports of Caddy (443).
 - "DNS-01 challenge", enable this if you want to use the DNS-01 ACME Challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the "General Settings" - "DNS Provider" and "API KEY" set.
+- Advanced Mode: Custom Certificate - Use a Certificate you imported or generated in "System - Trust - Certificates".
 
 ##### Tab Handle - Handle:
 - Press + to create a new Handle. A handle is like a "location" in nginx.
@@ -63,6 +64,7 @@ Press - Apply - and the new configuration will be active. After 1 to 2 minutes t
 
 #### How to create a wildcard subdomain reverse proxy:
 - Do everything the same as above, but create your Reverse Proxy Domain like this "*.example.com" and activate the DNS-01 Challenge.
+- Or - Advanced Mode: Custom Certificate - Use a Certificate you imported or generated in "System - Trust - Certificates". It has to be a wildcard certificate.
 - Go to the Subdomain Tab and create all subdomains that you need in relation to the "*.example.com" domain. So for example "foo.example.com" and "bar.example.com". But NOT "foo.bar.example.com", since for that you would need the "*.bar.example.com" domain and certificate.
 - In the Handle Tab you can now select your "*.example.com" domain, and if Subdomain is "None", the handles are added to the base domain, for example if you want a catch all for all non referenced subdomains.
 - If you create a Handle with "*.example.com" and "foo.example.com" as Subdomain, a nested handle will be generated. You can do all the same configurations as if the subdomain is a normal domain, with multiple handles and handle paths.
