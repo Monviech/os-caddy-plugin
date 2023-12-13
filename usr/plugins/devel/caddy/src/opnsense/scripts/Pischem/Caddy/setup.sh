@@ -14,6 +14,7 @@ CADDY_CONFIG_DIR="${CADDY_DIR}/.config/caddy" # Additional config directory
 mkdir -p "${CADDY_DIR}"
 mkdir -p "${CADDY_ACME_DIR}"
 mkdir -p "${CADDY_CERTS_DIR}"
+mkdir -p "${CADDY_CERTS_DIR}/temp"
 mkdir -p "${CADDY_OCSP_DIR}"
 mkdir -p "${CADDY_LOCKS_DIR}"
 mkdir -p "${CADDY_CONF_DIR}"

@@ -51,7 +51,8 @@
                     <EnableRanges>N</EnableRanges>
                 </FromPort>
                 <Description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <Required>Y</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
                 <DnsChallenge type="BooleanField">
@@ -71,7 +72,7 @@
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>FromDomain</display>
+                            <display>Description</display>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -86,7 +87,8 @@
                     <EnableRanges>N</EnableRanges>
                 </FromPort>
                 <Description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <Required>Y</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
             </subdomain>
@@ -101,7 +103,7 @@
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>FromDomain</display>
+                            <display>Description</display>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -111,7 +113,7 @@
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.subdomain</items>
-                            <display>FromDomain</display>
+                            <display>Description</display>
                         </reverseproxy>
                     </Model>
                 </subdomain>
@@ -140,7 +142,7 @@
                     <EnableRanges>N</EnableRanges>
                 </ToPort>
                 <Description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
             </handle>

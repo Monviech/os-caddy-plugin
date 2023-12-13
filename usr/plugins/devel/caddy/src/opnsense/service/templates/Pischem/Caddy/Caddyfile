@@ -29,14 +29,33 @@
         dns {{ helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first }} {{ helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first }}
     }
     {% elif customCert %}
-    tls /usr/local/etc/caddy/certificates/{{ customCert }}.pem /usr/local/etc/caddy/certificates/{{ customCert }}.key
+    tls /usr/local/etc/caddy/certificates/temp/{{ customCert }}.pem /usr/local/etc/caddy/certificates/temp/{{ customCert }}.key
     {% endif %}
+
+    {% set wildcard_handles_with_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('HandlePath', 'defined') | selectattr('subdomain', 'undefined') | list %}
+    {% set wildcard_handles_without_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('HandlePath', 'undefined') | selectattr('subdomain', 'undefined') | list %}
+
+    {% for handle in wildcard_handles_with_path %}
+    {% if handle.enabled|default("0") == "1" %}
+    handle {{ handle.HandlePath }} {
+        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}
+    }
+    {% endif %}
+    {% endfor %}
+
+    {% for handle in wildcard_handles_without_path %}
+    {% if handle.enabled|default("0") == "1" %}
+    handle {
+        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}
+    }
+    {% endif %}
+    {% endfor %}
 
     {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
     {% if subdomain.enabled|default("0") == "1" and subdomain.reverse == reverse['@uuid'] %}
-    @{{ subdomain.FromDomain }} host {{ subdomain.FromDomain }}{% if subdomain.FromPort %}:{{ subdomain.FromPort }}{% endif %}
+    @{{ subdomain['@uuid'] }} host {{ subdomain.FromDomain }}{% if subdomain.FromPort %}:{{ subdomain.FromPort }}{% endif %}
     {% filter replace("handle @", "\nhandle @") %}
-    handle @{{ subdomain.FromDomain }} {
+    handle @{{ subdomain['@uuid'] }} {
         {% set subdomain_handles_with_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | selectattr('HandlePath', 'defined') | list %}
         {% set subdomain_handles_without_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | selectattr('HandlePath', 'undefined') | list %}
         {% for handle in subdomain_handles_with_path %}
@@ -55,20 +74,6 @@
         {% endfor %}
     }
     {% endfilter %}
-    {% endif %}
-    {% endfor %}
-
-    {% for handle in helpers.toList('Pischem.caddy.reverseproxy.handle') %}
-    {% if handle.enabled|default("0") == "1" and handle.reverse == reverse['@uuid'] and not handle.subdomain %}
-    {% if handle.HandlePath %}
-    handle {{ handle.HandlePath }} {
-        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}
-    }
-    {% else %}
-    handle {
-        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}
-    }
-    {% endif %}
     {% endif %}
     {% endfor %}
 }

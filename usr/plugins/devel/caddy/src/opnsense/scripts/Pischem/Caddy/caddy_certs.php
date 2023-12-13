@@ -35,9 +35,8 @@ require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
 
 $configObj = Config::getInstance()->object();
-$temp_dir = '/usr/local/etc/caddy/certificates/';
+$temp_dir = '/usr/local/etc/caddy/certificates/temp/';
 
-// Function to extract and save certificates
 function extract_and_save_certificates($configObj, $temp_dir) {
     // Traverse through certificates
     foreach ($configObj->cert as $cert) {
@@ -45,24 +44,37 @@ function extract_and_save_certificates($configObj, $temp_dir) {
         $cert_content = base64_decode((string)$cert->crt);
         $key_content = base64_decode((string)$cert->prv);
 
-        // Save the certificate
-        file_put_contents($temp_dir . $cert_refid . '.pem', $cert_content);
-        chmod($temp_dir . $cert_refid . '.pem', 0600);
+        // Initialize certificate chain with the main certificate
+        $cert_chain = $cert_content;
 
-        // Save the private key
-        file_put_contents($temp_dir . $cert_refid . '.key', $key_content);
-        chmod($temp_dir . $cert_refid . '.key', 0600);
-
-        // Handle CA if exists to create a certificate bundle
+        // Handle CA and possible intermediate CA to create a certificate bundle
         if (!empty($cert->caref)) {
             foreach ($configObj->ca as $ca) {
                 if ((string)$cert->caref == (string)$ca->refid) {
+                    // Append the CA (possibly intermediate CA) certificate
                     $ca_content = base64_decode((string)$ca->crt);
-                    file_put_contents($temp_dir . $cert_refid . '.pem', $cert_content . "\n" . $ca_content);
-                    chmod($temp_dir . $cert_refid . '.pem', 0600);
+                    $cert_chain .= "\n" . $ca_content;
+
+                    // Check if this CA has its own CA reference (intermediate CA case)
+                    if (!empty($ca->caref)) {
+                        foreach ($configObj->ca as $parent_ca) {
+                            if ((string)$ca->caref == (string)$parent_ca->refid) {
+                                // Append the parent CA (root CA) certificate
+                                $parent_ca_content = base64_decode((string)$parent_ca->crt);
+                                $cert_chain .= "\n" . $parent_ca_content;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
+
+        // Save the certificate chain and private key
+        file_put_contents($temp_dir . $cert_refid . '.pem', $cert_chain);
+        chmod($temp_dir . $cert_refid . '.pem', 0600);
+        file_put_contents($temp_dir . $cert_refid . '.key', $key_content);
+        chmod($temp_dir . $cert_refid . '.key', 0600);
     }
 }
 
