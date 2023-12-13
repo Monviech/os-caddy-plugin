@@ -35,7 +35,7 @@ require_once("legacy_bindings.inc");
 use OPNsense\Core\Config;
 
 $configObj = Config::getInstance()->object();
-$temp_dir = '/usr/local/etc/caddy/certificates/';
+$temp_dir = '/usr/local/etc/caddy/certificates/temp/';
 
 // Function to extract and save certificates
 function extract_and_save_certificates($configObj, $temp_dir) {
