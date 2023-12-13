@@ -29,7 +29,7 @@
         dns {{ helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first }} {{ helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first }}
     }
     {% elif customCert %}
-    tls /usr/local/etc/caddy/certificates/{{ customCert }}.pem /usr/local/etc/caddy/certificates/{{ customCert }}.key
+    tls /usr/local/etc/caddy/certificates/temp/{{ customCert }}.pem /usr/local/etc/caddy/certificates/temp/{{ customCert }}.key
     {% endif %}
 
     {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
