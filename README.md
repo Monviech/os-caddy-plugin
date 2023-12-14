@@ -3,6 +3,12 @@
 - This personal project aims to provide a simple plugin for [OPNsense](https://github.com/opnsense) to enable support for [Caddy](https://github.com/caddyserver/caddy).
 - The scope will be the reverse proxy features.
 
+
+![ReverseProxy](https://github.com/Monviech/os-caddy-plugin/assets/79600909/be953266-54f6-4d0b-ba2e-cf6c9a013909)
+![Handle](https://github.com/Monviech/os-caddy-plugin/assets/79600909/12e4fcd7-7faa-4c81-a0ea-e35a451cea4c)
+
+More Screenshots and generated Caddyfile example: https://github.com/Monviech/os-caddy-plugin/pull/32
+
 # License
 
 - This project is licensed under the BSD 2-Clause "Simplified" license. See the LICENSE file for details. 
