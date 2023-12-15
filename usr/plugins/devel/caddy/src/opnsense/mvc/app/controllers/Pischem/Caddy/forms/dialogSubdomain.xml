@@ -3,30 +3,32 @@
         <id>subdomain.enabled</id>
         <label>enabled</label>
         <type>checkbox</type>
-        <help>Enable this Subdomain entry</help>
+        <help>Enable this reverse proxy subdomain.</help>
     </field>
     <field>
         <id>subdomain.reverse</id>
-        <label>Reverse Proxy</label>
+        <label>Reverse Proxy Domain</label>
         <type>dropdown</type>
-        <help>Select a Domain, to which this Subdomain should be added.</help>
+        <help>Select a domain, to which this subdomain should be added.</help>
     </field>
     <field>
         <id>subdomain.FromDomain</id>
-        <label>From Subdomain</label>
+        <label>Reverse Proxy Subdomain</label>
         <type>text</type>
-        <help><![CDATA[Enter the subdomain name (e.g., 'foo.example.com' if your wildcard domain is '*.example.com').]]></help>
+        <hint>opn.example.com</hint>
+        <help><![CDATA[Enter the subdomain name (e.g., 'opn.example.com' if your wildcard domain is '*.example.com').]]></help>
     </field>
     <field>
         <id>subdomain.FromPort</id>
-        <label>From Port</label>
+        <label>Reverse Proxy Port</label>
         <type>text</type>
-        <help><![CDATA[Enter the port number for this Subdomain reverse proxy source (e.g., '8000').]]></help>
+        <help><![CDATA[Enter the port number. Leave this empty for bind to port 80 and 443 with automatic redirection. Don't forget to create a firewall rule that allows this destination port to "This Firewall".]]></help>
     </field>
     <field>
         <id>subdomain.Description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Enter a description for this Subdomain entry.</help>
+        <hint>opn.example.com.443</hint>
+        <help>Enter a description for this reverse proxy subdomain.</help>
     </field>
 </form>

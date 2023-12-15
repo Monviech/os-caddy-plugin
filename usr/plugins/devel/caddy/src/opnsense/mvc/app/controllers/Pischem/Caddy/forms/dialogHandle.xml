@@ -3,48 +3,49 @@
         <id>handle.enabled</id>
         <label>enabled</label>
         <type>checkbox</type>
-        <help>Enable this handle entry</help>
+        <help>Enable this handle.</help>
     </field>
     <field>
         <id>handle.reverse</id>
-        <label>Domain</label>
+        <label>Reverse Proxy Domain</label>
         <type>dropdown</type>
-        <help>Select a Domain, to which the handle should be added.</help>
+        <help>Select a reverse proxy domain, to which this handle should be added.</help>
     </field>
     <field>
         <id>handle.subdomain</id>
-        <label>Subdomain</label>
+        <label>Reverse Proxy Subdomain</label>
         <type>dropdown</type>
-        <help>Optionally, select a Subdomain, to which the handle should be added.</help>
+        <help><![CDATA[Optionally, select a reverse proxy subdomain, to which this handle should be added. In most cases, leaving this on "None" will be the best choice.]]></help>
     </field>
     <field>
         <id>handle.HandleType</id>
         <label>Handle Type</label>
         <type>dropdown</type>
-        <help>Select the handle type.</help>
+        <help>Select the handle type. In most cases, leaving this on handle will be the best choice.</help>
     </field>
     <field>
         <id>handle.HandlePath</id>
         <label>Handle Path</label>
         <type>text</type>
-        <help><![CDATA[Enter the handle, e.g. '/*' or '/example/*' or leave empty for a catch all handle]]></help>
+        <help><![CDATA[Enter the handle, e.g. '/*' or '/example/*' or leave empty for a catch all handle. In most cases, leaving this empty will be the best choice.]]></help>
     </field>
     <field>
         <id>handle.ToDomain</id>
-        <label>To Domain</label>
+        <label>Backend Server Domain</label>
         <type>text</type>
-        <help><![CDATA[Enter the domain name or IP address to the backend server destination of this handle (e.g., 'example.com').]]></help>
+        <hint>192.168.1.1</hint>
+        <help><![CDATA[Enter the internal domain name or IP address to the backend server destination of this handle.]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
-        <label>To Port</label>
+        <label>Backend Server Port</label>
         <type>text</type>
-        <help><![CDATA[Enter the port number to the backend server destination of this handle (e.g., '9000').]]></help>
+        <help><![CDATA[Enter the port number of the backend server. Leave this empty for bind to port 80 and 443 with automatic redirection.]]></help>
     </field>
     <field>
         <id>handle.Description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Enter a description for this handle entry.</help>
+        <help>Enter a description for this handle.</help>
     </field>
 </form>

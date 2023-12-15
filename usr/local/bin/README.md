@@ -1,2 +1,2 @@
 # Current Build
-curl -L "https://caddyserver.com/api/download?os=freebsd&arch=amd64&p=github.com%2Fcaddy-dns%2Fcloudflare&idempotency=1620845780975" -o caddy
+https://caddyserver.com/api/download?os=freebsd&arch=amd64&p=github.com%2Fcaddy-dns%2Fcloudflare&p=github.com%2Fcaddy-dns%2Fduckdns&p=github.com%2Fcaddy-dns%2Fdigitalocean&p=github.com%2Fcaddy-dns%2Fdnspod&p=github.com%2Fcaddy-dns%2Fhetzner&p=github.com%2Fcaddy-dns%2Fgodaddy&p=github.com%2Fcaddy-dns%2Fgandi&p=github.com%2Fcaddy-dns%2Fvultr&p=github.com%2Fcaddy-dns%2Fionos&idempotency=29198543194239

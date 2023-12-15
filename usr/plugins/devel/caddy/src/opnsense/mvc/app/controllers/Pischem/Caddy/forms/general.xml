@@ -3,13 +3,14 @@
         <id>caddy.general.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>This will enable or disable Caddy server.</help>
+        <help>Enable or disable Caddy Web Server.</help>
     </field>
     <field>
         <id>caddy.general.TlsEmail</id>
         <label>ACME Email</label>
         <type>text</type>
-        <help>Enter the email address for ACME certificate notifications.</help>
+        <hint>info@example.com</hint>
+        <help>Enter the email address for certificate notifications.</help>
     </field>
     <field>
         <id>caddy.general.TlsAutoHttps</id>
@@ -21,12 +22,12 @@
         <id>caddy.general.TlsDnsProvider</id>
         <label>DNS Provider</label>
         <type>dropdown</type>
-        <help>Select the DNS provider for the ACME DNS01 Challenge.</help>
+        <help>Select the DNS provider for the DNS-01 Challenge. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You only need this for Wildcard Certificates. If you have your own Wildcard certificate, you can import it to System Trust Certificates and use it in the advanced mode of a new Reverse Proxy Domain.</help>
     </field>
     <field>
         <id>caddy.general.TlsDnsApiKey</id>
         <label>DNS API Key</label>
         <type>text</type>
-        <help>Enter the API key for the selected DNS provider.</help>
+        <help>Enter the API key for the selected DNS provider. Leave this empty, if no DNS provider is set.</help>
     </field>
 </form>

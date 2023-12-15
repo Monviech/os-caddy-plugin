@@ -10,7 +10,10 @@
             roll_keep_for 720h
         }
     }
-    email {{ helpers.toList('Pischem.caddy.general.TlsEmail') | first }}
+    {% set emailValue = helpers.toList('Pischem.caddy.general.TlsEmail') | first %}
+    {% if emailValue %}
+    email {{ emailValue }}
+    {% endif %}
     {% set autoHttpsValue = helpers.toList('Pischem.caddy.general.TlsAutoHttps') | first %}
     {% if autoHttpsValue != "on" %}
     auto_https {{ autoHttpsValue }}

@@ -3,37 +3,41 @@
         <id>reverse.enabled</id>
         <label>enabled</label>
         <type>checkbox</type>
-        <help>Enable this reverse proxy entry</help>
+        <help>Enable this reverse proxy domain.</help>
     </field>
     <field>
         <id>reverse.FromDomain</id>
-        <label>From Domain</label>
+        <label>Reverse Proxy Domain</label>
         <type>text</type>
-        <help><![CDATA[Enter the domain name for the reverse proxy source (e.g., 'example.com').]]></help>
+        <hint>example.com</hint>
+        <help><![CDATA[Enter a domain name or IP address. For a wildcard domain, use *.example.com. Only use wildcard domains with a wildcard certificate.]]></help>
     </field>
     <field>
         <id>reverse.FromPort</id>
-        <label>From Port</label>
+        <label>Reverse Proxy Port</label>
         <type>text</type>
-        <help><![CDATA[Enter the port number for the reverse proxy source (e.g., '8000').]]></help>
+        <help><![CDATA[Enter the port number. Leave this empty for bind to port 80 and 443 with automatic redirection. Don't forget to create a firewall rule that allows this destination
+ port to "This Firewall".]]></help>
     </field>
     <field>
         <id>reverse.Description</id>
         <label>Description</label>
         <type>text</type>
-        <help>Enter a description for this reverse proxy entry.</help>
+        <hint>example.com.443</hint>
+        <help>Enter a description for this reverse proxy domain.</help>
     </field>
     <field>
         <id>reverse.DnsChallenge</id>
         <label>DNS-01 challenge</label>
         <type>checkbox</type>
-        <help>Enable DNS-01 challenge for ACME, please configure DNS Provider and API Key in General Settings.</help>
+        <help>Enable DNS-01 challenge for ACME, please configure DNS Provider and API Key in General Settings. In most cases, leaving this option unchecked will be the best choice. The a
+utomatic Let's Encrypt HTTP challenge will be used if this option is unchecked, which needs no further configuration.</help>
     </field>
     <field>
         <id>reverse.CustomCertificate</id>
         <label>Custom Certificate</label>
         <type>dropdown</type>
-        <advanced>true</advanced>
-        <help>Choose your own certificate for this reverse proxy entry from System Trust Certificates</help>
+        <help>Choose your own certificate from System Trust Certificates. Make sure you have imported the full chain. In most cases, leaving this on "None" will be the best choice.</help
+>
     </field>
 </form>
