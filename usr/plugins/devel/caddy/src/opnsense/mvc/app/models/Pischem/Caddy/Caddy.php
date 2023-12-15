@@ -35,6 +35,9 @@ use Phalcon\Messages\Message;
 
 class Caddy extends BaseModel
 {
+
+    // 1. Check domain-port combinations
+    // 2. Check subdomain-port combinations
     private function checkForUniquePortCombos($items, $messages, $type = 'domain')
     {
         $combos = [];
@@ -42,55 +45,80 @@ class Caddy extends BaseModel
             $fromDomainOrSubdomain = (string) $item->FromDomain;
             $fromPort = (string) $item->FromPort;
 
-            // Treat ports 80 and 443 as default ports
-            if ($fromPort === '' || $fromPort === '80' || $fromPort === '443') {
-                $fromPort = 'default';
+            // Default ports are treated as a special case
+            if ($fromPort === '') {
+                $defaultPorts = ['80', '443'];
+            } else {
+                $defaultPorts = [$fromPort];
             }
 
-            // Create a unique key for domain/subdomain-port combination
-            $comboKey = $fromDomainOrSubdomain . ':' . $fromPort;
+            foreach ($defaultPorts as $port) {
+                // Create a unique key for domain/subdomain-port combination
+                $comboKey = $fromDomainOrSubdomain . ':' . $port;
 
-            // Check for duplicate combinations
-            if (isset($combos[$comboKey])) {
-                $domainField = $type === 'domain' ? "reverse.FromDomain" : "subdomain.FromDomain";
-                $portField = $type === 'domain' ? "reverse.FromPort" : "subdomain.FromPort";
+                // Check for duplicate combinations
+                if (isset($combos[$comboKey])) {
+                    $domainField = $type === 'domain' ? "reverse.FromDomain" : "subdomain.FromDomain";
+                    $portField = $type === 'domain' ? "reverse.FromPort" : "subdomain.FromPort";
 
-                $messages->appendMessage(new Message(
-                    gettext("Duplicate entry: The combination of $type '$fromDomainOrSubdomain' and port '$fromPort' is already used. Each $type and port pairing must be unique."),
-                    $domainField,
-                    "Duplicate" . ucfirst($type) . "Port"
-                ));
-                $messages->appendMessage(new Message(
-                    gettext("Duplicate entry: This port is already used for the $type '$fromDomainOrSubdomain'. Please choose a different port or $type."),
-                    $portField,
-                    "Duplicate" . ucfirst($type) . "Port"
-                ));
-            } else {
-                $combos[$comboKey] = true;
+                    $messages->appendMessage(new Message(
+                        gettext("Duplicate entry: The combination of $type '$fromDomainOrSubdomain' and port '$port' is already used. Each $type and port pairing must be unique."),
+                        $domainField,
+                        "Duplicate" . ucfirst($type) . "Port"
+                    ));
+                    $messages->appendMessage(new Message(
+                        gettext("Duplicate entry: This port is already used for the $type '$fromDomainOrSubdomain'. Please choose a different port or $type."),
+                        $portField,
+                        "Duplicate" . ucfirst($type) . "Port"
+                    ));
+                } else {
+                    $combos[$comboKey] = true;
+                }
             }
         }
     }
-    
+
+    // 3. Check that subdomains are under a wildcard or exact domain
+    private function endsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        if ($length == 0) {
+            return true;
+        }
+        return (substr($haystack, -$length) === $needle);
+    }
+
     private function checkSubdomainsAgainstDomains($subdomains, $domains, $messages)
     {
-        $domainList = [];
+        $wildcardDomainList = [];
         foreach ($domains as $domain) {
             if ((string) $domain->enabled === '1') {
                 $domainName = (string) $domain->FromDomain;
-                $domainList[$domainName] = $domainName;
+                if (str_starts_with($domainName, '*.')) {
+                    // Map wildcard domain to its base (e.g., '*.example.com' -> 'example.com')
+                    $wildcardBase = substr($domainName, 2);
+                    $wildcardDomainList[$wildcardBase] = $domainName;
+                }
             }
         }
 
         foreach ($subdomains as $subdomain) {
             if ((string) $subdomain->enabled === '1') {
                 $subdomainName = (string) $subdomain->FromDomain;
-                // Extract the second-level domain and higher (e.g., example.com from cat.example.com)
-                $parentDomain = implode('.', array_slice(explode('.', $subdomainName), -2));
+                $subdomainBase = implode('.', array_slice(explode('.', $subdomainName), -2));
 
-                // Check if the subdomain is under a wildcard domain or the exact domain
-                if (!isset($domainList['*.' . $parentDomain]) && $subdomainName !== $parentDomain) {
+                // Check if subdomain's base domain has a corresponding wildcard domain
+                $isValid = false;
+                    foreach ($wildcardDomainList as $baseDomain => $wildcardDomain) {
+                        if ($this->endsWith($subdomainName, $baseDomain)) {
+                            $isValid = true;
+                            break;
+                        }
+                    }
+
+                if (!$isValid) {
                     $messages->appendMessage(new Message(
-                        gettext("Invalid subdomain configuration: '$subdomainName' must be under a wildcard domain like '*.$parentDomain' or be an exact domain itself."),
+                        gettext("Invalid subdomain configuration: '$subdomainName' does not fall under any configured wildcard domain."),
                         "subdomain.FromDomain",
                         "InvalidSubdomain"
                     ));
@@ -98,7 +126,8 @@ class Caddy extends BaseModel
             }
         }
     }
-    
+
+    // 4. Check for conflicts between wildcard and base domains
     private function checkForWildcardAndBaseDomainConflicts($domains, $messages)
     {
         $domainList = [];
@@ -130,7 +159,8 @@ class Caddy extends BaseModel
             }
         }
     }
-    
+
+    // 5. Check for unique handle paths among all domain and subdomain combinations
     private function checkForUniqueHandlePaths($handles, $domains, $subdomains, $messages)
     {
         $handlePathCombos = [];
@@ -181,19 +211,19 @@ class Caddy extends BaseModel
     {
         $messages = parent::performValidation($validateFullModel);
 
-        // Check domain-port combinations
+        // 1. Check domain-port combinations
         $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages, 'domain');
 
-        // Check subdomain-port combinations
+        // 2. Check subdomain-port combinations
         $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages, 'subdomain');
 
-        // Check that subdomains are under a wildcard or exact domain
+        // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
-        
-        // Check for conflicts between wildcard and base domains
+
+        // 4. Check for conflicts between wildcard and base domains
         $this->checkForWildcardAndBaseDomainConflicts($this->reverseproxy->reverse->iterateItems(), $messages);
-        
-        // Check for unique handle paths among all domain and subdomain combinations
+
+        // 5. Check for unique handle paths among all domain and subdomain combinations
         $this->checkForUniqueHandlePaths(
             $this->reverseproxy->handle->iterateItems(),
             $this->reverseproxy->reverse->iterateItems(),
@@ -202,5 +232,6 @@ class Caddy extends BaseModel
         );
 
         return $messages;
+
     }
 }
