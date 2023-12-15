@@ -29,7 +29,6 @@
  *
  */
 
-
 namespace Pischem\Caddy\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
@@ -44,7 +43,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchReverseProxyAction()
     {
-        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'Description', 'DnsChallenge']);
+        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'Description', 'DnsChallenge', 'CustomCertificate']);
     }
 
     public function setReverseProxyAction($uuid)
