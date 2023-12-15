@@ -206,34 +206,6 @@ class Caddy extends BaseModel
             }
         }
     }
-    
-    // 6. Validate DNS challenge configuration
-    private function validateDnsChallengeConfiguration($messages)
-    {
-        $dnsProvider = (string) $this->general->TlsDnsProvider;
-        $dnsApiKey = (string) $this->general->TlsDnsApiKey;
-
-        foreach ($this->reverseproxy->reverse->iterateItems() as $reverse) {
-            $dnsChallenge = (string) $reverse->DnsChallenge;
-            $customCertificate = (string) $reverse->CustomCertificate;
-
-            if ($dnsChallenge === '1') {
-                if (!empty($customCertificate)) {
-                    $messages->appendMessage(new Message(
-                        gettext("Invalid DNS challenge configuration: DNS challenge cannot be enabled when a custom certificate is set."),
-                        "reverse.DnsChallenge",
-                        "InvalidDnsChallengeWithCustomCert"
-                    ));
-                } else if ($dnsProvider === 'none' || empty($dnsProvider) || empty($dnsApiKey)) {
-                    $messages->appendMessage(new Message(
-                        gettext("Invalid DNS challenge configuration: A valid DNS provider and API key must be set when DNS challenge is enabled."),
-                        "reverse.DnsChallenge",
-                        "InvalidDnsChallengeConfig"
-                    ));
-                }
-            }
-        }
-    }
 
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
@@ -259,9 +231,6 @@ class Caddy extends BaseModel
             $this->reverseproxy->subdomain->iterateItems(),
             $messages
         );
-            
-        // 6. Validate DNS challenge configuration
-        $this->validateDnsChallengeConfiguration($messages);
 
         return $messages;
 
