@@ -79,10 +79,11 @@
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
-                            <th data-column-id="FromDomain" data-type="string">From Domain</th>
-                            <th data-column-id="FromPort" data-type="string">From Port</th>
-                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="FromDomain" data-type="string">Domain</th>
+                            <th data-column-id="FromPort" data-type="string">Port</th>
                             <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean">DNS-01</th>
+                            <th data-column-id="CustomCertificate" data-type="string">Custom Certificate</th>
+                            <th data-column-id="Description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
                     </thead>
@@ -109,8 +110,9 @@
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
-                            <th data-column-id="FromDomain" data-type="string">From Subdomain</th>
-                            <th data-column-id="FromPort" data-type="string">From Port</th>
+                            <th data-column-id="reverse" data-type="string">Domain</th>
+                            <th data-column-id="FromDomain" data-type="string">Subdomain</th>
+                            <th data-column-id="FromPort" data-type="string">Port</th>
                             <th data-column-id="Description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
@@ -145,8 +147,8 @@
                             <th data-column-id="subdomain" data-type="string">Subomain</th>
                             <th data-column-id="HandleType" data-type="string">Handle Type</th>
                             <th data-column-id="HandlePath" data-type="string">Handle Path</th>
-                            <th data-column-id="ToDomain" data-type="string">To Domain</th>
-                            <th data-column-id="ToPort" data-type="string">To Port</th>
+                            <th data-column-id="ToDomain" data-type="string">Backend Domain</th>
+                            <th data-column-id="ToPort" data-type="string">Backend Port</th>
                             <th data-column-id="Description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
