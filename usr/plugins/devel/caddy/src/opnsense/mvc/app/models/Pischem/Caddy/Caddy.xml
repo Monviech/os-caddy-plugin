@@ -25,6 +25,14 @@
                 <OptionValues>
                     <none>None (default)</none>
                     <cloudflare>Cloudflare</cloudflare>
+                    <duckdns>Duck DNS</duckdns>
+                    <digitalocean>DigitalOcean</digitalocean>
+                    <dnspod>DNSPod</dnspod>
+                    <hetzner>Hetzner</hetzner>
+                    <godaddy>GoDaddy</godaddy>
+                    <gandi>Gandi</gandi>
+                    <vultr>Vultr</vultr>
+                    <ionos>IONOS</ionos>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField">
