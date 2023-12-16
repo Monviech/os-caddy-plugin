@@ -51,8 +51,22 @@ pkg update
 - Press `Apply` to enable and start Caddy.
 
 ### How to create an easy reverse proxy:
-##### In Services - Caddy Web Server - Reverse Proxy:
+##### In Services - Caddy Web Server - Reverse Proxy - Reverse Proxy Domain:
+- Press `+` to create a new Reverse Proxy Domain
+- `Reverse Proxy Domain` - `foo.example.com`
+- `Description` - `foo.exmaple.com`
+- `Save`
 
+##### In Services - Caddy Web Server - Reverse Proxy - Handle:
+- Press `+` to create a new Handle
+- `Reverse Proxy Domain` - `foo.example.com`
+- `Backend Server Domain` - `192.168.10.1`
+- `Save`
+- `Apply`
+
+Done, leave all other fields to default or empty. After 1 to 2 minutes the Certificate will be installed and everything just works.
+
+### A more detailed explanation:
 ##### Tab Reverse Proxy - Reverse Proxy Domains:
 - Press `+` to create a new Reverse Proxy Domain
 - `Enable` this new entry
