@@ -1,8 +1,7 @@
 # Caddy Plugin for OPNsense
 
 - This personal project aims to provide a simple plugin for [OPNsense](https://github.com/opnsense) to enable support for [Caddy](https://github.com/caddyserver/caddy).
-- The scope will be the reverse proxy features.
-
+- The scope is the reverse proxy features. The goal is a simple to configure plugin that just works for general needs and to prevent creeping featuritis.
 
 ![ReverseProxy](https://github.com/Monviech/os-caddy-plugin/assets/79600909/be953266-54f6-4d0b-ba2e-cf6c9a013909)
 ![Handle](https://github.com/Monviech/os-caddy-plugin/assets/79600909/12e4fcd7-7faa-4c81-a0ea-e35a451cea4c)
@@ -23,8 +22,8 @@ More Screenshots and generated Caddyfile example: https://github.com/Monviech/os
 - Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
 
 # How to install:
-- ##### DISCLAIMER: Please don't use this in any productive enviroments (yet). As of version 1.1.2b, most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-- ##### Release Candidate VERSION 1.1.5r-RC2. Tested by myself on DEC740 Hardware and OPNsense 23.7.10_1-amd64.
+- ##### DISCLAIMER: Please don't use this in any productive enviroments (yet). Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
+- ##### Release Candidate VERSION 1.1.7r-RC2. Tested by myself on DEC740 Hardware and OPNsense 23.7.10_1-amd64.
 ```
 fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.pischem.com/repo-config/os-caddy-plugin.conf
 ```
@@ -71,8 +70,8 @@ Done, leave all other fields to default or empty. After 1 to 2 minutes the Certi
 - Press `+` to create a new Reverse Proxy Domain
 - `Enable` this new entry
 - `Reverse Proxy Domain` can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the `Handle` Server in the backend.
-- `Reverse Proxy Port` should be the port the OPNsense will listen on. Don't forget to create Firewall rules that allow traffic to this port on `WAN` or `LAN` to `This Firewall`. You can leave this empty if you want to use the default ports of Caddy `443` and automatic redirection from port `80`.
-- `Description` - The description is mandatory. Create descriptions for each domain. Since there could be multiples of the same domain with different ports, do it like this: `foo.example.com` and `foo.example.com.443` and `foo.example.com.8443`.
+- `Reverse Proxy Port` should be the port the OPNsense will listen on. Don't forget to create Firewall rules that allow traffic to this port on `WAN` or `LAN` to `This Firewall`. You can leave this empty if you want to use the default ports of Caddy (`80` and `443`) with automatic redirection from HTTP to HTTPS.
+- `Description` - The description is mandatory. Create descriptions for each domain. Since there could be multiples of the same domain with different ports, do it like this: `foo.example.com` and `foo.example.com.8443`.
 - `DNS-01 challenge`, enable this if you want to use the `DNS-01` ACME challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the `General Settings` - `DNS Provider` and `API KEY` set.
 - `Custom Certificate` - Use a Certificate you imported or generated in `System - Trust - Certificates`. The chain is generated automatically. `Certificate + Intermediate CA + Root CA`, `Certificate + Root CA` and `self signed Certificate` are all fully supported.
 
@@ -92,7 +91,7 @@ Press `Apply` and the new configuration will be active. After 1 to 2 minutes the
 - Do everything the same as above, but create your Reverse Proxy Domain like this `*.example.com` and activate the `DNS-01` challenge checkbox.
 - OR - `Custom Certificate` - Use a Certificate you imported or generated in `System - Trust - Certificates`. It has to be a wildcard certificate.
 - Go to the `Reverse Proxy Subdomain` Tab and create all subdomains that you need in relation to the `*.example.com` domain. So for example `foo.example.com` and `bar.example.com`.
-- Create descriptions for each subdomain. Since there could be multiples of the same subdomain with different ports, do it like this: `foo.example.com` and `foo.example.com.443` and `foo.example.com.8443`.
+- Create descriptions for each subdomain. Since there could be multiples of the same subdomain with different ports, do it like this: `foo.example.com` and `foo.example.com.8443`.
 - In the `Handle` Tab you can now select your `*.example.com` `Reverse Proxy Domain`, and if `Reverse Proxy Subdomain` is `None`, the Handles are added to the base `Reverse Proxy Domain`. For example, if you want a catch all Handle for all non referenced subdomains.
 - If you create a Handle with `*.example.com` as `Reverse Proxy Domain` and `foo.example.com` as `Reverse Proxy Subdomain`, a nested Handle will be generated. You can do all the same configurations as if the subdomain is a normal domain, with multiple Handles and Handle paths.
 
@@ -101,8 +100,9 @@ https://github.com/Monviech/os-caddy-plugin/pull/32
 
 ##### Troubleshooting:
 - Check the /var/log/caddy/caddy.log file to find errors. There is also a Caddy Log File in the GUI.
+- A good indicator that Caddy is indeed running is this log entry: `serving initial configuration`
 - Check the Service Widget and the "General Settings" Service Control buttons. If everything works they should show a green "Play" sign. If Caddy is stopped there is a red "Stop" sign. If Caddy is disabled, there is no widget and no control buttons.
-- You won't find the custom certificates in /usr/local/etc/caddy/certificates/temp since they're deleted every time caddy has loaded them (at least when Auto HTTPS is activated). Check the caddy Log File to see lines like "[INFO] Deleting certificates/temp/6544c53124b72.pem because key is empty". That means the certificates have been created from the OPNsense Trust, and then imported into the running Caddy, and then deleted.
+- You won't find the custom certificates in /usr/local/etc/caddy/certificates/temp since they're deleted every time caddy has loaded them (at least when Auto HTTPS is activated).
 
 # How to build from source:
 - As build system use a FreeBSD 13.2 - https://github.com/opnsense/tools
@@ -130,3 +130,6 @@ All API Actions can be found in the API controller files.
 
 Example:
 /api/caddy/ReverseProxy/get
+/api/caddy/General/get
+/api/caddy/log/get
+/api/caddy/service/status
