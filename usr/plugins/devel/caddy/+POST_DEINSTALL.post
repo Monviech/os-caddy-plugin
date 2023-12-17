@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Define the path to the removal script
+REMOVE_SCRIPT="/usr/local/opnsense/scripts/Pischem/Caddy/remove.sh"
+
+# Execute the removal script
+if [ -f "$REMOVE_SCRIPT" ]; then
+    sh "$REMOVE_SCRIPT"
+else
+    echo "Removal script not found: $REMOVE_SCRIPT"
+fi
+

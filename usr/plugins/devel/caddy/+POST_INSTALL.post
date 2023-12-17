@@ -3,11 +3,6 @@
 # Define the path to the +TARGETS file
 TARGETS_FILE="/usr/local/opnsense/service/templates/Pischem/Caddy/+TARGETS"
 
-# Uncomment the line for rc.d/caddy in the +TARGETS file before template reload
-if [ -f "$TARGETS_FILE" ]; then
-    sed -i.bak '/^#.*rc.d\/caddy:/s/^#//' "$TARGETS_FILE"
-fi
-
 # Trigger a reload of the Caddy template to ensure all necessary files are generated
 configctl template reload Pischem/Caddy
 
@@ -21,7 +16,3 @@ else
     echo "Setup script not found: $SETUP_SCRIPT"
 fi
 
-# Re-comment the line for rc.d/caddy in the +TARGETS file to prevent future regenerations
-if [ -f "$TARGETS_FILE" ]; then
-    sed -i '' '/rc.d\/caddy:/s/^/#/' "$TARGETS_FILE"
-fi
