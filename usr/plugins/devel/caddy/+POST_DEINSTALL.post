@@ -1,12 +1,16 @@
 #!/bin/sh
 
-# Define the path to the removal script
-REMOVE_SCRIPT="/usr/local/opnsense/scripts/Pischem/Caddy/remove.sh"
-
-# Execute the removal script
-if [ -f "$REMOVE_SCRIPT" ]; then
-    sh "$REMOVE_SCRIPT"
-else
-    echo "Removal script not found: $REMOVE_SCRIPT"
+# Remove the Caddy service script
+if [ -f /usr/local/etc/rc.d/caddy ]; then
+    echo "Removing file: /usr/local/etc/rc.d/caddy"
+    rm -f /usr/local/etc/rc.d/caddy
 fi
+
+# Remove the /etc/rc.conf.d/caddy file
+if [ -f /etc/rc.conf.d/caddy ]; then
+    echo "Removing file: /etc/rc.conf.d/caddy"
+    rm -f /etc/rc.conf.d/caddy
+fi
+
+echo "Caddy deinstallation completed."
 
