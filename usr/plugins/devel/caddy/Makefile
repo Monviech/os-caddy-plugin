@@ -1,8 +1,8 @@
-PLUGIN_NAME=     caddy
-PLUGIN_VERSION=  1.1.5r
-PLUGIN_COMMENT=  Caddy Web Server configuration plugin
-PLUGIN_DEPENDS=  caddy
-PLUGIN_MAINTAINER= cedrik@pischem.com
-PLUGIN_WWW= https://github.com/Monviech/os-caddy-plugin
+PLUGIN_NAME=            caddy
+PLUGIN_VERSION=         1.1.7r
+PLUGIN_DEPENDS=         caddy
+PLUGIN_COMMENT=         Easy to configure Reverse Proxy with Automatic HTTPS
+PLUGIN_MAINTAINER=      cedrik@pischem.com
+PLUGIN_WWW=             https://github.com/Monviech/os-caddy-plugin
 
 .include "../../Mk/plugins.mk"

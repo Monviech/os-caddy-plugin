@@ -1,3 +1,2 @@
 Caddyfile:/usr/local/etc/caddy/Caddyfile
 rc.conf.d/caddy:/etc/rc.conf.d/caddy
-rc.d/caddy:/usr/local/etc/rc.d/caddy

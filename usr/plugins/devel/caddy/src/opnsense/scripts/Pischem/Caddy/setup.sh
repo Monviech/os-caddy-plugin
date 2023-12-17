@@ -42,3 +42,6 @@ cd "${CADDY_DIR}" && /usr/local/bin/caddy fmt --overwrite
 
 # Write custom certs from the OPNsense Trust Store into a directory where Caddy can read them
 /usr/local/opnsense/scripts/Pischem/Caddy/caddy_certs.php
+
+echo "Caddy installation completed. All caddy directories and files created successfully." 
+

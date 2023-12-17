@@ -14,8 +14,8 @@ rcvar=caddy_enable
 
 load_rc_config $name
 
-: ${caddy_enable:={{ caddy_enable|default("NO") }}}
-: ${caddy_config_file:={{ caddy_config_file|default('"/usr/local/etc/caddy/Caddyfile"') }}}
+: ${caddy_enable:=NO}
+: ${caddy_config_file:="/usr/local/etc/caddy/Caddyfile"}
 
 pidfile="/var/run/caddy.pid"
 command="/usr/sbin/daemon"
@@ -43,4 +43,3 @@ caddy_start_precmd()
 }
 
 run_rc_command "$1"
-
