@@ -40,7 +40,19 @@
         <id>handle.ToPort</id>
         <label>Backend Server Port</label>
         <type>text</type>
-        <help><![CDATA[Enter the port number of the backend server. Leave this empty for bind to port 80 and 443 with automatic redirection.]]></help>
+        <help><![CDATA[Enter the port number of the backend server. Leave this empty for bind to port 80. For HTTPS, use 443.]]></help>
+    </field>
+    <field>
+        <id>handle.HttpTls</id>
+        <label>TLS</label>
+        <type>checkbox</type>
+        <help>Use TLS over HTTP (HTTPS) to communicate with the Backend Server. In most cases, leaving this unchecked will be the best choice. Caddy uses HTTP for communication with the Backend Server by default.</help>
+    </field>
+    <field>
+        <id>handle.HttpTlsTrustedCaCerts</id>
+        <label>TLS Trusted CA Certificate</label>
+        <type>dropdown</type>
+        <help>If TLS is enabled, and you are not using a globally trusted server certificate on your Backend Server, you can choose a CA certificate to trust from System Trust Authorities.</help>
     </field>
     <field>
         <id>handle.Description</id>
