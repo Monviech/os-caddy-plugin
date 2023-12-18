@@ -63,27 +63,30 @@ pkg update
 - `Save`
 - `Apply`
 
-Done, leave all other fields to default or empty. After 1 to 2 minutes the Certificate will be installed and everything just works.
+Done, leave all other fields to default or empty. You don't need the advanced mode options. After 1 to 2 minutes the Certificate will be installed and everything just works. Check the Logfile for that.
+Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Server" Reverse Proxy.
 
 ### A more detailed explanation:
 ##### Tab Reverse Proxy - Reverse Proxy Domains:
 - Press `+` to create a new Reverse Proxy Domain
 - `Enable` this new entry
-- `Reverse Proxy Domain` can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the `Handle` Server in the backend.
-- `Reverse Proxy Port` should be the port the OPNsense will listen on. Don't forget to create Firewall rules that allow traffic to this port on `WAN` or `LAN` to `This Firewall`. You can leave this empty if you want to use the default ports of Caddy (`80` and `443`) with automatic redirection from HTTP to HTTPS.
+- `Reverse Proxy Domain` - can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the `Handle` Server in the backend.
+- `Reverse Proxy Port` (advanced) - should be the port the OPNsense will listen on. Don't forget to create Firewall rules that allow traffic to this port on `WAN` or `LAN` to `This Firewall`. You can leave this empty if you want to use the default ports of Caddy (`80` and `443`) with automatic redirection from HTTP to HTTPS.
 - `Description` - The description is mandatory. Create descriptions for each domain. Since there could be multiples of the same domain with different ports, do it like this: `foo.example.com` and `foo.example.com.8443`.
-- `DNS-01 challenge`, enable this if you want to use the `DNS-01` ACME challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the `General Settings` - `DNS Provider` and `API KEY` set.
-- `Custom Certificate` - Use a Certificate you imported or generated in `System - Trust - Certificates`. The chain is generated automatically. `Certificate + Intermediate CA + Root CA`, `Certificate + Root CA` and `self signed Certificate` are all fully supported.
+- `DNS-01 challenge` (advanced) - enable this if you want to use the `DNS-01` ACME challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the `General Settings` - `DNS Provider` and `API KEY` set.
+- `Custom Certificate` (advanced) - Use a Certificate you imported or generated in `System - Trust - Certificates`. The chain is generated automatically. `Certificate + Intermediate CA + Root CA`, `Certificate + Root CA` and `self signed Certificate` are all fully supported.
 
 ##### Tab Handle - Handle:
 - Press `+` to create a new `Handle`. A Handle is like a location in nginx.
 - `Enable` this new entry.
-- `Reverse Proxy Domain` - Select the domain you have created in `Reverse Proxy Domains`
-- `Reverse Proxy Subdomain` - Leave this on `None`. It is not needed without having a wildcard certificate, or a `*.example.com` Domain.
-- `Handle Type` - Only `Handle` can be chosen as of now. It's the most common option.
-- `Handle Path` - Leave this empty if you want to create a catch all location. The catch all will always be generated at the last spot of the Caddyfile. That means, you can create multiple Handle entries, and have each of them point at different locations like `/example/*` or `/foo/*` or `/foo/bar/*`. There is input validation here.
+- `Reverse Proxy Domain` - Select the domain you have created in `Reverse Proxy Domains`.
+- `Reverse Proxy Subdomain` (advanced) - Leave this on `None`. It is not needed without having a wildcard certificate, or a `*.example.com` Domain.
+- `Handle Type` (advanced) - Only `Handle` can be chosen as of now. It's the most common option.
+- `Handle Path` (advanced) - Leave this empty if you want to create a catch all location. The catch all will always be generated at the last spot of the Caddyfile. That means, you can create multiple Handle entries, and have each of them point at different locations like `/example/*` or `/foo/*` or `/foo/bar/*`. There is input validation here.
 - `Backend Server Domain` - Should be an internal domain name or an IP Address of the Backend Server that should receive the traffic of the `Reverse Proxy Domain`.
-- `Backend Server Port` - Should be the port the Backend Server listens on. This can be left empty to use Caddy default ports 80 and 443.
+- `Backend Server Port` (advanced) - Should be the port the Backend Server listens on. This can be left empty to use Caddy default ports 80 and 443.
+- `TLS` (advanced) - If your Backend Server only accepts HTTPS, enable this option. If the Backend Server has a globally trusted certificate, this is all you need.
+- `TLS Trusted CA Certificates` (advanced) - Choose a CA certificate to trust for the Backend Server connection. Caddy doesn't allow a "skip certificate check" due to safety reasons. So, import your self-signed certificate or your self signed CA certificate into the OPNsense "System - Trust - Authorities" store, and select it here. This will make Caddy trust the connection and the TLS will work.
 
 Press `Apply` and the new configuration will be active. After 1 to 2 minutes the Certificate will be installed.
 
