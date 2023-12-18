@@ -43,23 +43,18 @@ function extract_and_save_certificates($configObj, $temp_dir) {
         $cert_refid = (string)$cert->refid;
         $cert_content = base64_decode((string)$cert->crt);
         $key_content = base64_decode((string)$cert->prv);
-
-        // Initialize certificate chain with the main certificate
         $cert_chain = $cert_content;
 
         // Handle CA and possible intermediate CA to create a certificate bundle
         if (!empty($cert->caref)) {
             foreach ($configObj->ca as $ca) {
                 if ((string)$cert->caref == (string)$ca->refid) {
-                    // Append the CA (possibly intermediate CA) certificate
                     $ca_content = base64_decode((string)$ca->crt);
                     $cert_chain .= "\n" . $ca_content;
 
-                    // Check if this CA has its own CA reference (intermediate CA case)
                     if (!empty($ca->caref)) {
                         foreach ($configObj->ca as $parent_ca) {
                             if ((string)$ca->caref == (string)$parent_ca->refid) {
-                                // Append the parent CA (root CA) certificate
                                 $parent_ca_content = base64_decode((string)$parent_ca->crt);
                                 $cert_chain .= "\n" . $parent_ca_content;
                                 break;
@@ -76,8 +71,18 @@ function extract_and_save_certificates($configObj, $temp_dir) {
         file_put_contents($temp_dir . $cert_refid . '.key', $key_content);
         chmod($temp_dir . $cert_refid . '.key', 0600);
     }
+
+    // Traverse through CA certificates and save them
+    foreach ($configObj->ca as $ca) {
+        $ca_refid = (string)$ca->refid;
+        $ca_content = base64_decode((string)$ca->crt);
+
+        // Save the CA certificate
+        file_put_contents($temp_dir . $ca_refid . '.pem', $ca_content);
+        chmod($temp_dir . $ca_refid . '.pem', 0600);
+    }
 }
 
 extract_and_save_certificates($configObj, $temp_dir);
-echo "Certificates, keys, and CA chains extracted to $temp_dir\n";
+echo "Certificates, keys, CA chains, and CA certificates extracted to $temp_dir\n";
 ?>
