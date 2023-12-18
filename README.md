@@ -23,7 +23,8 @@ More Screenshots and generated Caddyfile example: https://github.com/Monviech/os
 
 # How to install:
 - ##### DISCLAIMER: Please don't use this in any productive enviroments (yet). Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-- ##### Release Candidate VERSION 1.1.7r-RC2. Tested by myself on DEC740 Hardware and OPNsense 23.7.10_1-amd64.
+- ##### Release Candidate VERSION 1.1.8r-RC3. Tested by myself on DEC740 Hardware and OPNsense 23.7.10_1-amd64.
+- Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
 ```
 fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.pischem.com/repo-config/os-caddy-plugin.conf
 ```
