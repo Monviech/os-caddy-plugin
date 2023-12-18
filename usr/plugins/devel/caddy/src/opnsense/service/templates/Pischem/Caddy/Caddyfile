@@ -25,23 +25,33 @@
 {% if reverse.enabled|default("0") == "1" %}
 # Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
 {{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
-    {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
+    {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
+    {% set dnsApiKey = helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first %}
     {% set customCert = reverse.CustomCertificate|default("") %}
-    {% if dnsChallenge == "1" %}
+
+    {% if dnsProvider != "none" %}
     tls {
-        dns {{ helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first }} {{ helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first }}
+        dns {{ dnsProvider }} {{ dnsApiKey }}
     }
     {% elif customCert %}
     tls /usr/local/etc/caddy/certificates/temp/{{ customCert }}.pem /usr/local/etc/caddy/certificates/temp/{{ customCert }}.key
     {% endif %}
-
     {% set wildcard_handles_with_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('HandlePath', 'defined') | selectattr('subdomain', 'undefined') | list %}
     {% set wildcard_handles_without_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('HandlePath', 'undefined') | selectattr('subdomain', 'undefined') | list %}
 
     {% for handle in wildcard_handles_with_path %}
     {% if handle.enabled|default("0") == "1" %}
     handle {{ handle.HandlePath }} {
-        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}
+        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
+            {% if handle.HttpTls|default("0") == "1" %}
+            transport http {
+                tls
+                {% if handle.HttpTlsTrustedCaCerts %}
+                tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                {% endif %}
+            }
+            {% endif %}
+        }
     }
     {% endif %}
     {% endfor %}
@@ -49,7 +59,16 @@
     {% for handle in wildcard_handles_without_path %}
     {% if handle.enabled|default("0") == "1" %}
     handle {
-        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}
+        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
+            {% if handle.HttpTls|default("0") == "1" %}
+            transport http {
+                tls
+                {% if handle.HttpTlsTrustedCaCerts %}
+                tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                {% endif %}
+            }
+            {% endif %}
+        }
     }
     {% endif %}
     {% endfor %}
@@ -64,14 +83,32 @@
         {% for handle in subdomain_handles_with_path %}
         {% if handle.enabled|default("0") == "1" %}
         handle {{ handle.HandlePath }} {
-            reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}
+            reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
+                {% if handle.HttpTls|default("0") == "1" %}
+                transport http {
+                    tls
+                    {% if handle.HttpTlsTrustedCaCerts %}
+                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    {% endif %}
+                }
+                {% endif %}
+            }
         }
         {% endif %}
         {% endfor %}
         {% for handle in subdomain_handles_without_path %}
         {% if handle.enabled|default("0") == "1" %}
         handle {
-            reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}
+            reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
+                {% if handle.HttpTls|default("0") == "1" %}
+                transport http {
+                    tls
+                    {% if handle.HttpTlsTrustedCaCerts %}
+                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    {% endif %}
+                }
+                {% endif %}
+            }
         }
         {% endif %}
         {% endfor %}
