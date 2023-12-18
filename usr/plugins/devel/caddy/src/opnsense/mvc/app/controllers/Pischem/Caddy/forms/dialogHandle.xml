@@ -16,18 +16,21 @@
         <label>Reverse Proxy Subdomain</label>
         <type>dropdown</type>
         <help><![CDATA[Optionally, select a reverse proxy subdomain, to which this handle should be added. In most cases, leaving this on "None" will be the best choice.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.HandleType</id>
         <label>Handle Type</label>
         <type>dropdown</type>
         <help>Select the handle type. In most cases, leaving this on handle will be the best choice.</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.HandlePath</id>
         <label>Handle Path</label>
         <type>text</type>
         <help><![CDATA[Enter the handle, e.g. '/*' or '/example/*' or leave empty for a catch all handle. In most cases, leaving this empty will be the best choice.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.ToDomain</id>
@@ -40,7 +43,22 @@
         <id>handle.ToPort</id>
         <label>Backend Server Port</label>
         <type>text</type>
-        <help><![CDATA[Enter the port number of the backend server. Leave this empty for bind to port 80 and 443 with automatic redirection.]]></help>
+        <help><![CDATA[Enter the port number of the backend server. Leave this empty for bind to port 80. For HTTPS, use 443.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HttpTls</id>
+        <label>TLS</label>
+        <type>checkbox</type>
+        <help>Use TLS over HTTP (HTTPS) to communicate with the Backend Server. In most cases, leaving this unchecked will be the best choice. Caddy uses HTTP for communication with the Backend Server by default.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HttpTlsTrustedCaCerts</id>
+        <label>TLS Trusted CA Certificate</label>
+        <type>dropdown</type>
+        <help>If TLS is enabled, and you are not using a globally trusted server certificate on your Backend Server, you can choose a CA certificate to trust from System Trust Authorities.</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.Description</id>
