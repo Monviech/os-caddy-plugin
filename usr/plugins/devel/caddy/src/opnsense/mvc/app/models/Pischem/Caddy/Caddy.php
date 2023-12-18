@@ -160,53 +160,6 @@ class Caddy extends BaseModel
         }
     }
 
-    // 5. Check for unique handle paths among all domain and subdomain combinations
-    private function checkForUniqueHandlePaths($handles, $domains, $subdomains, $messages)
-    {
-        $handlePathCombos = [];
-
-        // Convert Generators to arrays
-        $domainsArray = iterator_to_array($domains);
-        $subdomainsArray = iterator_to_array($subdomains);
-
-        // Create associative arrays for quick lookup by UUID
-        $domainLookup = [];
-        foreach ($domainsArray as $domain) {
-            $domainUUID = (string) $domain->getAttribute('uuid');
-            $domainLookup[$domainUUID] = (string) $domain->FromDomain;
-        }
-
-        $subdomainLookup = [];
-        foreach ($subdomainsArray as $subdomain) {
-            $subdomainUUID = (string) $subdomain->getAttribute('uuid');
-            $subdomainLookup[$subdomainUUID] = (string) $subdomain->FromDomain;
-        }
-
-        foreach ($handles as $handle) {
-            if ((string) $handle->enabled === '1') {
-                $handlePath = (string) $handle->HandlePath;
-                $domainUUID = (string) $handle->reverse;
-                $subdomainUUID = (string) $handle->subdomain;
-
-                $keyDomain = isset($domainLookup[$domainUUID]) ? $domainLookup[$domainUUID] : '';
-                $keySubdomain = isset($subdomainLookup[$subdomainUUID]) ? $subdomainLookup[$subdomainUUID] : '';
-
-                // Create a unique key for handle path within each domain and subdomain
-                $pathKey = $keyDomain . ':' . $keySubdomain . ':' . $handlePath;
-
-                if (isset($handlePathCombos[$pathKey])) {
-                    $messages->appendMessage(new Message(
-                        gettext("Duplicate entry: Handle path '$handlePath' is already used within the domain/subdomain combination '$keyDomain/$keySubdomain'. Each handle path must be unique per domain or domain/subdomain combination."),
-                        "handle.HandlePath",
-                        "DuplicateHandlePath"
-                    ));
-                } else {
-                    $handlePathCombos[$pathKey] = true;
-                }
-            }
-        }
-    }
-
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -223,14 +176,6 @@ class Caddy extends BaseModel
 
         // 4. Check for conflicts between wildcard and base domains
         $this->checkForWildcardAndBaseDomainConflicts($this->reverseproxy->reverse->iterateItems(), $messages);
-
-        // 5. Check for unique handle paths among all domain and subdomain combinations
-        $this->checkForUniqueHandlePaths(
-            $this->reverseproxy->handle->iterateItems(),
-            $this->reverseproxy->reverse->iterateItems(),
-            $this->reverseproxy->subdomain->iterateItems(),
-            $messages
-        );
 
         return $messages;
 
