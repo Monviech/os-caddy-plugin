@@ -61,6 +61,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>handle.HttpNtlm</id>
+        <label>NTLM</label>
+        <type>checkbox</type>
+        <help>When "TLS" has been checked, check "NTLM" in addition for reverse proxying an Exchange Server. In most other cases, leaving this unchecked will be the best choice.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>handle.Description</id>
         <label>Description</label>
         <type>text</type>
