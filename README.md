@@ -22,8 +22,9 @@ More Screenshots and generated Caddyfile example: https://github.com/Monviech/os
 - Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
 
 # How to install:
-- ##### DISCLAIMER: Please don't use this in any productive enviroments (yet). Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-- ##### Release Candidate VERSION 1.1.8r-RC3. Tested by myself on DEC740 Hardware and OPNsense 23.7.10_1-amd64.
+##### DISCLAIMER: Please don't use this in any productive enviroments (yet). Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
+##### Release Candidate VERSION 1.1.9r-RC3. Tested by myself on DEC740 Hardware and OPNsense 23.7.10_1-amd64.
+##### Caddy Version is v2.7.6 h1:w0NymbG2m9PcvKWsrXO6EEkY9Ru4FJK8uQbYcev1p3A=
 - Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
 ```
 fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.pischem.com/repo-config/os-caddy-plugin.conf
@@ -46,8 +47,8 @@ pkg update
 - `Enable` or `disable` Caddy
 - `ACME Email` address: e.g. `info@example.com`, it's optional.
 - Leave `Auto HTTPS` on `On (default)`
-- `DNS Provider` - Choose either `none (default)` for normal HTTP ACME or a DNS Provider - e.g. `Cloudflare` or `Hetzner` - to enable the `DNS-01` ACME challenge. If your provider is missing, just open an issue on github and I will add it over time.
-- `DNS API Key` - Leave empty if you don't use a DNS Provider, or put your `API Key` here.
+- `DNS Provider` (advanced) - Choose either `none (default)` for normal HTTP ACME or a DNS Provider - e.g. `Cloudflare` or `Hetzner` - to enable the `DNS-01` ACME challenge. If your provider is missing, just open an issue on github and I will add it over time.
+- `DNS API Key` (advanced) -  Leave empty if you don't use a DNS Provider, or put your `API Key` here.
 - Press `Apply` to enable and start Caddy.
 
 ### How to create an easy reverse proxy:
@@ -82,12 +83,13 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 - `Enable` this new entry.
 - `Reverse Proxy Domain` - Select the domain you have created in `Reverse Proxy Domains`.
 - `Reverse Proxy Subdomain` (advanced) - Leave this on `None`. It is not needed without having a wildcard certificate, or a `*.example.com` Domain.
-- `Handle Type` (advanced) - Only `Handle` can be chosen as of now. It's the most common option.
+- `Handle Type` (advanced) - `Handle` of `Handle Path` can be chosen. If in doubt, always use `Handle` the most common option. `Handle Path` is used to strip the handle path from the URI. For example if you have example.com/opnsense internally, but want to call it with just example.com externally.
 - `Handle Path` (advanced) - Leave this empty if you want to create a catch all location. The catch all will always be generated at the last spot of the Caddyfile. That means, you can create multiple Handle entries, and have each of them point at different locations like `/example/*` or `/foo/*` or `/foo/bar/*`. There is input validation here.
 - `Backend Server Domain` - Should be an internal domain name or an IP Address of the Backend Server that should receive the traffic of the `Reverse Proxy Domain`.
 - `Backend Server Port` (advanced) - Should be the port the Backend Server listens on. This can be left empty to use Caddy default ports 80 and 443.
 - `TLS` (advanced) - If your Backend Server only accepts HTTPS, enable this option. If the Backend Server has a globally trusted certificate, this is all you need.
 - `TLS Trusted CA Certificates` (advanced) - Choose a CA certificate to trust for the Backend Server connection. Caddy doesn't allow a "skip certificate check" due to safety reasons. So, import your self-signed certificate or your self signed CA certificate into the OPNsense "System - Trust - Authorities" store, and select it here. This will make Caddy trust the connection and the TLS will work.
+- `NTLM` (advanced) - If your Backend Server needs NTLM authentication, enable this option together with `TLS`. For example, Exchange Server.
 
 Press `Apply` and the new configuration will be active. After 1 to 2 minutes the Certificate will be installed.
 
