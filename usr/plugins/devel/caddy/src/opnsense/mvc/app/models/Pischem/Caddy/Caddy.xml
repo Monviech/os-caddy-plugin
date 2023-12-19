@@ -130,6 +130,7 @@
                     <Default>handle</Default>
                     <OptionValues>
                         <handle>handle</handle>
+                        <handle_path>handle_path</handle_path>
                     </OptionValues>
                 </HandleType>
                 <HandlePath type="TextField">
