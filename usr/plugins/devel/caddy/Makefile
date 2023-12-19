@@ -1,5 +1,5 @@
 PLUGIN_NAME=            caddy
-PLUGIN_VERSION=         1.1.8r
+PLUGIN_VERSION=         1.1.9r
 PLUGIN_DEPENDS=         caddy
 PLUGIN_COMMENT=         Easy to configure Reverse Proxy with Automatic HTTPS
 PLUGIN_MAINTAINER=      cedrik@pischem.com

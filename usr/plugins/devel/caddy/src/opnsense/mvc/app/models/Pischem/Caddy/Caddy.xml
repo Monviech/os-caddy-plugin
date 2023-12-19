@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a basic reverse proxy in Caddy Web Server.</description>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -130,6 +130,7 @@
                     <Default>handle</Default>
                     <OptionValues>
                         <handle>handle</handle>
+                        <handle_path>handle_path</handle_path>
                     </OptionValues>
                 </HandleType>
                 <HandlePath type="TextField">
@@ -149,6 +150,9 @@
                 <HttpTls type="BooleanField">
                     <default>0</default>
                 </HttpTls>
+                <HttpNtlm type="BooleanField">
+                    <default>0</default>
+                </HttpNtlm>
                 <HttpTlsTrustedCaCerts type="CertificateField">
                     <type>ca</type>
                 </HttpTlsTrustedCaCerts>

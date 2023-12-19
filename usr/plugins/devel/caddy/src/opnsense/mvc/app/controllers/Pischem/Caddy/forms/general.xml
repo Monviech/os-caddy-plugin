@@ -22,12 +22,14 @@
         <id>caddy.general.TlsDnsProvider</id>
         <label>DNS Provider</label>
         <type>dropdown</type>
-        <help>Select the DNS provider for the DNS-01 Challenge. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You only need this for Wildcard Certificates. If you have your own Wildcard certificate, you can import it to System Trust Certificates and use it in the advanced mode of a new Reverse Proxy Domain.</help>
+        <help>Select the DNS provider for the DNS-01 Challenge. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You mostly need this for Wildcard Certificates. If you have your own Wildcard certificate, you can import it to System Trust Certificates and use it in the advanced mode of a new Reverse Proxy Domain. To use the DNS-01 Challenge, enable the checkbox in the advanced mode of a Reverse Proxy Domain.</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>caddy.general.TlsDnsApiKey</id>
         <label>DNS API Key</label>
         <type>text</type>
         <help>Enter the API key for the selected DNS provider. Leave this empty, if no DNS provider is set.</help>
+        <advanced>true</advanced>
     </field>
 </form>
