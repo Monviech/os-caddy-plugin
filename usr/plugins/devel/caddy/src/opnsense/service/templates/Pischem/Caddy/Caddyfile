@@ -41,15 +41,24 @@
 
     {% for handle in wildcard_handles_with_path %}
     {% if handle.enabled|default("0") == "1" %}
-    handle {{ handle.HandlePath }} {
+    {{ handle.HandleType }} {{ handle.HandlePath }} {
         reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
             {% if handle.HttpTls|default("0") == "1" %}
+            {% if handle.HttpNtlm|default("0") == "1" %}
+            transport http_ntlm {
+                tls
+                {% if handle.HttpTlsTrustedCaCerts %}
+                tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                {% endif %}
+            }
+            {% else %}
             transport http {
                 tls
                 {% if handle.HttpTlsTrustedCaCerts %}
                 tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                 {% endif %}
             }
+            {% endif %}
             {% endif %}
         }
     }
@@ -61,12 +70,21 @@
     handle {
         reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
             {% if handle.HttpTls|default("0") == "1" %}
+            {% if handle.HttpNtlm|default("0") == "1" %}
+            transport http_ntlm {
+                tls
+                {% if handle.HttpTlsTrustedCaCerts %}
+                tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                {% endif %}
+            }
+            {% else %}
             transport http {
                 tls
                 {% if handle.HttpTlsTrustedCaCerts %}
                 tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                 {% endif %}
             }
+            {% endif %}
             {% endif %}
         }
     }
@@ -82,15 +100,24 @@
         {% set subdomain_handles_without_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | selectattr('HandlePath', 'undefined') | list %}
         {% for handle in subdomain_handles_with_path %}
         {% if handle.enabled|default("0") == "1" %}
-        handle {{ handle.HandlePath }} {
+        {{ handle.HandleType }} {{ handle.HandlePath }} {
             reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
                 {% if handle.HttpTls|default("0") == "1" %}
+                {% if handle.HttpNtlm|default("0") == "1" %}
+                transport http_ntlm {
+                    tls
+                    {% if handle.HttpTlsTrustedCaCerts %}
+                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    {% endif %}
+                }
+                {% else %}
                 transport http {
                     tls
                     {% if handle.HttpTlsTrustedCaCerts %}
                     tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                 }
+                {% endif %}
                 {% endif %}
             }
         }
@@ -101,12 +128,21 @@
         handle {
             reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
                 {% if handle.HttpTls|default("0") == "1" %}
+                {% if handle.HttpNtlm|default("0") == "1" %}
+                transport http_ntlm {
+                    tls
+                    {% if handle.HttpTlsTrustedCaCerts %}
+                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    {% endif %}
+                }
+                {% else %}
                 transport http {
                     tls
                     {% if handle.HttpTlsTrustedCaCerts %}
                     tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                 }
+                {% endif %}
                 {% endif %}
             }
         }
