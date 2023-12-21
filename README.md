@@ -19,6 +19,7 @@ More Screenshots and generated Caddyfile example: https://github.com/Monviech/os
 - Thanks to the OPNsense community/developers for creating a powerful and flexible open source firewall and routing platform.
 - Thanks for answering programming questions and being very helpful: [AdShellevis](https://github.com/Adschellevis)
 - Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
+- Thanks for giving me good examples of Caddy configurations that shaped the direction this plugin: [gspannu](https://github.com/gspannu)
 
 # How to install:
 ##### DISCLAIMER: Even though I use this productively on multiple OPNsense Firewalls (and also a HA pair with config sync), I give no guarantee whatsoever. Please read the license file for the full disclaimer. Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
