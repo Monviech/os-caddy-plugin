@@ -134,7 +134,6 @@
                     </OptionValues>
                 </HandleType>
                 <HandlePath type="TextField">
-                    <mask>/^(\/([^\/\*]+\/)*\*)?$/u</mask>
                     <ValidationMessage>Please enter a valid 'Handle Path'.</ValidationMessage>
                 </HandlePath>
                 <ToDomain type="HostnameField">
