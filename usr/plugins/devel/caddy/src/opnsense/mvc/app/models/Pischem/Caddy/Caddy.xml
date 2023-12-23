@@ -58,6 +58,16 @@
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>N</EnableRanges>
                 </FromPort>
+                <accesslist type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName</display>
+                        </reverseproxy>
+                    </Model>
+                </accesslist>
                 <Description type="TextField">
                     <Required>Y</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
@@ -94,6 +104,16 @@
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>N</EnableRanges>
                 </FromPort>
+                <accesslist type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName</display>
+                        </reverseproxy>
+                    </Model>
+                </accesslist>
                 <Description type="TextField">
                     <Required>Y</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
@@ -125,16 +145,6 @@
                         </reverseproxy>
                     </Model>
                 </subdomain>
-                <accesslist type="ModelRelationField">
-                    <Required>N</Required>
-                    <Model>
-                        <reverseproxy>
-                            <source>Pischem.Caddy.Caddy</source>
-                            <items>reverseproxy.accesslist</items>
-                            <display>accesslistName</display>
-                        </reverseproxy>
-                    </Model>
-                </accesslist>
                 <HandleType type="OptionField">
                     <Required>Y</Required>
                     <Default>handle</Default>
