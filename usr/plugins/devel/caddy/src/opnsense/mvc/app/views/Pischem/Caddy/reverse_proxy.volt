@@ -91,6 +91,7 @@
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
                             <th data-column-id="FromDomain" data-type="string">Domain</th>
                             <th data-column-id="FromPort" data-type="string">Port</th>
+                            <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
                             <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">DNS-01</th>
                             <th data-column-id="CustomCertificate" data-type="string" data-visible="false">Custom Certificate</th>
                             <th data-column-id="Description" data-type="string">Description</th>
@@ -123,6 +124,7 @@
                             <th data-column-id="reverse" data-type="string">Domain</th>
                             <th data-column-id="FromDomain" data-type="string">Subdomain</th>
                             <th data-column-id="FromPort" data-type="string">Port</th>
+                            <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
                             <th data-column-id="Description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
@@ -155,7 +157,6 @@
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
                             <th data-column-id="reverse" data-type="string">Domain</th>
                             <th data-column-id="subdomain" data-type="string">Subomain</th>
-                            <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
                             <th data-column-id="HandleType" data-type="string" data-visible="false">Handle Type</th>
                             <th data-column-id="HandlePath" data-type="string">Handle Path</th>
                             <th data-column-id="ToDomain" data-type="string">Backend Domain</th>
@@ -185,7 +186,7 @@
     <!-- Access List Tab -->
     <div id="accessListTab" class="tab-pane fade">
         <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
-            <h1>Access List</h1>
+            <h1>Access Lists</h1>
             <div style="display: block;">
                 <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList">
                     <thead>
