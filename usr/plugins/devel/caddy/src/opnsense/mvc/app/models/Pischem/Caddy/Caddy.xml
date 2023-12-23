@@ -125,6 +125,16 @@
                         </reverseproxy>
                     </Model>
                 </subdomain>
+                <accesslist type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName</display>
+                        </reverseproxy>
+                    </Model>
+                </accesslist>
                 <HandleType type="OptionField">
                     <Required>Y</Required>
                     <Default>handle</Default>
@@ -160,6 +170,33 @@
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
             </handle>
+            <accesslist type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <accesslistName type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
+                <ValidationMessage>Please provide a valid Access List Name.</ValidationMessage>
+                </accesslistName>
+                <clientIps type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>Y</NetMaskAllowed>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <Strict>Y</Strict>
+                    <ValidationMessage>Please enter valid IP address(es) or network(s), separated by commas.</ValidationMessage>
+                </clientIps>
+                <accesslistInvert type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </accesslistInvert>
+                <Description type="TextField">
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
+                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
+                </Description>
+            </accesslist>
         </reverseproxy>
     </items>
 </model>
