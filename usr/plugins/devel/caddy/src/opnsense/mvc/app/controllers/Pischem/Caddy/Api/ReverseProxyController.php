@@ -107,9 +107,9 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*Handle Section*/
 
-        public function searchHandleAction()
+    public function searchHandleAction()
     {
-        return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'subdomain', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'HttpTls', 'HttpTlsTrustedCaCerts', 'HttpNtlm', 'Description']);
+        return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'subdomain', 'accesslist', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'HttpTls', 'HttpTlsTrustedCaCerts', 'HttpNtlm', 'Description']);
     }
 
     public function setHandleAction($uuid)
@@ -135,5 +135,38 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function toggleHandleAction($uuid, $enabled = null)
     {
         return $this->toggleBase("reverseproxy.handle", $uuid, $enabled);
+    }
+    
+    
+    /* AccessList Section */
+
+    public function searchAccessListAction()
+    {
+        return $this->searchBase("reverseproxy.accesslist", ['enabled', 'accesslistName', 'clientIps', 'accesslistInvert', 'Description']);
+    }
+
+    public function setAccessListAction($uuid)
+    {
+        return $this->setBase("accesslist", "reverseproxy.accesslist", $uuid);
+    }
+
+    public function addAccessListAction()
+    {
+        return $this->addBase("accesslist", "reverseproxy.accesslist");
+    }
+
+    public function getAccessListAction($uuid = null)
+    {
+        return $this->getBase("accesslist", "reverseproxy.accesslist", $uuid);
+    }
+
+    public function delAccessListAction($uuid)
+    {
+        return $this->delBase("reverseproxy.accesslist", $uuid);
+    }
+
+    public function toggleAccessListAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.accesslist", $uuid, $enabled);
     }
 }
