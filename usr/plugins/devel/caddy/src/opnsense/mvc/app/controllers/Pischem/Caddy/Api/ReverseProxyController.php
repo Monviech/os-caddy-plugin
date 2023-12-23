@@ -43,7 +43,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchReverseProxyAction()
     {
-        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'Description', 'DnsChallenge', 'CustomCertificate']);
+        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'accesslist', 'DnsChallenge', 'CustomCertificate', 'Description']);
     }
 
     public function setReverseProxyAction($uuid)
@@ -76,7 +76,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchSubdomainAction()
     {
-        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'Description']);
+        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'accesslist', 'Description']);
     }
 
     public function setSubdomainAction($uuid)
@@ -109,7 +109,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchHandleAction()
     {
-        return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'subdomain', 'accesslist', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'HttpTls', 'HttpTlsTrustedCaCerts', 'HttpNtlm', 'Description']);
+        return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'subdomain', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'HttpTls', 'HttpTlsTrustedCaCerts', 'HttpNtlm', 'Description']);
     }
 
     public function setHandleAction($uuid)
