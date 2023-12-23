@@ -52,6 +52,15 @@
             del:'/api/caddy/ReverseProxy/delHandle/',
             toggle:'/api/caddy/ReverseProxy/toggleHandle/',
         });
+        
+        $("#accessListGrid").UIBootgrid({
+            search:'/api/caddy/ReverseProxy/searchAccessList/',
+            get:'/api/caddy/ReverseProxy/getAccessList/',
+            set:'/api/caddy/ReverseProxy/setAccessList/',
+            add:'/api/caddy/ReverseProxy/addAccessList/',
+            del:'/api/caddy/ReverseProxy/delAccessList/',
+            toggle:'/api/caddy/ReverseProxy/toggleAccessList/',
+        });
 
         // Initialize the Apply button using SimpleActionButton
         $("#reconfigureAct").SimpleActionButton();
@@ -62,17 +71,18 @@
 </script>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#reverseProxyTab">Reverse Proxy</a></li>
-    <li><a data-toggle="tab" href="#handleTab">Handle</a></li>
+    <li class="active"><a data-toggle="tab" href="#domainsTab">Domains</a></li>
+    <li><a data-toggle="tab" href="#handlesTab">Handles</a></li>
+    <li><a data-toggle="tab" href="#accessListTab">Access Lists</a></li>
 </ul>
 
 <div class="tab-content content-box">
 
     <!-- Reverse Proxy Tab -->
-    <div id="reverseProxyTab" class="tab-pane fade in active">
+    <div id="domainsTab" class="tab-pane fade in active">
         <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
             <!-- Reverse Proxy -->
-            <h1>Reverse Proxy Domains</h1>
+            <h1>Domains</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseProxyGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogReverseProxy">
                     <thead>
@@ -103,7 +113,7 @@
         </div>
         <div style="background-color: white; padding: 10px; margin-top: 20px; border: 1px solid #ddd;">
             <!-- Subdomains -->
-            <h1>Reverse Proxy Subdomains</h1>
+            <h1>Subdomains</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseSubdomainGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubdomain">
                     <thead>
@@ -134,9 +144,9 @@
     </div>
 
     <!-- Handle Tab -->
-    <div id="handleTab" class="tab-pane fade">
+    <div id="handlesTab" class="tab-pane fade">
         <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
-            <h1>Handle</h1>
+            <h1>Handles</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle">
                     <thead>
@@ -145,6 +155,7 @@
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
                             <th data-column-id="reverse" data-type="string">Domain</th>
                             <th data-column-id="subdomain" data-type="string">Subomain</th>
+                            <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
                             <th data-column-id="HandleType" data-type="string" data-visible="false">Handle Type</th>
                             <th data-column-id="HandlePath" data-type="string">Handle Path</th>
                             <th data-column-id="ToDomain" data-type="string">Backend Domain</th>
@@ -171,6 +182,38 @@
             </div>
         </div>
     </div>
+    <!-- Access List Tab -->
+    <div id="accessListTab" class="tab-pane fade">
+        <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
+            <h1>Access List</h1>
+            <div style="display: block;">
+                <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList">
+                    <thead>
+                        <tr>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
+                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
+                            <th data-column-id="accesslistName" data-type="string">Name</th>
+                            <th data-column-id="clientIps" data-type="string">Client IPs</th>
+                            <th data-column-id="accesslistInvert" data-type="boolean" data-formatter="boolean">Invert</th>
+                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button id="addAccessListBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Reconfigure Button -->
@@ -186,3 +229,4 @@
 {{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':'DialogReverseProxy','label':lang._('Edit Reverse Proxy Domain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':'DialogSubdomain','label':lang._('Edit Reverse Proxy Subdomain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit Handle')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':'DialogAccessList','label':lang._('Edit Access List')])}}
