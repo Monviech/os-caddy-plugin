@@ -1,11 +1,5 @@
 <form>
     <field>
-        <id>accesslist.enabled</id>
-        <label>Enabled</label>
-        <type>checkbox</type>
-        <help>Enable this access list.</help>
-    </field>
-    <field>
         <id>accesslist.accesslistName</id>
         <label>Access List Name</label>
         <type>text</type>
