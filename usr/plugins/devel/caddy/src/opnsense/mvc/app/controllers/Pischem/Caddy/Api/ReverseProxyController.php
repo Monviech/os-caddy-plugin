@@ -142,7 +142,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchAccessListAction()
     {
-        return $this->searchBase("reverseproxy.accesslist", ['enabled', 'accesslistName', 'clientIps', 'accesslistInvert', 'Description']);
+        return $this->searchBase("reverseproxy.accesslist", ['accesslistName', 'clientIps', 'accesslistInvert', 'Description']);
     }
 
     public function setAccessListAction($uuid)
@@ -163,10 +163,5 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function delAccessListAction($uuid)
     {
         return $this->delBase("reverseproxy.accesslist", $uuid);
-    }
-
-    public function toggleAccessListAction($uuid, $enabled = null)
-    {
-        return $this->toggleBase("reverseproxy.accesslist", $uuid, $enabled);
     }
 }
