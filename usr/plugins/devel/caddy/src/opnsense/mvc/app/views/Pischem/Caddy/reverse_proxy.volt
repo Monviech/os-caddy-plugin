@@ -59,7 +59,6 @@
             set:'/api/caddy/ReverseProxy/setAccessList/',
             add:'/api/caddy/ReverseProxy/addAccessList/',
             del:'/api/caddy/ReverseProxy/delAccessList/',
-            toggle:'/api/caddy/ReverseProxy/toggleAccessList/',
         });
 
         // Initialize the Apply button using SimpleActionButton
@@ -192,7 +191,6 @@
                     <thead>
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
                             <th data-column-id="accesslistName" data-type="string">Name</th>
                             <th data-column-id="clientIps" data-type="string">Client IPs</th>
                             <th data-column-id="accesslistInvert" data-type="boolean" data-formatter="boolean">Invert</th>
