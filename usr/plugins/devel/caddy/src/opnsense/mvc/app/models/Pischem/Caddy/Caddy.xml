@@ -38,6 +38,15 @@
             <TlsDnsApiKey type="TextField">
                 <ValidationMessage>Please enter a valid API key.</ValidationMessage>
             </TlsDnsApiKey>
+            <accesslist type="ModelRelationField">
+                <Model>
+                    <reverseproxy>
+                        <source>Pischem.Caddy.Caddy</source>
+                        <items>reverseproxy.accesslist</items>
+                        <display>accesslistName</display>
+                    </reverseproxy>
+                </Model>
+            </accesslist>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -59,7 +68,6 @@
                     <EnableRanges>N</EnableRanges>
                 </FromPort>
                 <accesslist type="ModelRelationField">
-                    <Required>N</Required>
                     <Model>
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
@@ -105,7 +113,6 @@
                     <EnableRanges>N</EnableRanges>
                 </FromPort>
                 <accesslist type="ModelRelationField">
-                    <Required>N</Required>
                     <Model>
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
@@ -136,7 +143,6 @@
                     </Model>
                 </reverse>
                 <subdomain type="ModelRelationField">
-                    <Required>N</Required>
                     <Model>
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
@@ -196,7 +202,6 @@
                 </clientIps>
                 <accesslistInvert type="BooleanField">
                     <Default>0</Default>
-                    <Required>N</Required>
                 </accesslistInvert>
                 <Description type="TextField">
                     <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
