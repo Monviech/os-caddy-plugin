@@ -61,8 +61,17 @@
             del:'/api/caddy/ReverseProxy/delAccessList/',
         });
 
-        // Initialize the Apply button using SimpleActionButton
-        $("#reconfigureAct").SimpleActionButton();
+        $("#reconfigureAct").SimpleActionButton({
+            onAction: function(data, status) {
+                // Check if the action was successful
+                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
+                    // Update only the service control UI for 'caddy'
+                    updateServiceControlUI('caddy');
+                } else {
+                    console.error("Action was not successful or an error occurred:", data);
+                }
+            }
+        });
 
         // Initialize the service control UI for 'caddy'
         updateServiceControlUI('caddy');
