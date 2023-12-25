@@ -65,6 +65,13 @@
                     tlsDnsProviderSelect.append(new Option(option.value, key, false, option.selected === 1));
                 }
             });
+            
+            // Populate Trusted Proxies dropdown
+            var accesslistSelect = $('#caddy\\.general\\.accesslist');
+            accesslistSelect.empty(); // Clear existing options
+            $.each(generalSettings.accesslist, function(key, option) {
+                accesslistSelect.append(new Option(option.value, key, false, option.selected === 1));
+            });
 
             // Refresh selectpicker for these dropdowns
             $('.selectpicker').selectpicker('refresh');
@@ -85,8 +92,8 @@
                 },
                 onAction: function(data, status) {
                     if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                    // Reload the page if the action was successful
-                        location.reload();
+                        // Update only the service control UI for 'caddy'
+                        updateServiceControlUI('caddy');
                     } else {
                     // Handle any errors or unsuccessful actions
                         console.error("Action was not successful or an error occurred:", data);
