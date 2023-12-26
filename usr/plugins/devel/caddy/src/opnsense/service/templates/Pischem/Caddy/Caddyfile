@@ -10,6 +10,16 @@
             roll_keep_for 720h
         }
     }
+    {% set generalSettings = helpers.getNodeByTag('Pischem.caddy.general') %}
+    {% set accessListUuid = generalSettings.accesslist %}
+    {% if accessListUuid %}
+        {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accessListUuid) | first %}
+        {% if accessList %}
+        servers {
+            trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
+        }
+        {% endif %}
+    {% endif %}
     {% set emailValue = helpers.toList('Pischem.caddy.general.TlsEmail') | first %}
     {% if emailValue %}
     email {{ emailValue }}
@@ -21,14 +31,7 @@
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
-{% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
-{% if reverse.enabled|default("0") == "1" %}
-# Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
-{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
-    {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
-    {% set dnsApiKey = helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first %}
-    {% set customCert = reverse.CustomCertificate|default("") %}
-
+{% macro tls_configuration(dnsProvider, dnsApiKey, customCert) %}
     {% if dnsProvider != "none" %}
     tls {
         dns {{ dnsProvider }} {{ dnsApiKey }}
@@ -36,12 +39,10 @@
     {% elif customCert %}
     tls /usr/local/etc/caddy/certificates/temp/{{ customCert }}.pem /usr/local/etc/caddy/certificates/temp/{{ customCert }}.key
     {% endif %}
-    {% set wildcard_handles_with_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('HandlePath', 'defined') | selectattr('subdomain', 'undefined') | list %}
-    {% set wildcard_handles_without_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('HandlePath', 'undefined') | selectattr('subdomain', 'undefined') | list %}
+{% endmacro %}
 
-    {% for handle in wildcard_handles_with_path %}
-    {% if handle.enabled|default("0") == "1" %}
-    {{ handle.HandleType }} {{ handle.HandlePath }} {
+{% macro reverse_proxy_configuration(handle) %}
+    {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
         reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
             {% if handle.HttpTls|default("0") == "1" %}
             {% if handle.HttpNtlm|default("0") == "1" %}
@@ -62,94 +63,71 @@
             {% endif %}
         }
     }
-    {% endif %}
-    {% endfor %}
+{% endmacro %}
 
-    {% for handle in wildcard_handles_without_path %}
-    {% if handle.enabled|default("0") == "1" %}
-    handle {
-        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
-            {% if handle.HttpTls|default("0") == "1" %}
-            {% if handle.HttpNtlm|default("0") == "1" %}
-            transport http_ntlm {
-                tls
-                {% if handle.HttpTlsTrustedCaCerts %}
-                tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
-                {% endif %}
-            }
-            {% else %}
-            transport http {
-                tls
-                {% if handle.HttpTlsTrustedCaCerts %}
-                tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
-                {% endif %}
-            }
-            {% endif %}
-            {% endif %}
-        }
+{% macro access_list_configuration(accesslist, invert) %}
+    {% set client_ips = accesslist.clientIps.split(',') %}
+    {% set client_ips_space_separated = client_ips | join(' ') %}
+    @{{ accesslist['@uuid'] }} {
+        {{ 'not' if invert else '' }} client_ip {{ client_ips_space_separated }}
     }
+{% endmacro %}
+
+{% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
+{% if reverse.enabled|default("0") == "1" %}
+# Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
+{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+    {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
+    {% set dnsApiKey = helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first %}
+    {% set customCert = reverse.CustomCertificate|default("") %}
+    {{ tls_configuration(dnsProvider, dnsApiKey, customCert) }}
+
+    {% if reverse.accesslist %}
+    {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', reverse.accesslist) | first %}
+    {{ access_list_configuration(accesslist, accesslist.accesslistInvert|default("0") == "1") }}
+    handle @{{ accesslist['@uuid'] }} {
+        {% set wildcard_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
+        {% for handle in wildcard_handles %}
+        {% if handle.enabled|default("0") == "1" %}
+            {{ reverse_proxy_configuration(handle) }}
+        {% endif %}
+        {% endfor %}
+    }
+    {% else %}
+    {% set wildcard_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
+    {% for handle in wildcard_handles %}
+    {% if handle.enabled|default("0") == "1" %}
+        {{ reverse_proxy_configuration(handle) }}
     {% endif %}
     {% endfor %}
+    {% endif %}
 
     {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
     {% if subdomain.enabled|default("0") == "1" and subdomain.reverse == reverse['@uuid'] %}
-    @{{ subdomain['@uuid'] }} host {{ subdomain.FromDomain }}{% if subdomain.FromPort %}:{{ subdomain.FromPort }}{% endif %}
-    {% filter replace("handle @", "\nhandle @") %}
-    handle @{{ subdomain['@uuid'] }} {
-        {% set subdomain_handles_with_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | selectattr('HandlePath', 'defined') | list %}
-        {% set subdomain_handles_without_path = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | selectattr('HandlePath', 'undefined') | list %}
-        {% for handle in subdomain_handles_with_path %}
-        {% if handle.enabled|default("0") == "1" %}
-        {{ handle.HandleType }} {{ handle.HandlePath }} {
-            reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
-                {% if handle.HttpTls|default("0") == "1" %}
-                {% if handle.HttpNtlm|default("0") == "1" %}
-                transport http_ntlm {
-                    tls
-                    {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
-                    {% endif %}
-                }
-                {% else %}
-                transport http {
-                    tls
-                    {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
-                    {% endif %}
-                }
-                {% endif %}
-                {% endif %}
-            }
-        }
-        {% endif %}
-        {% endfor %}
-        {% for handle in subdomain_handles_without_path %}
-        {% if handle.enabled|default("0") == "1" %}
-        handle {
-            reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
-                {% if handle.HttpTls|default("0") == "1" %}
-                {% if handle.HttpNtlm|default("0") == "1" %}
-                transport http_ntlm {
-                    tls
-                    {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
-                    {% endif %}
-                }
-                {% else %}
-                transport http {
-                    tls
-                    {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
-                    {% endif %}
-                }
-                {% endif %}
-                {% endif %}
-            }
-        }
-        {% endif %}
-        {% endfor %}
+    @{{ subdomain['@uuid'] }} {
+        host {{ subdomain.FromDomain }}{% if subdomain.FromPort %}:{{ subdomain.FromPort }}{% endif %}
     }
-    {% endfilter %}
+    handle @{{ subdomain['@uuid'] }} {
+        {% if subdomain.accesslist %}
+        {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', subdomain.accesslist) | first %}
+        {{ access_list_configuration(accesslist, accesslist.accesslistInvert|default("0") == "1") }}
+        handle @{{ accesslist['@uuid'] }} {
+            {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
+            {% for handle in subdomain_handles %}
+            {% if handle.enabled|default("0") == "1" %}
+                {{ reverse_proxy_configuration(handle) }}
+            {% endif %}
+            {% endfor %}
+        }
+        {% else %}
+        {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
+        {% for handle in subdomain_handles %}
+        {% if handle.enabled|default("0") == "1" %}
+            {{ reverse_proxy_configuration(handle) }}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    }
     {% endif %}
     {% endfor %}
 }

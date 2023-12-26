@@ -20,11 +20,11 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>reverse.Description</id>
-        <label>Description</label>
-        <type>text</type>
-        <hint>example.com.443</hint>
-        <help>Enter a description for this reverse proxy domain.</help>
+        <id>reverse.accesslist</id>
+        <label>Access List</label>
+        <type>dropdown</type>
+        <help><![CDATA[Optionally, select an Access List to restrict access to this domain. If left on "None", any local or remote client is allowed access. In most cases, leaving this on "None" will be the best choice.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>reverse.DnsChallenge</id>
@@ -39,5 +39,12 @@
         <type>dropdown</type>
         <help>Choose your own certificate from System Trust Certificates. Make sure you have imported the full chain. In most cases, leaving this on "None" will be the best choice.</help>
         <advanced>true</advanced>
+    </field>
+    <field>
+        <id>reverse.Description</id>
+        <label>Description</label>
+        <type>text</type>
+        <hint>example.com.443</hint>
+        <help>Enter a description for this reverse proxy domain.</help>
     </field>
 </form>

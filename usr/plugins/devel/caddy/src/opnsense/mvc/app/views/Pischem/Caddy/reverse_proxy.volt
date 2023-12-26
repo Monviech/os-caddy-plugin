@@ -52,9 +52,26 @@
             del:'/api/caddy/ReverseProxy/delHandle/',
             toggle:'/api/caddy/ReverseProxy/toggleHandle/',
         });
+        
+        $("#accessListGrid").UIBootgrid({
+            search:'/api/caddy/ReverseProxy/searchAccessList/',
+            get:'/api/caddy/ReverseProxy/getAccessList/',
+            set:'/api/caddy/ReverseProxy/setAccessList/',
+            add:'/api/caddy/ReverseProxy/addAccessList/',
+            del:'/api/caddy/ReverseProxy/delAccessList/',
+        });
 
-        // Initialize the Apply button using SimpleActionButton
-        $("#reconfigureAct").SimpleActionButton();
+        $("#reconfigureAct").SimpleActionButton({
+            onAction: function(data, status) {
+                // Check if the action was successful
+                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
+                    // Update only the service control UI for 'caddy'
+                    updateServiceControlUI('caddy');
+                } else {
+                    console.error("Action was not successful or an error occurred:", data);
+                }
+            }
+        });
 
         // Initialize the service control UI for 'caddy'
         updateServiceControlUI('caddy');
@@ -62,17 +79,18 @@
 </script>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#reverseProxyTab">Reverse Proxy</a></li>
-    <li><a data-toggle="tab" href="#handleTab">Handle</a></li>
+    <li class="active"><a data-toggle="tab" href="#domainsTab">Domains</a></li>
+    <li><a data-toggle="tab" href="#handlesTab">Handles</a></li>
+    <li><a data-toggle="tab" href="#accessListTab">Access Lists</a></li>
 </ul>
 
 <div class="tab-content content-box">
 
     <!-- Reverse Proxy Tab -->
-    <div id="reverseProxyTab" class="tab-pane fade in active">
+    <div id="domainsTab" class="tab-pane fade in active">
         <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
             <!-- Reverse Proxy -->
-            <h1>Reverse Proxy Domains</h1>
+            <h1>Domains</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseProxyGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogReverseProxy">
                     <thead>
@@ -81,6 +99,7 @@
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
                             <th data-column-id="FromDomain" data-type="string">Domain</th>
                             <th data-column-id="FromPort" data-type="string">Port</th>
+                            <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
                             <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">DNS-01</th>
                             <th data-column-id="CustomCertificate" data-type="string" data-visible="false">Custom Certificate</th>
                             <th data-column-id="Description" data-type="string">Description</th>
@@ -103,7 +122,7 @@
         </div>
         <div style="background-color: white; padding: 10px; margin-top: 20px; border: 1px solid #ddd;">
             <!-- Subdomains -->
-            <h1>Reverse Proxy Subdomains</h1>
+            <h1>Subdomains</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseSubdomainGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubdomain">
                     <thead>
@@ -113,6 +132,7 @@
                             <th data-column-id="reverse" data-type="string">Domain</th>
                             <th data-column-id="FromDomain" data-type="string">Subdomain</th>
                             <th data-column-id="FromPort" data-type="string">Port</th>
+                            <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
                             <th data-column-id="Description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
@@ -134,9 +154,9 @@
     </div>
 
     <!-- Handle Tab -->
-    <div id="handleTab" class="tab-pane fade">
+    <div id="handlesTab" class="tab-pane fade">
         <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
-            <h1>Handle</h1>
+            <h1>Handles</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle">
                     <thead>
@@ -170,6 +190,46 @@
                 </table>
             </div>
         </div>
+        <!-- Help Text regarding Handle order -->
+        <div style="margin-top: 20px; width: 100%; background-color: white; padding: 5px; border: 1px solid #ddd;">
+        <h5>Handle Order</h5>
+            <ul>
+                <li>Handles are processed in the order they are listed for their respective domain and/or subdomain. A handle higher up in the list will take precedence over those listed below it.</li>
+                <li>Specific handle paths should be placed before more generic ones. "/ui/opnsense" should be placed before a handle like "/ui" or an empty catch-all handle.</li>
+            </ul>
+            For more details, see the <a href="https://caddyserver.com/docs/caddyfile/directives/handle" target="_blank">Caddyserver Handle Documentation</a>.
+        </div>
+    </div>
+    <!-- Access List Tab -->
+    <div id="accessListTab" class="tab-pane fade">
+        <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
+            <h1>Access Lists</h1>
+            <div style="display: block;">
+                <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList">
+                    <thead>
+                        <tr>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
+                            <th data-column-id="accesslistName" data-type="string">Name</th>
+                            <th data-column-id="clientIps" data-type="string">Client IPs</th>
+                            <th data-column-id="accesslistInvert" data-type="boolean" data-formatter="boolean">Invert</th>
+                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button id="addAccessListBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -186,3 +246,4 @@
 {{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':'DialogReverseProxy','label':lang._('Edit Reverse Proxy Domain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':'DialogSubdomain','label':lang._('Edit Reverse Proxy Subdomain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit Handle')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':'DialogAccessList','label':lang._('Edit Access List')])}}

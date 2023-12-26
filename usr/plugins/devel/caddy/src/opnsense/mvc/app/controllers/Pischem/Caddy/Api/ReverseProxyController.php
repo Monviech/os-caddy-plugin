@@ -43,7 +43,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchReverseProxyAction()
     {
-        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'Description', 'DnsChallenge', 'CustomCertificate']);
+        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'accesslist', 'DnsChallenge', 'CustomCertificate', 'Description']);
     }
 
     public function setReverseProxyAction($uuid)
@@ -76,7 +76,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchSubdomainAction()
     {
-        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'Description']);
+        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'accesslist', 'Description']);
     }
 
     public function setSubdomainAction($uuid)
@@ -107,7 +107,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*Handle Section*/
 
-        public function searchHandleAction()
+    public function searchHandleAction()
     {
         return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'subdomain', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'HttpTls', 'HttpTlsTrustedCaCerts', 'HttpNtlm', 'Description']);
     }
@@ -135,5 +135,33 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function toggleHandleAction($uuid, $enabled = null)
     {
         return $this->toggleBase("reverseproxy.handle", $uuid, $enabled);
+    }
+    
+    
+    /* AccessList Section */
+
+    public function searchAccessListAction()
+    {
+        return $this->searchBase("reverseproxy.accesslist", ['accesslistName', 'clientIps', 'accesslistInvert', 'Description']);
+    }
+
+    public function setAccessListAction($uuid)
+    {
+        return $this->setBase("accesslist", "reverseproxy.accesslist", $uuid);
+    }
+
+    public function addAccessListAction()
+    {
+        return $this->addBase("accesslist", "reverseproxy.accesslist");
+    }
+
+    public function getAccessListAction($uuid = null)
+    {
+        return $this->getBase("accesslist", "reverseproxy.accesslist", $uuid);
+    }
+
+    public function delAccessListAction($uuid)
+    {
+        return $this->delBase("reverseproxy.accesslist", $uuid);
     }
 }

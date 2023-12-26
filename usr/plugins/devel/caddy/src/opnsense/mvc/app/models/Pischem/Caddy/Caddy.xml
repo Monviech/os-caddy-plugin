@@ -38,6 +38,15 @@
             <TlsDnsApiKey type="TextField">
                 <ValidationMessage>Please enter a valid API key.</ValidationMessage>
             </TlsDnsApiKey>
+            <accesslist type="ModelRelationField">
+                <Model>
+                    <reverseproxy>
+                        <source>Pischem.Caddy.Caddy</source>
+                        <items>reverseproxy.accesslist</items>
+                        <display>accesslistName</display>
+                    </reverseproxy>
+                </Model>
+            </accesslist>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -58,6 +67,15 @@
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>N</EnableRanges>
                 </FromPort>
+                <accesslist type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName</display>
+                        </reverseproxy>
+                    </Model>
+                </accesslist>
                 <Description type="TextField">
                     <Required>Y</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
@@ -94,6 +112,15 @@
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>N</EnableRanges>
                 </FromPort>
+                <accesslist type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName</display>
+                        </reverseproxy>
+                    </Model>
+                </accesslist>
                 <Description type="TextField">
                     <Required>Y</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
@@ -116,7 +143,6 @@
                     </Model>
                 </reverse>
                 <subdomain type="ModelRelationField">
-                    <Required>N</Required>
                     <Model>
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
@@ -134,7 +160,8 @@
                     </OptionValues>
                 </HandleType>
                 <HandlePath type="TextField">
-                    <ValidationMessage>Please enter a valid 'Handle Path'.</ValidationMessage>
+                    <Mask>/^(/.*)?$/u</Mask>
+                    <ValidationMessage>Please enter a valid 'Handle Path' that starts with '/'.</ValidationMessage>
                 </HandlePath>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
@@ -160,6 +187,28 @@
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
             </handle>
+            <accesslist type="ArrayField">
+                <accesslistName type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
+                <ValidationMessage>Please provide a valid Access List Name.</ValidationMessage>
+                </accesslistName>
+                <clientIps type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>Y</NetMaskAllowed>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <Strict>Y</Strict>
+                    <ValidationMessage>Please enter valid IP address(es) or network(s), separated by commas.</ValidationMessage>
+                </clientIps>
+                <accesslistInvert type="BooleanField">
+                    <Default>0</Default>
+                </accesslistInvert>
+                <Description type="TextField">
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
+                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
+                </Description>
+            </accesslist>
         </reverseproxy>
     </items>
 </model>
