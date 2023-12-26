@@ -10,6 +10,16 @@
             roll_keep_for 720h
         }
     }
+    {% set generalSettings = helpers.getNodeByTag('Pischem.caddy.general') %}
+    {% set accessListUuid = generalSettings.accesslist %}
+    {% if accessListUuid %}
+        {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accessListUuid) | first %}
+        {% if accessList %}
+        servers {
+            trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
+        }
+        {% endif %}
+    {% endif %}
     {% set emailValue = helpers.toList('Pischem.caddy.general.TlsEmail') | first %}
     {% if emailValue %}
     email {{ emailValue }}
