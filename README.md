@@ -23,7 +23,7 @@ More Screenshots and generated Caddyfile example: https://github.com/Monviech/os
 
 # How to install:
 ##### DISCLAIMER: Even though I use this productively on multiple OPNsense Firewalls (and also a HA pair with config sync), I give no guarantee whatsoever. Please read the license file for the full disclaimer. Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-##### Second Release is os-caddy-1.3.0. Tested by myself on DEC740 Hardware with OPNsense CE 23.7.10_1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
+##### Second Release is os-caddy-1.3.1. Tested by myself on DEC740 Hardware with OPNsense CE 23.7.10_1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
 ##### Caddy Version is v2.7.6 h1:w0NymbG2m9PcvKWsrXO6EEkY9Ru4FJK8uQbYcev1p3A=
 - Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
 ```
