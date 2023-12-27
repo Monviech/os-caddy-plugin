@@ -160,7 +160,7 @@
                     </OptionValues>
                 </HandleType>
                 <HandlePath type="TextField">
-                    <Mask>/^(/.*)?$/u</Mask>
+                    <Mask>/^(\/.*)?$/u</Mask>
                     <ValidationMessage>Please enter a valid 'Handle Path' that starts with '/'.</ValidationMessage>
                 </HandlePath>
                 <ToDomain type="HostnameField">
