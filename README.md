@@ -1,11 +1,11 @@
 # Caddy Plugin for OPNsense
 
-- This personal project aims to provide a simple plugin for [OPNsense](https://github.com/opnsense) to enable support for [Caddy](https://github.com/caddyserver/caddy).
-- The scope is the reverse proxy features. The goal is a simple to configure plugin that just works for general needs and to prevent creeping featuritis.
+- This project provides a simple yet powerful plugin for [OPNsense](https://github.com/opnsense) to enable support for [Caddy](https://github.com/caddyserver/caddy).
+- The scope is the reverse proxy features.
+- The main goal is an easy to configure plugin. Most options that aren't generally needed are hidden behind the advanced mode for this reason.
+- The feature set is complete for now.
 
-![Handle](https://github.com/Monviech/os-caddy-plugin/assets/79600909/12e4fcd7-7faa-4c81-a0ea-e35a451cea4c)
-
-More Screenshots and generated Caddyfile example: https://github.com/Monviech/os-caddy-plugin/pull/32
+[Screenshots and generated Caddyfile example](https://github.com/Monviech/os-caddy-plugin/pull/32)
 
 # License
 
@@ -23,7 +23,7 @@ More Screenshots and generated Caddyfile example: https://github.com/Monviech/os
 
 # How to install:
 ##### DISCLAIMER: Even though I use this productively on multiple OPNsense Firewalls (and also a HA pair with config sync), I give no guarantee whatsoever. Please read the license file for the full disclaimer. Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-##### Second Release is os-caddy-1.3.2. Tested by myself on DEC740 Hardware with OPNsense CE 23.7.10_1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
+##### Latest Patch is os-caddy-1.3.2. Tested by myself on DEC740 Hardware with OPNsense CE 23.7.10_1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
 ##### Caddy Version is v2.7.6 h1:w0NymbG2m9PcvKWsrXO6EEkY9Ru4FJK8uQbYcev1p3A=
 - Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
 ```
@@ -71,7 +71,7 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 - `DNS API Key` (advanced) -  Leave empty if you don't use a DNS Provider, or put your `API Key` here.
 - `Trusted Proxies` (advanced) - Leave empty if you don't use a CDN in front of your OPNsense. If you use Cloudflare or another CDN provider, create an access list with the IP addresses of that CDN and add it here. Add the same Access List to the domain this CDN tries to reach.
 
-##### Reverse Proxy - Tab Domains:
+##### Tab Reverse Proxy - Domains:
 - Press `+` to create a new Reverse Proxy Domain
 - `Enable` this new entry
 - `Reverse Proxy Domain` - can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the `Handle` Server in the backend.
@@ -81,21 +81,21 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 - `DNS-01 challenge` (advanced) - enable this if you want to use the `DNS-01` ACME challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the `General Settings` - `DNS Provider` and `API KEY` set.
 - `Custom Certificate` (advanced) - Use a Certificate you imported or generated in `System - Trust - Certificates`. The chain is generated automatically. `Certificate + Intermediate CA + Root CA`, `Certificate + Root CA` and `self signed Certificate` are all fully supported.
 
-##### Tab Handle:
+##### Tab Handle - Handle:
 Please note that the order that handles are created in the scope of each domain or domain/subdomain influence functionality. The first matching handle wins. So if you put an empty catch-all handle in front of a more specific handle like /ui/opnsense, the catch-all will match first. Right now there isn't an easy way to move the position of handles in the grid, so you have to delete and re-add them if you want to change their order. Most of the time, creating just one empty catch-all handle is the best choice.
 - Press `+` to create a new `Handle`. A Handle is like a location in nginx.
 - `Enable` this new entry.
 - `Reverse Proxy Domain` - Select the domain you have created in `Reverse Proxy Domains`.
 - `Reverse Proxy Subdomain` (advanced) - Leave this on `None`. It is not needed without having a wildcard certificate, or a `*.example.com` Domain.
 - `Handle Type` (advanced) - `Handle` or `Handle Path` can be chosen. If in doubt, always use `Handle`, the most common option. `Handle Path` is used to strip the handle path from the URI. For example if you have example.com/opnsense internally, but want to call it with just example.com externally.
-- `Handle Path` (advanced) - Leave this empty if you want to create a catch all location. You can create multiple Handle entries, and have each of them point at different locations like `/foo/*` or `/foo/bar/*` or `/foo*` or `*foo`. The order in which the handles are saved is important. Save more specific handles first, because the first matching handle wins. Empty handles will always be placed last automatically in the Caddyfile. If you want to change the order of the handles later, you have to clone them in the order you want, and then delete the old entries. In most cases, leaving this empty will be the best choice.
+- `Handle Path` (advanced) - Leave this empty if you want to create a catch all location. You can create multiple Handle entries, and have each of them point at different locations like `/foo/*` or `/foo/bar/*` or `/foo*` or `*foo`
 - `Backend Server Domain` - Should be an internal domain name or an IP Address of the Backend Server that should receive the traffic of the `Reverse Proxy Domain`.
 - `Backend Server Port` (advanced) - Should be the port the Backend Server listens on. This can be left empty to use Caddy default ports 80 and 443.
 - `TLS` (advanced) - If your Backend Server only accepts HTTPS, enable this option. If the Backend Server has a globally trusted certificate, this is all you need.
 - `TLS Trusted CA Certificates` (advanced) - Choose a CA certificate to trust for the Backend Server connection. Caddy doesn't allow a "skip certificate check" due to safety reasons. So, import your self-signed certificate or your self signed CA certificate into the OPNsense "System - Trust - Authorities" store, and select it here. This will make Caddy trust the connection and the TLS will work.
 - `NTLM` (advanced) - If your Backend Server needs NTLM authentication, enable this option together with `TLS`. For example, Exchange Server.
 
-##### Tab Access Lists:
+##### Tab Reverse Proxy - Access Lists:
 - Press `+` to create a new Access List
 - `Access List name` - Choose a name for the Access List, for example `private_ips`.
 - `Client IP Addresses` - Enter any number of IPv4 and IPv6 addresses or networks that this access list should contain. For example for matching only internal networks, add `192.168.0.0/16` `172.16.0.0/12` `10.0.0.0/8` `127.0.0.1/8` `fd00::/8` `::1`.
@@ -139,7 +139,7 @@ You don't have to make the binary chmod +x, the setup script does that automatic
 The Rest API is now fully integreated with the OPNsense syntax.
 https://docs.opnsense.org/development/api.html
 
-All API Actions can be found in the API controller files.
+All API Actions can be found in the [API controller files](https://github.com/Monviech/os-caddy-plugin/tree/main/usr/plugins/devel/caddy/src/opnsense/mvc/app/controllers/Pischem/Caddy/Api)
 
 Example:
 - /api/caddy/ReverseProxy/get
