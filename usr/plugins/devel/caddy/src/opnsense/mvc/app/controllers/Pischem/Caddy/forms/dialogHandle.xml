@@ -29,7 +29,7 @@
         <id>handle.HandlePath</id>
         <label>Handle Path</label>
         <type>text</type>
-        <help><![CDATA[Enter the handle, e.g. '/*' or '/example/*' or leave empty for a catch all handle. In most cases, leaving this empty will be the best choice.]]></help>
+        <help><![CDATA[Enter a handle like '/*' or '/example/*', or leave blank for a catch-all handle (recommended). You can define multiple handles per domain/subdomain by creating additional entries. Save more specific handles first, as the first matching handle is prioritized. Blank handles are processed last automatically. To reorder, clone handles in the desired sequence and delete old ones.]]></help>
         <advanced>true</advanced>
     </field>
     <field>

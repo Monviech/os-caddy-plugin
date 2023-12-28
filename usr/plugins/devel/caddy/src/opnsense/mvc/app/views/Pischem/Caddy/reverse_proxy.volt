@@ -190,15 +190,6 @@
                 </table>
             </div>
         </div>
-        <!-- Help Text regarding Handle order -->
-        <div style="margin-top: 20px; width: 100%; background-color: white; padding: 5px; border: 1px solid #ddd;">
-        <h5>Handle Order</h5>
-            <ul>
-                <li>Handles are processed in the order they are listed for their respective domain and/or subdomain. A handle higher up in the list will take precedence over those listed below it.</li>
-                <li>Specific handle paths should be placed before more generic ones. "/ui/opnsense" should be placed before a handle like "/ui" or an empty catch-all handle.</li>
-            </ul>
-            For more details, see the <a href="https://caddyserver.com/docs/caddyfile/directives/handle" target="_blank">Caddyserver Handle Documentation</a>.
-        </div>
     </div>
     <!-- Access List Tab -->
     <div id="accessListTab" class="tab-pane fade">

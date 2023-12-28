@@ -1,11 +1,11 @@
 # Caddy Plugin for OPNsense
 
-- This personal project aims to provide a simple plugin for [OPNsense](https://github.com/opnsense) to enable support for [Caddy](https://github.com/caddyserver/caddy).
-- The scope is the reverse proxy features. The goal is a simple to configure plugin that just works for general needs and to prevent creeping featuritis.
+- This project provides a simple yet powerful plugin for [OPNsense](https://github.com/opnsense) to enable support for [Caddy](https://github.com/caddyserver/caddy).
+- The scope is the reverse proxy features.
+- The main goal is an easy to configure plugin. Most options that aren't generally needed are hidden behind the advanced mode for this reason.
+- The feature set is complete for now.
 
-![Handle](https://github.com/Monviech/os-caddy-plugin/assets/79600909/12e4fcd7-7faa-4c81-a0ea-e35a451cea4c)
-
-More Screenshots and generated Caddyfile example: https://github.com/Monviech/os-caddy-plugin/pull/32
+[Screenshots and generated Caddyfile example](https://github.com/Monviech/os-caddy-plugin/pull/32)
 
 # License
 
@@ -23,7 +23,7 @@ More Screenshots and generated Caddyfile example: https://github.com/Monviech/os
 
 # How to install:
 ##### DISCLAIMER: Even though I use this productively on multiple OPNsense Firewalls (and also a HA pair with config sync), I give no guarantee whatsoever. Please read the license file for the full disclaimer. Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-##### Second Release is os-caddy-1.3.1. Tested by myself on DEC740 Hardware with OPNsense CE 23.7.10_1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
+##### Latest Patch is os-caddy-1.3.2. Tested by myself on DEC740 Hardware with OPNsense CE 23.7.10_1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
 ##### Caddy Version is v2.7.6 h1:w0NymbG2m9PcvKWsrXO6EEkY9Ru4FJK8uQbYcev1p3A=
 - Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
 ```
@@ -139,7 +139,7 @@ You don't have to make the binary chmod +x, the setup script does that automatic
 The Rest API is now fully integreated with the OPNsense syntax.
 https://docs.opnsense.org/development/api.html
 
-All API Actions can be found in the API controller files.
+All API Actions can be found in the [API controller files](https://github.com/Monviech/os-caddy-plugin/tree/main/usr/plugins/devel/caddy/src/opnsense/mvc/app/controllers/Pischem/Caddy/Api)
 
 Example:
 - /api/caddy/ReverseProxy/get
