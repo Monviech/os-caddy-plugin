@@ -82,7 +82,7 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 - `Custom Certificate` (advanced) - Use a Certificate you imported or generated in `System - Trust - Certificates`. The chain is generated automatically. `Certificate + Intermediate CA + Root CA`, `Certificate + Root CA` and `self signed Certificate` are all fully supported.
 
 ##### Tab Handle - Handle:
-Please note that the order that handles are created in the scope of each domain or domain/subdomain influence functionality. The first matching handle wins. So if you put an empty catch-all handle in front of a more specific handle like /ui/opnsense, the catch-all will match first. Right now there isn't an easy way to move the position of handles in the grid, so you have to delete and re-add them if you want to change their order. Most of the time, creating just one empty catch-all handle is the best choice.
+Please note that the order that handles are savex in the scope of each domain or domain/subdomain influence functionality. The first matching handle wins. So if you put /ui* in front of a more specific handle like /ui/opnsense, the /ui* will match first and /ui/opnsense won't ever match. Right now there isn't an easy way to move the position of handles in the grid, so you have to clone them if you want to change their order, and delete the old entries afterwards. Most of the time, creating just one empty catch-all handle is the best choice. The template logic makes sure that catch-all handles are always placed last, after all other handles.
 - Press `+` to create a new `Handle`. A Handle is like a location in nginx.
 - `Enable` this new entry.
 - `Reverse Proxy Domain` - Select the domain you have created in `Reverse Proxy Domains`.
