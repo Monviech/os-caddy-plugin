@@ -43,6 +43,7 @@
         <id>handle.ToPort</id>
         <label>Backend Server Port</label>
         <type>text</type>
+        <hint>443</hint>
         <help><![CDATA[Enter the port number of the backend server. Leave this empty for bind to port 80. For HTTPS, use 443.]]></help>
         <advanced>true</advanced>
     </field>

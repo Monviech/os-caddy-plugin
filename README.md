@@ -23,7 +23,7 @@
 
 # How to install:
 ##### DISCLAIMER: Even though I use this productively on multiple OPNsense Firewalls (and also a HA pair with config sync), I give no guarantee whatsoever. Please read the license file for the full disclaimer. Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-##### Latest Patch is os-caddy-1.3.2. Tested by myself on DEC740 Hardware with OPNsense CE 23.7.10_1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
+##### Latest Patch is os-caddy-1.3.3. Tested by myself on DEC740 Hardware with OPNsense CE 23.7.10_1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
 ##### Caddy Version is v2.7.6 h1:w0NymbG2m9PcvKWsrXO6EEkY9Ru4FJK8uQbYcev1p3A=
 - Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
 ```
@@ -38,8 +38,8 @@ pkg update
 
 ##### Attention:
 - Make sure that port `80` and `443` aren't occupied. You have to change the default listen port to `8443` for example. Go to `System: Settings: Administration` to change the `TCP Port`. Then also enable `HTTP Redirect - Disable web GUI redirect rule`. 
-- If you have already other reverse proxy or webserver plugins installed, make sure they don't use the same ports as Caddy
-- Create Firewall rules that allow 80 and 443 TCP to "This Firewall" on WAN.
+- If you have other reverse proxy or webserver plugins installed, make sure they don't use the same ports as Caddy
+- Create Firewall rules that allow 80 and 443 TCP to "This Firewall" on WAN and (optionally) LAN, OPT1 etc...
 - There is a lot of input validation. If you read all the hints, help texts and error messages, its unlikely that you create a configuration that won't work.
 
 ### How to create an easy reverse proxy:
@@ -49,7 +49,7 @@ pkg update
 ##### Services - Caddy Web Server - Reverse Proxy - Domain:
 - Press `+` to create a new Reverse Proxy Domain
 - `Reverse Proxy Domain` - `foo.example.com`
-- `Description` - `foo.exmaple.com`
+- `Description` - `foo.example.com`
 - `Save`
 
 ##### Services - Caddy Web Server - Reverse Proxy - Handle:
@@ -126,7 +126,7 @@ Please note that the order that handles are saved in the scope of each domain or
 - Build the os-caddy.pkg by going into /usr/plugins/devel/caddy/ and invoking ```make package``` 
 
 # Custom configuration files
-- The Caddyfile has an additional import from the path ```/usr/local/etc/caddy/caddy.d/```. You can place your own custom configuration files inside that adhere to the Caddyfile syntax. ```*.global``` will be imported into the global block of the Caddyfile. ```*.conf``` will be imported at the end of the Caddyfile, you can put your own reverse_proxy or other settings there.
+- The Caddyfile has an additional import from the path ```/usr/local/etc/caddy/caddy.d/```. You can place your own custom configuration files inside that adhere to the Caddyfile syntax. ```*.global``` will be imported into the global block of the Caddyfile. ```*.conf``` will be imported at the end of the Caddyfile, you can put your own reverse_proxy or other settings there. Don't forget to test your custom configuration with `caddy run --config /usr/local/etc/caddy/Caddyfile`.
 
 # Use custom caddy binary
 - If you want to use your own modules, build your own caddy binary directly in the OPNsense shell. Go on the Caddy Website https://caddyserver.com/download and select the packages you want. The package should be one for ```freebsd``` - for example ```freebsd amd64```. Afterwards save the download link and go to ```/usr/local/bin/``` in the OPNsense shell. Use the following command to download and build the new binary. Example needs to be adjusted to your personal download link:
