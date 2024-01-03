@@ -16,6 +16,7 @@
         <id>reverse.FromPort</id>
         <label>Reverse Proxy Port</label>
         <type>text</type>
+        <hint>443</hint>
         <help><![CDATA[Enter the port number. Leave this empty for bind to port 80 and 443 with automatic redirection. Don't forget to create a firewall rule that allows this port to "This Firewall".]]></help>
         <advanced>true</advanced>
     </field>
