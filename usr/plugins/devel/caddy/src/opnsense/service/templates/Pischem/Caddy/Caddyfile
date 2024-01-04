@@ -51,12 +51,18 @@
                 {% if handle.HttpTlsTrustedCaCerts %}
                 tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                 {% endif %}
+                {% if handle.HttpTlsServerName %}
+                tls_server_name {{ handle.HttpTlsServerName }}
+                {% endif %}
             }
             {% else %}
             transport http {
                 tls
                 {% if handle.HttpTlsTrustedCaCerts %}
                 tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                {% endif %}
+                {% if handle.HttpTlsServerName %}
+                tls_server_name {{ handle.HttpTlsServerName }}
                 {% endif %}
             }
             {% endif %}
@@ -117,7 +123,9 @@
         {% endif %}
         {% endfor %}
         {% endif %}
+        {% if Pischem.caddy.general.abort|default("0") == "1" %}
         abort
+        {% endif %}
     }
     {% endif %}
     {% endfor %}
@@ -151,7 +159,9 @@
     {% endif %}
     {% endfor %}
     {% endif %}
+    {% if Pischem.caddy.general.abort|default("0") == "1" %}
     abort
+    {% endif %}
 }
 {% endif %}
 {% endfor %}
