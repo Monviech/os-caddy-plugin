@@ -31,8 +31,8 @@
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
-{% macro tls_configuration(dnsProvider, dnsApiKey, customCert) %}
-    {% if dnsProvider != "none" %}
+{% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge) %}
+    {% if dnsChallenge == "1" and dnsProvider != "none" and dnsApiKey %}
     tls {
         dns {{ dnsProvider }} {{ dnsApiKey }}
     }
@@ -86,7 +86,8 @@
     {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
     {% set dnsApiKey = helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first %}
     {% set customCert = reverse.CustomCertificate|default("") %}
-    {{ tls_configuration(dnsProvider, dnsApiKey, customCert) }}
+    {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
+    {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge) }}
 
     {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
     {% if subdomain.enabled|default("0") == "1" and subdomain.reverse == reverse['@uuid'] %}
