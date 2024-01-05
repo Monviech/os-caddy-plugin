@@ -171,6 +171,7 @@
                             <th data-column-id="ToPort" data-type="string">Backend Port</th>
                             <th data-column-id="HttpTls" data-type="boolean" data-formatter="boolean" data-visible="false">TLS</th>
                             <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">TLS CA</th>
+                            <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">TLS Server Name</th>
                             <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">NTLM</th>
                             <th data-column-id="Description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
@@ -191,6 +192,7 @@
             </div>
         </div>
     </div>
+    
     <!-- Access List Tab -->
     <div id="accessListTab" class="tab-pane fade">
         <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">

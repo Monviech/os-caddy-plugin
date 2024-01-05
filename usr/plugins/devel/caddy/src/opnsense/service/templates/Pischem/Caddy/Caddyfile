@@ -31,8 +31,8 @@
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
-{% macro tls_configuration(dnsProvider, dnsApiKey, customCert) %}
-    {% if dnsProvider != "none" %}
+{% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge) %}
+    {% if dnsChallenge == "1" and dnsProvider != "none" and dnsApiKey %}
     tls {
         dns {{ dnsProvider }} {{ dnsApiKey }}
     }
@@ -51,12 +51,18 @@
                 {% if handle.HttpTlsTrustedCaCerts %}
                 tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                 {% endif %}
+                {% if handle.HttpTlsServerName %}
+                tls_server_name {{ handle.HttpTlsServerName }}
+                {% endif %}
             }
             {% else %}
             transport http {
                 tls
                 {% if handle.HttpTlsTrustedCaCerts %}
                 tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                {% endif %}
+                {% if handle.HttpTlsServerName %}
+                tls_server_name {{ handle.HttpTlsServerName }}
                 {% endif %}
             }
             {% endif %}
@@ -80,7 +86,8 @@
     {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
     {% set dnsApiKey = helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first %}
     {% set customCert = reverse.CustomCertificate|default("") %}
-    {{ tls_configuration(dnsProvider, dnsApiKey, customCert) }}
+    {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
+    {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge) }}
 
     {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
     {% if subdomain.enabled|default("0") == "1" and subdomain.reverse == reverse['@uuid'] %}
@@ -117,6 +124,9 @@
         {% endif %}
         {% endfor %}
         {% endif %}
+        {% if Pischem.caddy.general.abort|default("0") == "1" %}
+        abort
+        {% endif %}
     }
     {% endif %}
     {% endfor %}
@@ -150,7 +160,9 @@
     {% endif %}
     {% endfor %}
     {% endif %}
-
+    {% if Pischem.caddy.general.abort|default("0") == "1" %}
+    abort
+    {% endif %}
 }
 {% endif %}
 {% endfor %}

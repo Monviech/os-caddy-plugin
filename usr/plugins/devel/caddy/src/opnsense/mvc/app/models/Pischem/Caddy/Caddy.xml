@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a basic reverse proxy in Caddy Web Server.</description>
-    <version>1.0.9</version>
+    <version>1.1.0</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -47,6 +47,9 @@
                     </reverseproxy>
                 </Model>
             </accesslist>
+            <abort type="BooleanField">
+                <Default>0</Default>
+            </abort>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -182,6 +185,13 @@
                 <HttpTlsTrustedCaCerts type="CertificateField">
                     <type>ca</type>
                 </HttpTlsTrustedCaCerts>
+                <HttpTlsServerName type="HostnameField">
+                    <ValidationMessage>Please enter a valid hostname or IP address.</ValidationMessage>
+                    <IpAllowed>Y</IpAllowed>
+                    <HostWildcardAllowed>Y</HostWildcardAllowed>
+                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <ZoneRootAllowed>N</ZoneRootAllowed>
+                </HttpTlsServerName>
                 <Description type="TextField">
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>

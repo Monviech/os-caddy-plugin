@@ -58,7 +58,14 @@
         <id>handle.HttpTlsTrustedCaCerts</id>
         <label>TLS Trusted CA Certificate</label>
         <type>dropdown</type>
-        <help>If TLS is enabled, and you are not using a globally trusted server certificate on your Backend Server, you can choose a CA certificate to trust from System Trust Authorities.</help>
+        <help>If TLS is enabled, and you are not using a globally trusted server certificate on your Backend Server, you can choose a CA certificate or self signed certificate to trust from "System - Trust - Authorities".</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HttpTlsServerName</id>
+        <label>TLS Server Name</label>
+        <type>text</type>
+        <help><![CDATA[Optionally, specify a hostname or IP address that matches the Common Name (CN) of the Trusted CA Certificate. Useful if a certificate has been chosen and the CN doesn't match with the "Backend Server Domain".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
