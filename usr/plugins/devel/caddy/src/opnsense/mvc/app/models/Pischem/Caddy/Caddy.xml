@@ -48,7 +48,7 @@
                 </Model>
             </accesslist>
             <abort type="BooleanField">
-                <Default>1</Default>
+                <Default>0</Default>
             </abort>
         </general>
         <reverseproxy>
