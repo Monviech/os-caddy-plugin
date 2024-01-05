@@ -94,7 +94,7 @@ Please note that the order that handles are saved in the scope of each domain or
 - `Backend Server Port` **advanced**: Should be the port the Backend Server listens on. This can be left empty to use Caddy default ports 80 and 443.
 - `TLS` **advanced**: If your Backend Server only accepts HTTPS, enable this option. If the Backend Server has a globally trusted certificate, this is all you need.
 - `TLS Trusted CA Certificates` **advanced**: Choose a CA certificate to trust for the Backend Server connection. Import your self-signed certificate or your CA certificate into the OPNsense "System - Trust - Authorities" store, and select it here.
-- `TLS Server Name` **advanced**: If the CN (Common Name) of the offered trusted CA certificate or self-signed certificate doesn't match with the IP address or hostname of the `Backend Server Domain`, you can enter it here. This will change the SNI (Server Name Identification) of Caddy to the `TLS Server Name`. IP address e.g. `192.168.1.1` or hostname e.g. `localhost` or `opnsense.local` are all valid choices. Only if the CN and SNI match, the TLS connection will work, otherwise an error is logged that can be used to troubleshoot.
+- `TLS Server Name` **advanced**: If the SAN (Subject Alternative Names) of the offered trusted CA certificate or self-signed certificate doesn't match with the IP address or hostname of the `Backend Server Domain`, you can enter it here. This will change the SNI (Server Name Identification) of Caddy to the `TLS Server Name`. IP address e.g. `192.168.1.1` or hostname e.g. `localhost` or `opnsense.local` are all valid choices. Only if the SAN and SNI match, the TLS connection will work, otherwise an error is logged that can be used to troubleshoot.
 - `NTLM` **advanced**: If your Backend Server needs NTLM authentication, enable this option together with `TLS`. For example, Exchange Server.
 
 **Attention**: The GUI doesn't allow "tls_insecure_skip_verify" due to safety reasons, as the Caddy documentation states not to use it. Use the `TLS Trusted CA Certificates` and `TLS Server Name` options instead to get a **secure TLS connection** to your Backend Server. Otherwise, use HTTP. If you really need to use "tls_insecure_skip_verify" and know the implications, use the import statements of custom configuration files.
@@ -118,7 +118,7 @@ Please note that the order that handles are saved in the scope of each domain or
 
 #### HOW TO: Create a Handle with TLS and a trusted self-signed Certificate:
 ##### Example: Reverse Proxy the OPNsense Configuration GUI Website with Caddy
-- Open your OPNsense GUI in a Browser (e.g. Chrome or Firefox). Inspect the certificate. Copy the CN or SAN for later use, for example `OPNsense.localdomain`.
+- Open your OPNsense GUI in a Browser (e.g. Chrome or Firefox). Inspect the certificate. Copy the SAN for later use, for example `OPNsense.localdomain`.
 - Save the certificate in your Browser as PEM file. Open it up with a text editor, and copy the contents into a new entry in `System - Trust - Authorities`. Name the certificate e.g. `opnsense-selfsigned`.
 - Add a new Reverse Proxy Domain, for example `opn.example.com`. Make sure the name is externally resolvable to the IP of your OPNsense Firewall with Caddy.
 - Add a new Handle with the following options (enable advanced mode):
@@ -127,10 +127,10 @@ Please note that the order that handles are saved in the scope of each domain or
 - `Backend Server Port`: `8443` (Enter the port of your OPNsense GUI. You have changed it from 443 to a different port, since Caddy needs port 443.)
 - `TLS`: `X`
 - `TLS Trusted CA Certificates`: `opnsense-selfsigned` (The certificate you have saved in `System - Trust - Authorities`)
-- `TLS Server Name`: `OPNsense.localdomain` (The CN or SAN of the certificate)
+- `TLS Server Name`: `OPNsense.localdomain` (The SAN of the certificate)
 - Save
 - Apply
-- Open `https://opn.example.com` and it should serve the reverse proxied OPNsense Configuration GUI Website. Check the log file for errors if it doesn't work, most of the time the `TLS Server Name` doesn't match the CN or SAN of the `TLS Trusted CA Certificates`.
+- Open `https://opn.example.com` and it should serve the reverse proxied OPNsense Configuration GUI Website. Check the log file for errors if it doesn't work, most of the time the `TLS Server Name` doesn't match the SAN of the `TLS Trusted CA Certificates`. Please note that Caddy doesn't support CN (Common Name) in certificate since it's been deprecated since many years.
 - Additionally, you can create an access list to limit access to the GUI only from trusted IP addresses (recommended). Add that access list to the domain `opn.example.com` in advanced mode. Also, enable `Reject Unmatched Connections` in the `General` Settings to abort all connections immediately that don't match the access list or the handle.
 
 ##### Troubleshooting:
