@@ -106,13 +106,32 @@ Please note that the order that handles are saved in the scope of each domain or
 - `Invert List`: Invert the logic of the access list. If unchecked, the Client IP Addresses will be ALLOWED, all other IP addresses will be blocked. When checked, the Client IP Addresses will be BLOCKED, all other IP addresses will be allowed.
 - Afterwards, go back to Domains or Subdomains and add the Access List you have created to them (advanced mode). All handles created under these Domains will get an additional matcher. That means, the requests still reach Caddy, but if the IP Addresses don't match with the Access List logic, the request doesn't match any handle and will be dropped before being reverse proxied to any Backend Server. If you are using a CDN, make sure the Access List in General - Trusted Proxies and on each Domain used for that CDN are the same.
 
-#### How to create a wildcard subdomain reverse proxy:
+### HOW TO Section:
+
+#### HOW TO: Create a wildcard subdomain reverse proxy:
 - Do everything the same as above, but create your Reverse Proxy Domain like this `*.example.com` and activate the `DNS-01` challenge checkbox.
 - OR - `Custom Certificate` - Use a Certificate you imported or generated in `System - Trust - Certificates`. It has to be a wildcard certificate.
 - Go to the `Reverse Proxy Subdomain` Tab and create all subdomains that you need in relation to the `*.example.com` domain. So for example `foo.example.com` and `bar.example.com`.
 - Create descriptions for each subdomain. Since there could be multiples of the same subdomain with different ports, do it like this: `foo.example.com` and `foo.example.com.8443`.
 - In the `Handle` Tab you can now select your `*.example.com` `Reverse Proxy Domain`, and if `Reverse Proxy Subdomain` is `None`, the Handles are added to the base `Reverse Proxy Domain`. For example, if you want a catch all Handle for all non referenced subdomains.
 - If you create a Handle with `*.example.com` as `Reverse Proxy Domain` and `foo.example.com` as `Reverse Proxy Subdomain`, a nested Handle will be generated. You can do all the same configurations as if the subdomain is a normal domain, with multiple Handles and Handle paths.
+
+#### HOW TO: Create a Handle with TLS and a trusted self-signed Certificate:
+##### Example: Reverse Proxy the OPNsense Configuration GUI Website with Caddy
+- Open your OPNsense GUI in a Browser (e.g. Chrome or Firefox). Inspect the certificate. Copy the CN or SAN for later use, for example `OPNsense.localdomain`.
+- Save the certificate in your Browser as PEM file. Open it up with a text editor, and copy the contents into a new entry in `System - Trust - Authorities`. Name the certificate e.g. `opnsense-selfsigned`.
+- Add a new Reverse Proxy Domain, for example `opn.example.com`. Make sure the name is externally resolvable to the IP of your OPNsense Firewall with Caddy.
+- Add a new Handle with the following options (enable advanced mode):
+- `Reverse Proxy Domain`: `opn.example.com`
+- `Backend Server Domain`: `127.0.0.1`
+- `Backend Server Port`: `8443` (Enter the port of your OPNsense GUI. You have changed it from 443 to a different port, since Caddy needs port 443.)
+- `TLS`: `X`
+- `TLS Trusted CA Certificates`: `opnsense-selfsigned` (The certificate you have saved in `System - Trust - Authorities`)
+- `TLS Server Name`: `OPNsense.localdomain` (The CN or SAN of the certificate)
+- Save
+- Apply
+- Open `https://opn.example.com` and it should serve the reverse proxied OPNsense Configuration GUI Website. Check the log file for errors if it doesn't work, most of the time the `TLS Server Name` doesn't match the CN or SAN of the `TLS Trusted CA Certificates`.
+- Additionally, you can create an access list to limit access to the GUI only from trusted IP addresses (recommended). Add that access list to the domain `opn.example.com` in advanced mode. Also, enable `Reject Unmatched Connections` in the `General` Settings to abort all connections immediately that don't match the access list or the handle.
 
 ##### Troubleshooting:
 - Check `/var/log/caddy/caddy.log` file to find errors. There is also a Caddy Log File in the GUI.
