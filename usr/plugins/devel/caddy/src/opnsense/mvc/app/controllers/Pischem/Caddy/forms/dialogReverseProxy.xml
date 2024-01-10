@@ -42,6 +42,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>reverse.AccessLog</id>
+        <label>HTTP Access Log</label>
+        <type>checkbox</type>
+        <help>Enable the HTTP request logging for this domain and its subdomains. This option is mostly for troubleshooting since it will log every single request.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>reverse.Description</id>
         <label>Description</label>
         <type>text</type>
