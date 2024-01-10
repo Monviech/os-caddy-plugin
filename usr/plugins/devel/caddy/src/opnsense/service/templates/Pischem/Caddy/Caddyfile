@@ -4,10 +4,10 @@
         root /usr/local/etc/caddy
     }
     log {
-        output file /var/log/caddy/caddy.log {
-            roll_size 10MiB
-            roll_keep 10
-            roll_keep_for 720h
+        output net unixgram//var/caddy/var/run/log {
+        }
+        format json {
+            time_format rfc3339
         }
     }
     {% set generalSettings = helpers.getNodeByTag('Pischem.caddy.general') %}
