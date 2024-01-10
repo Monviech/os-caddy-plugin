@@ -41,8 +41,16 @@
     </field>
     <field>
         <id>caddy.general.abort</id>
-        <label>Reject Unmatched Connections</label>
+        <label>Abort Connections</label>
         <type>checkbox</type>
         <help>Abort all connections that don't have a matching handle or access list. This option doesn't conflict with Let's Encrypt. Disable it for troubleshooting purposes, e.g. testing if the Reverse Proxy Domain works and the Certificate has been installed. For production use, enabling this option is recommended.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.LogCredentials</id>
+        <label>Log Credentials</label>
+        <type>checkbox</type>
+        <help>Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.</help>
+        <advanced>true</advanced>
     </field>
 </form>
