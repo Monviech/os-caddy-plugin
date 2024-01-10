@@ -51,7 +51,7 @@
         <id>handle.HttpTls</id>
         <label>TLS</label>
         <type>checkbox</type>
-        <help>Use TLS over HTTP (HTTPS) to communicate with the Backend Server. In most cases, leaving this unchecked will be the best choice. Caddy uses HTTP for communication with the Backend Server by default.</help>
+        <help>Use HTTP over TLS (HTTPS) to communicate with the Backend Server. In most cases, leaving this unchecked will be the best choice. Caddy uses HTTP for communication with the Backend Server by default.</help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -65,14 +65,14 @@
         <id>handle.HttpTlsServerName</id>
         <label>TLS Server Name</label>
         <type>text</type>
-        <help><![CDATA[Optionally, specify a hostname or IP address that matches the Common Name (CN) of the Trusted CA Certificate. Useful if a certificate has been chosen and the CN doesn't match with the "Backend Server Domain".]]></help>
+        <help><![CDATA[Optionally, specify a hostname or IP address that matches the SAN of the "TLS Trusted CA Certificate". Please note that only SAN certificates are supported, CN will not work.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>handle.HttpNtlm</id>
         <label>NTLM</label>
         <type>checkbox</type>
-        <help>When "TLS" has been checked, check "NTLM" in addition for reverse proxying an Exchange Server. In most other cases, leaving this unchecked will be the best choice.</help>
+        <help>If "TLS" has been checked, check "NTLM" in addition for reverse proxying an Exchange Server. In most other cases, leaving this unchecked will be the best choice.</help>
         <advanced>true</advanced>
     </field>
     <field>
