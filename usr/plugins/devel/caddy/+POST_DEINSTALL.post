@@ -1,10 +1,6 @@
 #!/bin/sh
 
-# Remove the Caddy service script
-if [ -f /usr/local/etc/rc.d/caddy ]; then
-    echo "Removing file: /usr/local/etc/rc.d/caddy"
-    rm -f /usr/local/etc/rc.d/caddy
-fi
+# This deinstall script removes all generated template files since they are unknown by pkg.
 
 # Remove the /etc/rc.conf.d/caddy file
 if [ -f /etc/rc.conf.d/caddy ]; then
@@ -12,5 +8,14 @@ if [ -f /etc/rc.conf.d/caddy ]; then
     rm -f /etc/rc.conf.d/caddy
 fi
 
-echo "Caddy deinstallation completed."
+# Remove the /usr/local/etc/syslog-ng.conf.d/caddy.conf file
+if [ -f /usr/local/etc/syslog-ng.conf.d/caddy.conf ]; then
+    echo "Removing file: /usr/local/etc/syslog-ng.conf.d/caddy.conf"
+    rm -f /usr/local/etc/syslog-ng.conf.d/caddy.conf
+fi
 
+# Trigger a syslog-ng restart to remove the caddy unix socket cleanly
+echo "restart syslog-ng"
+configctl syslog restart
+
+echo "Caddy deinstallation completed."
