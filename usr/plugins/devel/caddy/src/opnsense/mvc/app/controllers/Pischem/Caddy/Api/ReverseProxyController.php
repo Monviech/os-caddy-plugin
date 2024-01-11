@@ -43,7 +43,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchReverseProxyAction()
     {
-        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'accesslist', 'DnsChallenge', 'CustomCertificate', 'Description']);
+        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'accesslist', 'DnsChallenge', 'CustomCertificate', 'AccessLog', 'Description']);
     }
 
     public function setReverseProxyAction($uuid)

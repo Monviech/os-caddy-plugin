@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a basic reverse proxy in Caddy Web Server.</description>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -33,6 +33,7 @@
                     <gandi>Gandi</gandi>
                     <vultr>Vultr</vultr>
                     <ionos>IONOS</ionos>
+                    <desec>Desec</desec>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField">
@@ -50,6 +51,9 @@
             <abort type="BooleanField">
                 <Default>0</Default>
             </abort>
+            <LogCredentials type="BooleanField">
+                <Default>0</Default>
+            </LogCredentials>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -89,6 +93,9 @@
                 </DnsChallenge>
                 <CustomCertificate type="CertificateField">
                 </CustomCertificate>
+                <AccessLog type="BooleanField">
+                    <Default>0</Default>
+                </AccessLog>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">

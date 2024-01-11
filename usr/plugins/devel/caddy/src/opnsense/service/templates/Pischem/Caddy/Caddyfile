@@ -4,21 +4,44 @@
         root /usr/local/etc/caddy
     }
     log {
-        output file /var/log/caddy/caddy.log {
-            roll_size 10MiB
-            roll_keep 10
-            roll_keep_for 720h
+        {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
+        {% if reverse.enabled|default("0") == "1" and reverse.AccessLog|default("0") == "1" %}
+        include http.log.access.{{ reverse['@uuid'] }}
+        {% endif %}
+        {% endfor %}
+        output net unixgram//var/caddy/var/run/log {
+        }
+        format json {
+            time_format rfc3339
         }
     }
     {% set generalSettings = helpers.getNodeByTag('Pischem.caddy.general') %}
     {% set accessListUuid = generalSettings.accesslist %}
+    {% set logCredentials = generalSettings.LogCredentials %}
+
+    {% set hasAccessList = false %}
+    {% set hasLogCredentials = false %}
+
     {% if accessListUuid %}
         {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accessListUuid) | first %}
         {% if accessList %}
-        servers {
-            trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
-        }
+            {% set hasAccessList = true %}
         {% endif %}
+    {% endif %}
+
+    {% if logCredentials == '1' %}
+        {% set hasLogCredentials = true %}
+    {% endif %}
+
+    {% if hasAccessList or hasLogCredentials %}
+    servers {
+        {% if hasAccessList %}
+        trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
+        {% endif %}
+        {% if hasLogCredentials %}
+        log_credentials
+        {% endif %}
+    }
     {% endif %}
     {% set emailValue = helpers.toList('Pischem.caddy.general.TlsEmail') | first %}
     {% if emailValue %}
@@ -83,6 +106,9 @@
 {% if reverse.enabled|default("0") == "1" %}
 # Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
 {{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+    {% if reverse.AccessLog|default("0") == "1" %}
+    log {{ reverse['@uuid'] }}
+    {% endif %}
     {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
     {% set dnsApiKey = helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first %}
     {% set customCert = reverse.CustomCertificate|default("") %}
