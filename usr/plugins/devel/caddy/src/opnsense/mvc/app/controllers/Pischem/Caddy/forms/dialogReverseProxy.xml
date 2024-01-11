@@ -35,6 +35,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>reverse.DynDns</id>
+        <label>Dynamic DNS</label>
+        <type>checkbox</type>
+        <help>Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this domain will be automatically updated with your DNS Provider.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>reverse.CustomCertificate</id>
         <label>Custom Certificate</label>
         <type>dropdown</type>
