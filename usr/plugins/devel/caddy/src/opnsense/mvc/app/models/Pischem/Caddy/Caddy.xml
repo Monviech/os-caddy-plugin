@@ -66,6 +66,7 @@
                 <ValidationMessage>Please enter a valid number from 1 to 1440 minutes.</ValidationMessage>
             </DynDnsCheckInterval>
             <DynDnsIpVersions type="OptionField">
+                <Default>ipv4</Default>
                 <OptionValues>
                     <ipv4>IPv4 only</ipv4>
                     <ipv6>IPv6 only</ipv6>
