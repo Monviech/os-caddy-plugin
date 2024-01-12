@@ -1,6 +1,6 @@
 {
   "name": "caddy",
-  "version": "2.7.6_1",
+  "version": "2.7.6_2",
   "comment": "Caddy web server",
   "desc": "Caddy 2 is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go",
   "www": "https://caddyserver.com",
@@ -13,19 +13,19 @@
   "licenses": ["APACHE20"],
   "files": {
     "/usr/local/bin/caddy": {
-      "checksum": "b519a6b2e868e901df11165efe68507d1f7a3ac65d313fad08bc8b04e880452b",
+      "checksum": "68973bbae59c3ba8d5210168c01fce661f36645699fd722d90032177a83d1d1a",
       "username": "root",
       "groupname": "wheel",
       "perm": "0555"
     },
-    "/usr/local/share/licenses/caddy-2.7.6_1/APACHE20": {
+    "/usr/local/share/licenses/caddy-2.7.6_2/APACHE20": {
       "checksum": "c07795dc0d0e17cc4b23566ddc05a508f14e8ce98bb7404963250039a2c1a811"
     },
-    "/usr/local/share/licenses/caddy-2.7.6_1/LICENSE": {
+    "/usr/local/share/licenses/caddy-2.7.6_2/LICENSE": {
       "checksum": "2dca659dc8846be25ab729554fe067dba90ca252314b73f6c6dbaa95bbb72d4e"
     },
-    "/usr/local/share/licenses/caddy-2.7.6_1/catalog.mk": {
-      "checksum": "ac8d5ed9476d21a9ed59cbfbb52393d0d2d2bab42f29811f9410fc86e305cb05"
+    "/usr/local/share/licenses/caddy-2.7.6_2/catalog.mk": {
+      "checksum": "be81e84c82648a4cf381bb95eace48843870fca4297773c1e71ffa50196b04ea"
     }
   }
 }

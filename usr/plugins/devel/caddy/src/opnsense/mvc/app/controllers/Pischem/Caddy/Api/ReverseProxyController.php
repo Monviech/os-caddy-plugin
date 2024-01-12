@@ -43,7 +43,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchReverseProxyAction()
     {
-        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'accesslist', 'DnsChallenge', 'CustomCertificate', 'AccessLog', 'Description']);
+        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'accesslist', 'DnsChallenge', 'CustomCertificate', 'AccessLog', 'DynDns', 'Description']);
     }
 
     public function setReverseProxyAction($uuid)
@@ -76,7 +76,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchSubdomainAction()
     {
-        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'accesslist', 'Description']);
+        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'accesslist', 'DynDns', 'Description']);
     }
 
     public function setSubdomainAction($uuid)

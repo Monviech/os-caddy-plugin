@@ -101,6 +101,7 @@
                             <th data-column-id="FromPort" data-type="string">Port</th>
                             <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
                             <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">DNS-01</th>
+                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
                             <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">HTTP Access Log</th>
                             <th data-column-id="CustomCertificate" data-type="string" data-visible="false">Custom Certificate</th>
                             <th data-column-id="Description" data-type="string">Description</th>
@@ -134,6 +135,7 @@
                             <th data-column-id="FromDomain" data-type="string">Subdomain</th>
                             <th data-column-id="FromPort" data-type="string">Port</th>
                             <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
+                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
                             <th data-column-id="Description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>

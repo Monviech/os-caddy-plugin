@@ -25,14 +25,18 @@
         <label>Access List</label>
         <type>dropdown</type>
         <help><![CDATA[Optionally, select an Access List to restrict access to this domain. If left on "None", any local or remote client is allowed access. In most cases, leaving this on "None" will be the best choice.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>reverse.DnsChallenge</id>
         <label>DNS-01 challenge</label>
         <type>checkbox</type>
         <help>Enable DNS-01 challenge for ACME, please configure DNS Provider and API Key in General Settings. In most cases, leaving this option unchecked will be the best choice. The automatic Let's Encrypt HTTP challenge will be used if this option is unchecked, which needs no further configuration.</help>
-        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>reverse.DynDns</id>
+        <label>Dynamic DNS</label>
+        <type>checkbox</type>
+        <help>Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this domain will be automatically updated with your DNS Provider.</help>
     </field>
     <field>
         <id>reverse.CustomCertificate</id>

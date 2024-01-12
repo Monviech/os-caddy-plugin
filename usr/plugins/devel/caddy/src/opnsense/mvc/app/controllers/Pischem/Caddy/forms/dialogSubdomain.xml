@@ -31,7 +31,12 @@
         <label>Access List</label>
         <type>dropdown</type>
         <help><![CDATA[Optionally, select an Access List to restrict access to this subdomain. If left on "None", any local or remote client is allowed access. In most cases, leaving this on "None" will be the best choice.]]></help>
-        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>subdomain.DynDns</id>
+        <label>Dynamic DNS</label>
+        <type>checkbox</type>
+        <help>Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this subdomain will be automatically updated with your DNS Provider.</help>
     </field>
     <field>
         <id>subdomain.Description</id>

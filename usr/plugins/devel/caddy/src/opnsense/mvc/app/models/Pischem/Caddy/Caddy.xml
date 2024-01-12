@@ -54,6 +54,30 @@
             <LogCredentials type="BooleanField">
                 <Default>0</Default>
             </LogCredentials>
+            <DynDnsSimpleHttp type="UrlField">
+                <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
+            </DynDnsSimpleHttp>
+            <DynDnsInterface type=".\RealInterfaceField">
+            </DynDnsInterface>
+            <DynDnsCheckInterval type="IntegerField">
+                <default>5</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>1440</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 1 to 1440 minutes.</ValidationMessage>
+            </DynDnsCheckInterval>
+            <DynDnsIpVersions type="OptionField">
+                <Default>ipv4</Default>
+                <OptionValues>
+                    <ipv4>IPv4 only</ipv4>
+                    <ipv6>IPv6 only</ipv6>
+                </OptionValues>
+            </DynDnsIpVersions>
+            <DynDnsTTL type="IntegerField">
+                <default>1</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>24</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 1 to 24 hours.</ValidationMessage>
+            </DynDnsTTL>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -96,6 +120,9 @@
                 <AccessLog type="BooleanField">
                     <Default>0</Default>
                 </AccessLog>
+                <DynDns type="BooleanField">
+                    <Default>0</Default>
+                </DynDns>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
@@ -136,6 +163,9 @@
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
+                <DynDns type="BooleanField">
+                    <Default>0</Default>
+                </DynDns>
             </subdomain>
             <handle type="ArrayField">
                 <enabled type="BooleanField">
