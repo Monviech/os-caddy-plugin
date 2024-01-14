@@ -60,6 +60,14 @@
             add:'/api/caddy/ReverseProxy/addAccessList/',
             del:'/api/caddy/ReverseProxy/delAccessList/',
         });
+        
+        $("#basicAuthGrid").UIBootgrid({
+            search:'/api/caddy/ReverseProxy/searchBasicAuth/',
+            get:'/api/caddy/ReverseProxy/getBasicAuth/',
+            set:'/api/caddy/ReverseProxy/setBasicAuth/',
+            add:'/api/caddy/ReverseProxy/addBasicAuth/',
+            del:'/api/caddy/ReverseProxy/delBasicAuth/',
+        });
 
         $("#reconfigureAct").SimpleActionButton({
             onAction: function(data, status) {
@@ -80,8 +88,9 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#domainsTab">Domains</a></li>
-    <li><a data-toggle="tab" href="#handlesTab">Handles</a></li>
+    <li><a data-toggle="tab" href="#handlesTab">Handlers</a></li>
     <li><a data-toggle="tab" href="#accessListTab">Access Lists</a></li>
+    <li><a data-toggle="tab" href="#basicAuthTab">Basic Auth</a></li>
 </ul>
 
 <div class="tab-content content-box">
@@ -100,6 +109,7 @@
                             <th data-column-id="FromDomain" data-type="string">Domain</th>
                             <th data-column-id="FromPort" data-type="string">Port</th>
                             <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
+                            <th data-column-id="basicauth" data-type="string" data-visible="false">Basic Auth</th>
                             <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">DNS-01</th>
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
                             <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">HTTP Access Log</th>
@@ -135,6 +145,7 @@
                             <th data-column-id="FromDomain" data-type="string">Subdomain</th>
                             <th data-column-id="FromPort" data-type="string">Port</th>
                             <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
+                            <th data-column-id="basicauth" data-type="string" data-visible="false">Basic Auth</th>
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
                             <th data-column-id="Description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
@@ -159,7 +170,7 @@
     <!-- Handle Tab -->
     <div id="handlesTab" class="tab-pane fade">
         <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
-            <h1>Handles</h1>
+            <h1>Handlers</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle">
                     <thead>
@@ -227,6 +238,36 @@
             </div>
         </div>
     </div>
+    
+    <!-- Basic Auth Tab -->
+    <div id="basicAuthTab" class="tab-pane fade">
+        <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
+            <h1>Basic Auth</h1>
+            <div style="display: block;">
+                <table id="basicAuthGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogBasicAuth">
+                    <thead>
+                        <tr>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
+                            <th data-column-id="basicauthuser" data-type="string">User</th>
+                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button id="addBasicAuthBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Reconfigure Button -->
@@ -243,3 +284,4 @@
 {{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':'DialogSubdomain','label':lang._('Edit Reverse Proxy Subdomain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit Handle')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':'DialogAccessList','label':lang._('Edit Access List')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogBasicAuth,'id':'DialogBasicAuth','label':lang._('Edit Basic Auth')])}}
