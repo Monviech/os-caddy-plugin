@@ -8,12 +8,15 @@
 # Main Features
 
 - Modern and fast Reverse Proxy
-- Automatic Let's Encrypt Certificates
-- ACME DNS-01 Challenge for Wildcard Certificates and Dynamic DNS (DynDns)
-- Domains, Wildcard Domains and Subdomains
+- Automatic Let's Encrypt Certificates without configuration
+- ACME DNS-01 Challenge
+- Dynamic DNS (DynDns)
+- Supported DNS Providers: cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, vultr, ionos, desec
+- Wildcard Domains and Subdomains
 - Access List support
 - Syslog-ng integration
 - HTTP Access Log
+- NTLM Transport
 - Use custom certificates from OPNsense certificate store
 
 # License
