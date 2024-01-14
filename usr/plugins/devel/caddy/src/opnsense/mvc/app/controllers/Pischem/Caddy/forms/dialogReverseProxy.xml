@@ -27,6 +27,13 @@
         <help><![CDATA[Optionally, select an Access List to restrict access to this domain. If left on "None", any local or remote client is allowed access. In most cases, leaving this on "None" will be the best choice.]]></help>
     </field>
     <field>
+        <id>reverse.basicauth</id>
+        <label>Basic Auth</label>
+        <type>select_multiple</type>
+        <size>5</size>
+        <help><![CDATA[Optionally, select Users to restrict access to this domain. Basic Auth matches after Access Lists. If left on "None", any client is allowed access. In most cases, leaving this on "None" will be the best choice.]]></help>
+    </field>
+    <field>
         <id>reverse.DnsChallenge</id>
         <label>DNS-01 challenge</label>
         <type>checkbox</type>
