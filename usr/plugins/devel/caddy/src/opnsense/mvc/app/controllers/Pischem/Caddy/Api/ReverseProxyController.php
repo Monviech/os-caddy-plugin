@@ -175,11 +175,31 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function setBasicAuthAction($uuid)
     {
+        if ($this->request->isPost()) {
+            $postData = $this->request->getPost();
+
+            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+                $plainPassword = $postData['basicauth']['basicauthpass'];
+                $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
+                $_POST['basicauth']['basicauthpass'] = $hashedPassword;
+            }
+        }
+
         return $this->setBase("basicauth", "reverseproxy.basicauth", $uuid);
     }
 
     public function addBasicAuthAction()
     {
+        if ($this->request->isPost()) {
+            $postData = $this->request->getPost();
+    
+            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+                $plainPassword = $postData['basicauth']['basicauthpass'];
+                $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
+                $_POST['basicauth']['basicauthpass'] = $hashedPassword;
+            }
+        }
+
         return $this->addBase("basicauth", "reverseproxy.basicauth");
     }
 
