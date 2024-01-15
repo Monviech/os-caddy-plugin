@@ -282,7 +282,7 @@
                     <Mask>/^([0-9a-zA-Z]{2,72})$/u</Mask>
                     <ValidationMessage>A user name must only contain numbers and letters and must be between 2 and 72 characters.</ValidationMessage>
                 </basicauthuser>
-                <basicauthpass type=".\UpdateOnlyBcryptField">
+                <basicauthpass type="UpdateOnlyTextField">
                     <Required>Y</Required>
                 </basicauthpass>
                 <Description type="TextField">
