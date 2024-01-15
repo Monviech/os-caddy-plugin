@@ -1,5 +1,5 @@
 PLUGIN_NAME=            caddy
-PLUGIN_VERSION=         1.4.0
+PLUGIN_VERSION=         1.4.1
 PLUGIN_DEPENDS=         caddy
 PLUGIN_COMMENT=         Easy to configure Reverse Proxy with Automatic HTTPS and DynDns
 PLUGIN_MAINTAINER=      cedrik@pischem.com
