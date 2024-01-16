@@ -30,7 +30,7 @@
     <li><a data-toggle="tab" href="#dnsProviderTab">DNS Provider</a></li>
 </ul>
 
-    <!-- Tab Content -->
+<!-- Tab Content -->
 <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
     <div class="tab-content">
 
