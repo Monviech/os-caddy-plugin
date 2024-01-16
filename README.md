@@ -7,17 +7,18 @@
 
 # Main Features
 
-- Modern and fast Reverse Proxy
-- Automatic Let's Encrypt Certificates without configuration
-- ACME DNS-01 Challenge
-- Dynamic DNS (DynDns)
-- Supported DNS Providers: cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, vultr, ionos, desec
-- Wildcard Domains and Subdomains
-- Access List support
-- Syslog-ng integration
-- HTTP Access Log
-- NTLM Transport
+- Modern and fast Reverse Proxy based on [Caddy](https://caddyserver.com/)
+- Automatic Let's Encrypt and ZeroSSL Certificates without configuration with HTTP-01 and TLS-ALPN-01
+- ACME DNS-01 challenge with configuration (requires supported DNS Provider)
+- Dynamic DNS (DynDns) with configuration (requires supported DNS Provider)
+- Supported DNS Providers:
+- ```cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, vultr, ionos, desec, porkbun```
 - Use custom certificates from OPNsense certificate store
+- Normal domains, wildcard domains and subdomains
+- Access Lists to restrict access based on static networks
+- Basic Auth to restrict access by username and password
+- Syslog-ng integration and HTTP Access Log
+- NTLM Transport for Exchange Server
 
 # License
 
@@ -29,31 +30,102 @@
 
 - Thanks to the Caddy community/developers for creating a fantastic open source web server.
 - Thanks to the OPNsense community/developers for creating a powerful and flexible open source firewall and routing platform.
-- Thanks for answering programming questions and being very helpful: [AdShellevis](https://github.com/Adschellevis)
-- Thanks for answering my questions in the OPNsense forum: [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464)
-- Thanks for giving me good examples of Caddy configurations that shaped the direction this plugin: [gspannu](https://github.com/gspannu)
+- Additional big **Thank You** in no particular order: [AdShellevis](https://github.com/Adschellevis), [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464), [gspannu](https://github.com/gspannu), [francislavoie](https://caddy.community/u/francislavoie/summary), [matt](https://caddy.community/u/matt/summary)
 
 # How to install:
 ##### DISCLAIMER: Even though I use this productively on multiple OPNsense Firewalls (and also a HA pair with config sync), I give no guarantee whatsoever. Please read the license file for the full disclaimer. Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-##### Tested by myself on DEC740 Hardware with OPNsense CE 23.7.11-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
-##### Caddy Version is v2.7.6 h1:w0NymbG2m9PcvKWsrXO6EEkY9Ru4FJK8uQbYcev1p3A=
-- Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
+##### Tested by myself on DEC740 Hardware with OPNsense CE 23.7.12-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
+##### Caddy Version:
+- ```v2.7.6 h1:w0NymbG2m9PcvKWsrXO6EEkY9Ru4FJK8uQbYcev1p3A=```
+- ```SHA256 (/usr/local/bin/caddy) = 68973bbae59c3ba8d5210168c01fce661f36645699fd722d90032177a83d1d1a```
+
+Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
 ```
 fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.pischem.com/repo-config/os-caddy-plugin.conf
 ```
 ```
 pkg update
 ```
+- **Attention** - If you have other (community) repositories installed that serve the caddy binary, some features might not work. Make sure you get caddy-2.7.6_2 from my repository. There are extra features compiled in.
 - Afterwards the "os-caddy" plugin can be installed from the OPNsense System - Firmware - Plugins, search for "os-caddy".
 
 # How to use Caddy after the installation:
 
-##### Attention:
+##### Attention, additional preparation of OPNsense needed:
 - Make sure that port `80` and `443` aren't occupied. You have to change the default listen port to `8443` for example. Go to `System: Settings: Administration` to change the `TCP Port`. Then also enable `HTTP Redirect - Disable web GUI redirect rule`. 
 - If you have other reverse proxy or webserver plugins installed, make sure they don't use the same ports as Caddy
 - Create Firewall rules that allow 80 and 443 TCP to "This Firewall" on WAN and (optionally) LAN, OPT1 etc...
 - There is a lot of input validation. If you read all the hints, help texts and error messages, its unlikely that you create a configuration that won't work.
-- If you use this in HA, only use your own custom certificates.
+- **Attention**: If you use this in HA (High Availability), only use your own custom certificates. Caddy needs a shared storage for the ACME challenges to work on two or more firewalls in HA at the same time. This is out of scope, since offering shared storage on firewalls where one can potentially fail, would leave the other without storage for Caddy to work with.
+
+### A detailed explanation of all available options:
+#### Please note that some options are hidden in advanced mode.
+##### Services - Caddy Web Server - General Settings - General:
+- `Enable` or `disable` Caddy
+- `ACME Email`: e.g. `info@example.com`, it's optional.
+- `Auto HTTPS`: `On (default)` creates automatic Let's Encrypt Certificates for all Domains that don't have more specific options set, like custom certificates.
+- `Trusted Proxies`: Leave empty if you don't use a CDN in front of your OPNsense. If you use Cloudflare or another CDN provider, create an access list with the IP addresses of that CDN and add it here. Add the same Access List to the domain this CDN tries to reach.
+- `Abort Connections`: This option, when enabled, aborts all connections to the Reverse Proxy Domain that don't match any specified handle or access list. This setting doesn't affect Let's Encrypt's ability to issue certificates, ensuring secure connections regardless of the option's status. If unchecked, the Reverse Proxy Domain remains accessible even without a matching handle, allowing for connectivity and certificate checks, even in the absence of a configured Backend Server. When using Access Lists, enabling this option is recommended to reject unauthorized connections outright. Without this option, unmatched IP addresses will encounter an empty page instead of an explicit rejection, though the Access Lists continue to function and restrict access.
+- `Log Credentials`: Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.
+
+##### Services - Caddy Web Server - General Settings - DNS Provider:
+- `DNS Provider`: Choose either `none (default)` for normal HTTP ACME or a DNS Provider to enable the `DNS-01` ACME challenge and Dynamic DNS (DynDns). If your provider is missing, please note that all easy to add providers have already been built in, the remaining providers all want unique special configurations that are mostly out of scope.
+- `DNS API Key`: Leave empty if you don't use a DNS Provider, or put your `API Key` here.
+- `DNS Secret API Key`: This field is used by porkbun in addition to the DNS API Key.
+- `DynDns Check Http`: Optionally, enter an URL to test the current IP address of the firewall via HTTP procotol. Generally, this is not needed. Caddy uses default providers to test the current IP addresses. If you rather use your own, enter the https:// link to an IP address testing website.
+- `DynDns Check Interface`: Optionally, select an interface to extract the current IP address of the firewall. Attention, all IP addresses will be read from this interface. Only choose this option if you know the implications.
+- `DynDns Check Interval`: Interval to poll for changes of the IP address. The default is 5 minutes. Can be a number between 1 to 1440 minutes. 
+- `DynDns IP Version`: Leave on None to set IPv4 A-Records and IPv6 AAAA-Records. Select "Ipv4 only" for setting A-Records. Select "IPv6 only" for setting AAAA-Records.
+- `DynDns TTL`: Set the TTL (time to live) for DNS Records. The default is 1 hour. Can be a number between 1 to 24 hours.
+
+##### Tab Reverse Proxy - Domains:
+- Press `+` to create a new Reverse Proxy Domain
+- `Enable` this new entry
+- `Reverse Proxy Domain`: Can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the `Handle` Server in the backend.
+- `Reverse Proxy Port`: Should be the port the OPNsense will listen on. Don't forget to create Firewall rules that allow traffic to this port on `WAN` or `LAN` to `This Firewall`. You can leave this empty if you want to use the default ports of Caddy (`80` and `443`) with automatic redirection from HTTP to HTTPS.
+- `Access List`: Restrict the access to this domain to a list of IP addresses you define in the `Access Lists` Tab. This doesn't influence the Let's Encrypt certificate generation, so you can be as restrictive as you want here.
+- `Basic Auth`: Restrict the access to this domain to a list of IP addresses you define in the `Access Lists` Tab. This doesn't influence the Let's Encrypt certificate generation, so you can be as restrictive as you want here.
+- `DNS-01 challenge`: Enable this if you want to use the `DNS-01` ACME challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the `General Settings` - `DNS Provider` and `API KEY` set.
+- `Dynamic DNS`: Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this domain will be automatically updated with your DNS Provider. 
+- `Custom Certificate`: Use a Certificate you imported or generated in `System - Trust - Certificates`. The chain is generated automatically. `Certificate + Intermediate CA + Root CA`, `Certificate + Root CA` and `self signed Certificate` are all fully supported.
+- `HTTP Access Log`: Enable the HTTP request logging for this domain and its subdomains. This option is mostly for troubleshooting since it will log every single request.
+- `Description`: The description is mandatory. Create descriptions for each domain. Since there could be multiples of the same domain with different ports, do it like this: `foo.example.com` and `foo.example.com.8443`.
+
+##### Tab Reverse Proxy - Subdomains:
+
+- Refer to the options of Domains.
+
+##### Tab Reverse Proxy - Handler:
+Please note that the order that handlers are saved in the scope of each domain or domain/subdomain can influence functionality - The first matching handler wins. So if you put /ui* in front of a more specific handler like /ui/opnsense, the /ui* will match first and /ui/opnsense won't ever match (in the scope of their domain). Right now there isn't an easy way to move the position of handles in the grid, so you have to clone them if you want to change their order, and delete the old entries afterwards. Most of the time, creating just one empty catch-all handle is the best choice. The template logic makes sure that catch-all handles are always placed last, after all other handles.
+- Press `+` to create a new `Handle`. A Handle is like a location in nginx.
+- `Enable` this new entry.
+- `Reverse Proxy Domain`: Select the domain you have created in `Reverse Proxy Domains`.
+- `Reverse Proxy Subdomain`: Leave this on `None`. It is not needed without having a wildcard certificate, or a `*.example.com` Domain.
+- `Handle Type`: `Handle` or `Handle Path` can be chosen. If in doubt, always use `Handle`, the most common option. `Handle Path` is used to strip the handle path from the URI. For example if you have example.com/opnsense internally, but want to call it with just example.com externally.
+- `Handle Path`: Leave this empty if you want to create a catch all location. You can create multiple Handle entries, and have each of them point at different locations like `/foo/*` or `/foo/bar/*` or `/foo*`.
+- `Backend Server Domain`: Should be an internal domain name or an IP Address of the Backend Server that should receive the traffic of the `Reverse Proxy Domain`.
+- `Backend Server Port`: Should be the port the Backend Server listens on. This can be left empty to use Caddy default ports 80 and 443.
+- `TLS`: If your Backend Server only accepts HTTPS, enable this option. If the Backend Server has a globally trusted certificate, this is all you need.
+- `TLS Trusted CA Certificates`: Choose a CA certificate to trust for the Backend Server connection. Import your self-signed certificate or your CA certificate into the OPNsense "System - Trust - Authorities" store, and select it here.
+- `TLS Server Name`: If the SAN (Subject Alternative Names) of the offered trusted CA certificate or self-signed certificate doesn't match with the IP address or hostname of the `Backend Server Domain`, you can enter it here. This will change the SNI (Server Name Identification) of Caddy to the `TLS Server Name`. IP address e.g. `192.168.1.1` or hostname e.g. `localhost` or `opnsense.local` are all valid choices. Only if the SAN and SNI match, the TLS connection will work, otherwise an error is logged that can be used to troubleshoot.
+- `NTLM`: If your Backend Server needs NTLM authentication, enable this option together with `TLS`. For example, Exchange Server.
+
+**Attention**: The GUI doesn't allow "tls_insecure_skip_verify" due to safety reasons, as the Caddy documentation states not to use it. Use the `TLS Trusted CA Certificates` and `TLS Server Name` options instead to get a **secure TLS connection** to your Backend Server. Otherwise, use HTTP. If you really need to use "tls_insecure_skip_verify" and know the implications, use the import statements of custom configuration files.
+
+##### Tab Reverse Proxy - Access - Access Lists:
+- Press `+` to create a new Access List
+- `Access List name`: Choose a name for the Access List, for example `private_ips`.
+- `Client IP Addresses`: Enter any number of IPv4 and IPv6 addresses or networks that this access list should contain. For example for matching only internal networks, add `192.168.0.0/16` `172.16.0.0/12` `10.0.0.0/8` `127.0.0.1/8` `fd00::/8` `::1`.
+- `Invert List`: Invert the logic of the access list. If unchecked, the Client IP Addresses will be ALLOWED, all other IP addresses will be blocked. When checked, the Client IP Addresses will be BLOCKED, all other IP addresses will be allowed.
+- Afterwards, go back to Domains or Subdomains and add the Access List you have created to them (advanced mode). All handles created under these Domains will get an additional matcher. That means, the requests still reach Caddy, but if the IP Addresses don't match with the Access List logic, the request doesn't match any handle and will be dropped before being reverse proxied to any Backend Server. If you are using a CDN, make sure the Access List in General - Trusted Proxies and on each Domain used for that CDN are the same.
+
+##### Tab Reverse Proxy - Access - Basic Auth:
+- Press `+` to create a new User for Basic Auth
+- `User`: Enter a username. Afterwards, you can select it in Reverse Proxy Domains or Subdomains to restrict access with basic auth. Usernames are only allowed to have alphanumeric characters.
+- `Password`: Enter a password. Write it down. It will be hashed with bcrypt. It can only be set and changed but won't be visible anymore. The hash can't be turned back into the original password.
+- Afterwards, go back to Domains or Subdomains and add the one or multiple basic auth users you have created to them (advanced mode). The basic auth matches after access lists, so you can set both to first restrict access by IP address, and then additionally by username and password. Please note that if you delete a user before deselecting it in a domain, the basic auth will stay with no user. If that happens you have to select the "clear all" in the domain or subdomain and save. Don't set basic auth on top of a wildcard domain directly, always set it on the subdomains instead.
+
+### HOW TO Section:
 
 ### How to create an easy reverse proxy:
 ##### Services - Caddy Web Server - General Settings:
@@ -74,60 +146,6 @@ pkg update
 
 Done, leave all other fields to default or empty. You don't need the advanced mode options. After just a few seconds the Let's Encrypt Certificate will be installed and everything just works. Check the Logfile for that.
 Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Server" Reverse Proxy.
-
-### A more detailed explanation:
-##### Services - Caddy Web Server - General Settings:
-- `Enable` or `disable` Caddy
-- `ACME Email`: e.g. `info@example.com`, it's optional.
-- `Auto HTTPS`: `On (default)` creates automatic Let's Encrypt Certificates for all Domains that don't have more specific options set, like custom certificates.
-- `DNS Provider` : Choose either `none (default)` for normal HTTP ACME or a DNS Provider - e.g. `Cloudflare` or `Hetzner` - to enable the `DNS-01` ACME challenge and Dynamic DNS (DynDns). If your provider is missing, please note that all easy to add providers have already been built in, the remaining providers all want unique special configurations that are mostly out of scope.
-- `DNS API Key` : Leave empty if you don't use a DNS Provider, or put your `API Key` here.
-- `DynDns Check Http`: Optionally, enter an URL to test the current IP address of the firewall via HTTP procotol. Generally, this is not needed. Caddy uses default providers to test the current IP addresses. If you rather use your own, enter the https:// link to an IP address testing website.
-- `DynDns Check Interface`: Optionally, select an interface to extract the current IP address of the firewall. Attention, all IP addresses will be read from this interface. Only choose this option if you know the implications.
-- `DynDns Check Interval`: Interval to poll for changes of the IP address. The default is 5 minutes. Can be a number between 1 to 1440 minutes. 
-- `DynDns IP Version`: Leave on None to set IPv4 A-Records and IPv6 AAAA-Records. Select "Ipv4 only" for setting A-Records. Select "IPv6 only" for setting AAAA-Records.
-- `DynDns TTL`: Set the TTL (time to live) for DNS Records. The default is 1 hour. Can be a number between 1 to 24 hours.
-- `Trusted Proxies` : Leave empty if you don't use a CDN in front of your OPNsense. If you use Cloudflare or another CDN provider, create an access list with the IP addresses of that CDN and add it here. Add the same Access List to the domain this CDN tries to reach.
-- `Abort Connections`: This option, when enabled, aborts all connections to the Reverse Proxy Domain that don't match any specified handle or access list. This setting doesn't affect Let's Encrypt's ability to issue certificates, ensuring secure connections regardless of the option's status. If unchecked, the Reverse Proxy Domain remains accessible even without a matching handle, allowing for connectivity and certificate checks, even in the absence of a configured Backend Server. When using Access Lists, enabling this option is recommended to reject unauthorized connections outright. Without this option, unmatched IP addresses will encounter an empty page instead of an explicit rejection, though the Access Lists continue to function and restrict access.
-- `Log Credentials`: Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.
-
-##### Tab Reverse Proxy - Domains:
-- Press `+` to create a new Reverse Proxy Domain
-- `Enable` this new entry
-- `Reverse Proxy Domain`: Can either be a domain name or an IP address. If a domain name is chosen, Caddy will automatically try to get an ACME certificate, and the header will be automatically passed to the `Handle` Server in the backend.
-- `Reverse Proxy Port`: Should be the port the OPNsense will listen on. Don't forget to create Firewall rules that allow traffic to this port on `WAN` or `LAN` to `This Firewall`. You can leave this empty if you want to use the default ports of Caddy (`80` and `443`) with automatic redirection from HTTP to HTTPS.
-- `Access List`: Restrict the access to this domain to a list of IP addresses you define in the `Access Lists` Tab. This doesn't influence the Let's Encrypt certificate generation, so you can be as restrictive as you want here.
-- `DNS-01 challenge`: Enable this if you want to use the `DNS-01` ACME challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the `General Settings` - `DNS Provider` and `API KEY` set.
-- `Dynamic DNS`: Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this domain will be automatically updated with your DNS Provider. 
-- `Custom Certificate`: Use a Certificate you imported or generated in `System - Trust - Certificates`. The chain is generated automatically. `Certificate + Intermediate CA + Root CA`, `Certificate + Root CA` and `self signed Certificate` are all fully supported.
-- `HTTP Access Log`: Enable the HTTP request logging for this domain and its subdomains. This option is mostly for troubleshooting since it will log every single request.
-- `Description`: The description is mandatory. Create descriptions for each domain. Since there could be multiples of the same domain with different ports, do it like this: `foo.example.com` and `foo.example.com.8443`.
-
-##### Tab Handle - Handle:
-Please note that the order that handles are saved in the scope of each domain or domain/subdomain can influence functionality - The first matching handle wins. So if you put /ui* in front of a more specific handle like /ui/opnsense, the /ui* will match first and /ui/opnsense won't ever match (in the scope of their domain). Right now there isn't an easy way to move the position of handles in the grid, so you have to clone them if you want to change their order, and delete the old entries afterwards. Most of the time, creating just one empty catch-all handle is the best choice. The template logic makes sure that catch-all handles are always placed last, after all other handles.
-- Press `+` to create a new `Handle`. A Handle is like a location in nginx.
-- `Enable` this new entry.
-- `Reverse Proxy Domain`: Select the domain you have created in `Reverse Proxy Domains`.
-- `Reverse Proxy Subdomain`: Leave this on `None`. It is not needed without having a wildcard certificate, or a `*.example.com` Domain.
-- `Handle Type`: `Handle` or `Handle Path` can be chosen. If in doubt, always use `Handle`, the most common option. `Handle Path` is used to strip the handle path from the URI. For example if you have example.com/opnsense internally, but want to call it with just example.com externally.
-- `Handle Path`: Leave this empty if you want to create a catch all location. You can create multiple Handle entries, and have each of them point at different locations like `/foo/*` or `/foo/bar/*` or `/foo*` or `*foo`
-- `Backend Server Domain`: Should be an internal domain name or an IP Address of the Backend Server that should receive the traffic of the `Reverse Proxy Domain`.
-- `Backend Server Port`: Should be the port the Backend Server listens on. This can be left empty to use Caddy default ports 80 and 443.
-- `TLS`: If your Backend Server only accepts HTTPS, enable this option. If the Backend Server has a globally trusted certificate, this is all you need.
-- `TLS Trusted CA Certificates`: Choose a CA certificate to trust for the Backend Server connection. Import your self-signed certificate or your CA certificate into the OPNsense "System - Trust - Authorities" store, and select it here.
-- `TLS Server Name`: If the SAN (Subject Alternative Names) of the offered trusted CA certificate or self-signed certificate doesn't match with the IP address or hostname of the `Backend Server Domain`, you can enter it here. This will change the SNI (Server Name Identification) of Caddy to the `TLS Server Name`. IP address e.g. `192.168.1.1` or hostname e.g. `localhost` or `opnsense.local` are all valid choices. Only if the SAN and SNI match, the TLS connection will work, otherwise an error is logged that can be used to troubleshoot.
-- `NTLM`: If your Backend Server needs NTLM authentication, enable this option together with `TLS`. For example, Exchange Server.
-
-**Attention**: The GUI doesn't allow "tls_insecure_skip_verify" due to safety reasons, as the Caddy documentation states not to use it. Use the `TLS Trusted CA Certificates` and `TLS Server Name` options instead to get a **secure TLS connection** to your Backend Server. Otherwise, use HTTP. If you really need to use "tls_insecure_skip_verify" and know the implications, use the import statements of custom configuration files.
-
-##### Tab Reverse Proxy - Access Lists:
-- Press `+` to create a new Access List
-- `Access List name`: Choose a name for the Access List, for example `private_ips`.
-- `Client IP Addresses`: Enter any number of IPv4 and IPv6 addresses or networks that this access list should contain. For example for matching only internal networks, add `192.168.0.0/16` `172.16.0.0/12` `10.0.0.0/8` `127.0.0.1/8` `fd00::/8` `::1`.
-- `Invert List`: Invert the logic of the access list. If unchecked, the Client IP Addresses will be ALLOWED, all other IP addresses will be blocked. When checked, the Client IP Addresses will be BLOCKED, all other IP addresses will be allowed.
-- Afterwards, go back to Domains or Subdomains and add the Access List you have created to them (advanced mode). All handles created under these Domains will get an additional matcher. That means, the requests still reach Caddy, but if the IP Addresses don't match with the Access List logic, the request doesn't match any handle and will be dropped before being reverse proxied to any Backend Server. If you are using a CDN, make sure the Access List in General - Trusted Proxies and on each Domain used for that CDN are the same.
-
-### HOW TO Section:
 
 #### HOW TO: Create a wildcard subdomain reverse proxy:
 - Do everything the same as above, but create your Reverse Proxy Domain like this `*.example.com` and activate the `DNS-01` challenge checkbox.
