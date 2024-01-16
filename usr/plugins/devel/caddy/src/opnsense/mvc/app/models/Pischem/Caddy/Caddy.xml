@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a basic reverse proxy in Caddy Web Server.</description>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -107,6 +107,16 @@
                         </reverseproxy>
                     </Model>
                 </accesslist>
+                <basicauth type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.basicauth</items>
+                            <display>basicauthuser</display>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </basicauth>
                 <Description type="TextField">
                     <Required>Y</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
@@ -158,6 +168,16 @@
                         </reverseproxy>
                     </Model>
                 </accesslist>
+                <basicauth type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>Pischem.Caddy.Caddy</source>
+                            <items>reverseproxy.basicauth</items>
+                            <display>basicauthuser</display>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </basicauth>
                 <Description type="TextField">
                     <Required>Y</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
@@ -256,6 +276,20 @@
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
             </accesslist>
+            <basicauth type="ArrayField">
+                <basicauthuser type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([0-9a-zA-Z]{2,72})$/u</Mask>
+                    <ValidationMessage>A user name must only contain numbers and letters and must be between 2 and 72 characters.</ValidationMessage>
+                </basicauthuser>
+                <basicauthpass type="UpdateOnlyTextField">
+                    <Required>Y</Required>
+                </basicauthpass>
+                <Description type="TextField">
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
+                </Description>
+            </basicauth>
         </reverseproxy>
     </items>
 </model>

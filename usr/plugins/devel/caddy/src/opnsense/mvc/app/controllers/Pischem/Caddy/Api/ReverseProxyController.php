@@ -43,7 +43,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchReverseProxyAction()
     {
-        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'accesslist', 'DnsChallenge', 'CustomCertificate', 'AccessLog', 'DynDns', 'Description']);
+        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'accesslist', 'basicauth', 'DnsChallenge', 'CustomCertificate', 'AccessLog', 'DynDns', 'Description']);
     }
 
     public function setReverseProxyAction($uuid)
@@ -76,7 +76,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchSubdomainAction()
     {
-        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'accesslist', 'DynDns', 'Description']);
+        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'accesslist', 'basicauth', 'DynDns', 'Description']);
     }
 
     public function setSubdomainAction($uuid)
@@ -105,7 +105,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
 
-    /*Handle Section*/
+    /*Handler Section*/
 
     public function searchHandleAction()
     {
@@ -163,5 +163,53 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function delAccessListAction($uuid)
     {
         return $this->delBase("reverseproxy.accesslist", $uuid);
+    }
+    
+    
+    /* BasicAuth Section */
+
+    public function searchBasicAuthAction()
+    {
+        return $this->searchBase("reverseproxy.basicauth", ['basicauthuser', 'basicauthpass', 'Description']);
+    }
+
+    public function setBasicAuthAction($uuid)
+    {
+        if ($this->request->isPost()) {
+            $postData = $this->request->getPost();
+
+            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+                $plainPassword = $postData['basicauth']['basicauthpass'];
+                $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
+                $_POST['basicauth']['basicauthpass'] = $hashedPassword;
+            }
+        }
+
+        return $this->setBase("basicauth", "reverseproxy.basicauth", $uuid);
+    }
+
+    public function addBasicAuthAction()
+    {
+        if ($this->request->isPost()) {
+            $postData = $this->request->getPost();
+    
+            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+                $plainPassword = $postData['basicauth']['basicauthpass'];
+                $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
+                $_POST['basicauth']['basicauthpass'] = $hashedPassword;
+            }
+        }
+
+        return $this->addBase("basicauth", "reverseproxy.basicauth");
+    }
+
+    public function getBasicAuthAction($uuid = null)
+    {
+        return $this->getBase("basicauth", "reverseproxy.basicauth", $uuid);
+    }
+
+    public function delBasicAuthAction($uuid)
+    {
+        return $this->delBase("reverseproxy.basicauth", $uuid);
     }
 }
