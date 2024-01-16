@@ -12,7 +12,7 @@
         <help><![CDATA[This is the standard field for the API Key. Enter the API key for the selected DNS provider. Leave this empty if no DNS provider is set.]]></help>
     </field>
     <field>
-        <id>caddy.general.TlsDnsApiSecretKey</id>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
         <label>DNS Secret API Key</label>
         <type>text</type>
         <help><![CDATA[A few DNS providers like porkbun also need a Secret API Key set. Leave this empty if other or no DNS providers are set.]]></help>
