@@ -1,6 +1,6 @@
 <model>
     <mount>//Pischem/caddy</mount>
-    <description>A GUI model for configuring a basic reverse proxy in Caddy Web Server.</description>
+    <description>A GUI model for configuring a basic reverse proxy in the Caddy web server.</description>
     <version>1.1.2</version>
     <items>
         <general>
@@ -34,11 +34,13 @@
                     <vultr>Vultr</vultr>
                     <ionos>IONOS</ionos>
                     <desec>Desec</desec>
+                    <porkbun>Porkbun</porkbun>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField">
-                <ValidationMessage>Please enter a valid API key.</ValidationMessage>
             </TlsDnsApiKey>
+            <TlsDnsSecretApiKey type="TextField">
+            </TlsDnsSecretApiKey>
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>
@@ -60,7 +62,7 @@
             <DynDnsInterface type=".\RealInterfaceField">
             </DynDnsInterface>
             <DynDnsCheckInterval type="IntegerField">
-                <default>5</default>
+                <Default>5</Default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>1440</MaximumValue>
                 <ValidationMessage>Please enter a valid number from 1 to 1440 minutes.</ValidationMessage>
@@ -73,7 +75,7 @@
                 </OptionValues>
             </DynDnsIpVersions>
             <DynDnsTTL type="IntegerField">
-                <default>1</default>
+                <Default>1</Default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>24</MaximumValue>
                 <ValidationMessage>Please enter a valid number from 1 to 24 hours.</ValidationMessage>
@@ -82,7 +84,7 @@
         <reverseproxy>
             <reverse type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <FromDomain type="HostnameField">
@@ -119,11 +121,11 @@
                 </basicauth>
                 <Description type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
                 <DnsChallenge type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                 </DnsChallenge>
                 <CustomCertificate type="CertificateField">
                 </CustomCertificate>
@@ -136,7 +138,7 @@
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <reverse type="ModelRelationField">
@@ -180,7 +182,7 @@
                 </basicauth>
                 <Description type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
                 <DynDns type="BooleanField">
@@ -234,13 +236,13 @@
                     <EnableRanges>N</EnableRanges>
                 </ToPort>
                 <HttpTls type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                 </HttpTls>
                 <HttpNtlm type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                 </HttpNtlm>
                 <HttpTlsTrustedCaCerts type="CertificateField">
-                    <type>ca</type>
+                    <Type>ca</Type>
                 </HttpTlsTrustedCaCerts>
                 <HttpTlsServerName type="HostnameField">
                     <ValidationMessage>Please enter a valid hostname or IP address.</ValidationMessage>
@@ -250,7 +252,7 @@
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </HttpTlsServerName>
                 <Description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
             </handle>
@@ -286,7 +288,7 @@
                     <Required>Y</Required>
                 </basicauthpass>
                 <Description type="TextField">
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </Description>
             </basicauth>

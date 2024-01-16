@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2023 Cedrik Pischem
+ # Copyright (c) 2024 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -89,8 +89,7 @@
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#domainsTab">Domains</a></li>
     <li><a data-toggle="tab" href="#handlesTab">Handlers</a></li>
-    <li><a data-toggle="tab" href="#accessListTab">Access Lists</a></li>
-    <li><a data-toggle="tab" href="#basicAuthTab">Basic Auth</a></li>
+    <li><a data-toggle="tab" href="#accessTab">Access</a></li>
 </ul>
 
 <div class="tab-content content-box">
@@ -207,8 +206,9 @@
         </div>
     </div>
     
-    <!-- Access List Tab -->
-    <div id="accessListTab" class="tab-pane fade">
+    <!-- New Combined Access Tab -->
+    <div id="accessTab" class="tab-pane fade">
+        <!-- Access Lists Section -->
         <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
             <h1>Access Lists</h1>
             <div style="display: block;">
@@ -237,11 +237,9 @@
                 </table>
             </div>
         </div>
-    </div>
-    
-    <!-- Basic Auth Tab -->
-    <div id="basicAuthTab" class="tab-pane fade">
-        <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
+
+        <!-- Basic Auth Section -->
+        <div style="background-color: white; padding: 10px; margin-top: 20px; border: 1px solid #ddd;">
             <h1>Basic Auth</h1>
             <div style="display: block;">
                 <table id="basicAuthGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogBasicAuth">
@@ -282,6 +280,6 @@
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':'DialogReverseProxy','label':lang._('Edit Reverse Proxy Domain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':'DialogSubdomain','label':lang._('Edit Reverse Proxy Subdomain')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit Handle')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit Handler')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':'DialogAccessList','label':lang._('Edit Access List')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogBasicAuth,'id':'DialogBasicAuth','label':lang._('Edit Basic Auth')])}}

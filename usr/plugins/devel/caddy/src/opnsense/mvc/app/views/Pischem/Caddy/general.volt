@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2023 Cedrik Pischem
+ # Copyright (c) 2024 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -23,11 +23,31 @@
  # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  # POSSIBILITY OF SUCH DAMAGE.
  #}
+<!-- Tab Navigation -->
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
+    <li><a data-toggle="tab" href="#dnsProviderTab">DNS Provider</a></li>
+</ul>
 
+<!-- Tab Content -->
 <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
-    <div class="content">
-        <h1>Caddy General Settings</h1>
-        {{ partial("layout_partials/base_form", ['fields': generalForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+    <div class="tab-content">
+
+        <!-- General Tab -->
+        <div id="generalTab" class="tab-pane active">
+            <div class="content">
+                <h1>General Settings</h1>
+                {{ partial("layout_partials/base_form", ['fields': generalForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+            </div>
+        </div>
+
+        <!-- DNS Provider Tab -->
+        <div id="dnsProviderTab" class="tab-pane">
+            <div class="content">
+                <h1>DNS Provider Settings</h1>
+                {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+            </div>
+        </div>
     </div>
 </div>
 
@@ -65,7 +85,7 @@
                     tlsDnsProviderSelect.append(new Option(option.value, key, false, option.selected === 1));
                 }
             });
-            
+
             // Populate Trusted Proxies dropdown
             var accesslistSelect = $('#caddy\\.general\\.accesslist');
             accesslistSelect.empty(); // Clear existing options
