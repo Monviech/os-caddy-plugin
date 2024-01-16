@@ -2,8 +2,8 @@
 
 /**
  *    Copyright (C) 2015 Deciso B.V.
- *    Copyright (C) 2023 Cedrik Pischem
- * 
+ *    Copyright (C) 2024 Cedrik Pischem
+ *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,6 @@
  *
  */
 
-
 namespace Pischem\Caddy;
 
 use OPNsense\Base\IndexController;
@@ -39,8 +38,8 @@ class GeneralController extends IndexController
     public function indexAction()
     {
         // Assign the general settings form to the view
-        $this->view->generalForm = $this->getForm("general");
         $this->view->pick('Pischem/Caddy/general');
+        $this->view->generalForm = $this->getForm("general");
+        $this->view->dnsproviderForm = $this->getForm("dnsprovider");
     }
 }
-
