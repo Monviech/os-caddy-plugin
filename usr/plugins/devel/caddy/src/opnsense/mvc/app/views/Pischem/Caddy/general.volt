@@ -23,7 +23,6 @@
  # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  # POSSIBILITY OF SUCH DAMAGE.
  #}
-
 <!-- Tab Navigation -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
@@ -37,7 +36,7 @@
         <!-- General Tab -->
         <div id="generalTab" class="tab-pane active">
             <div class="content">
-                <h1>Caddy General Settings</h1>
+                <h1>General Settings</h1>
                 {{ partial("layout_partials/base_form", ['fields': generalForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
             </div>
         </div>
@@ -45,6 +44,7 @@
         <!-- DNS Provider Tab -->
         <div id="dnsProviderTab" class="tab-pane">
             <div class="content">
+                <h1>DNS Provider Settings</h1>
                 {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
             </div>
         </div>
