@@ -24,14 +24,14 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
-<div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
-    <!-- Tab Navigation -->
-    <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-        <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
-        <li><a data-toggle="tab" href="#dnsProviderTab">DNS Provider</a></li>
-    </ul>
+<!-- Tab Navigation -->
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
+    <li><a data-toggle="tab" href="#dnsProviderTab">DNS Provider</a></li>
+</ul>
 
     <!-- Tab Content -->
+<div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
     <div class="tab-content">
 
         <!-- General Tab -->
