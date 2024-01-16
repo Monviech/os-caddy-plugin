@@ -3,65 +3,20 @@
         <id>caddy.general.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable or disable Caddy Web Server.</help>
+        <help><![CDATA[Enable or disable the Caddy web server.]]></help>
     </field>
     <field>
         <id>caddy.general.TlsEmail</id>
         <label>ACME Email</label>
         <type>text</type>
         <hint>info@example.com</hint>
-        <help>Enter the email address for certificate notifications.</help>
+        <help><![CDATA[Enter the email address for certificate notifications.]]></help>
     </field>
     <field>
         <id>caddy.general.TlsAutoHttps</id>
         <label>Auto HTTPS</label>
         <type>dropdown</type>
-        <help>Select the auto HTTPS option. On (default) creates automatic certificates using Let's Encrypt without needing any configuration.</help>
-    </field>
-    <field>
-        <id>caddy.general.TlsDnsProvider</id>
-        <label>DNS Provider</label>
-        <type>dropdown</type>
-        <help>Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You mostly need this for Wildcard Certificates, and for Dynamic DNS. To use the DNS-01 Challenge, enable the checkbox in the advanced mode of a Reverse Proxy Domain. To use Dynamic DNS, enable the checkbox in a Reverse Proxy Domain or Subdomain. </help>
-    </field>
-    <field>
-        <id>caddy.general.TlsDnsApiKey</id>
-        <label>DNS API Key</label>
-        <type>text</type>
-        <help>Enter the API key for the selected DNS provider. Leave this empty, if no DNS provider is set.</help>
-    </field>
-    <field>
-        <id>caddy.general.DynDnsSimpleHttp</id>
-        <label>DynDns Check Http</label>
-        <type>text</type>
-        <help><![CDATA[Optionally, enter an URL to test the current IP address of the firewall via HTTP procotol. Generally, this is not needed. Caddy uses default providers to test the current IP addresses. If you rather use your own, enter the https:// link to an IP address testing website.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>caddy.general.DynDnsInterface</id>
-        <label>DynDns Check Interface</label>
-        <type>dropdown</type>
-        <help><![CDATA[Optionally, select an interface to extract the current IP address of the firewall. Attention, all IP addresses will be read from this interface. Only choose this option if you know the implications.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>caddy.general.DynDnsCheckInterval</id>
-        <label>DynDns Check Interval</label>
-        <type>text</type>
-        <help><![CDATA[Interval to poll for changes of the IP address. The default is 5 minutes. Can be a number between 1 to 1440 minutes.]]></help>
-    </field>
-    <field>
-        <id>caddy.general.DynDnsIpVersions</id>
-        <label>DynDns IP Version</label>
-        <type>dropdown</type>
-        <help><![CDATA[Leave on None to set IPv4 A-Records and IPv6 AAAA-Records. Select "Ipv4 only" for setting A-Records. Select "IPv6 only" for setting AAAA-Records.]]></help>
-    </field>
-    <field>
-        <id>caddy.general.DynDnsTTL</id>
-        <label>DynDns TTL</label>
-        <type>text</type>
-        <help><![CDATA[Set the TTL (time to live) for DNS Records. The default is 1 hour. Can be a number between 1 to 24 hours.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[Select the auto HTTPS option. "On" (default) creates automatic certificates using Let's Encrypt or ZeroSSL without needing any configuration.]]></help>
     </field>
     <field>
         <id>caddy.general.accesslist</id>
@@ -74,13 +29,13 @@
         <id>caddy.general.abort</id>
         <label>Abort Connections</label>
         <type>checkbox</type>
-        <help>Abort all connections that don't have a matching handle or access list. This option doesn't conflict with Let's Encrypt. Disable it for troubleshooting purposes, e.g. testing if the Reverse Proxy Domain works and the Certificate has been installed. For production use, enabling this option is recommended.</help>
+        <help><![CDATA[Abort all connections that don't have a matching handle or access list. This option doesn't conflict with Let's Encrypt. Disable it for troubleshooting purposes, e.g., testing if the Reverse Proxy Domain works and the Certificate has been installed. For production use, enabling this option is recommended.]]></help>
     </field>
     <field>
         <id>caddy.general.LogCredentials</id>
         <label>Log Credentials</label>
         <type>checkbox</type>
-        <help>Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.</help>
+        <help><![CDATA[Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.]]></help>
         <advanced>true</advanced>
     </field>
 </form>
