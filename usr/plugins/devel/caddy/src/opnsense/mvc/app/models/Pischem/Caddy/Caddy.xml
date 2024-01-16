@@ -1,6 +1,6 @@
 <model>
     <mount>//Pischem/caddy</mount>
-    <description>A GUI model for configuring a basic reverse proxy in Caddy Web Server.</description>
+    <description>A GUI model for configuring a basic reverse proxy in the Caddy web server.</description>
     <version>1.1.2</version>
     <items>
         <general>
