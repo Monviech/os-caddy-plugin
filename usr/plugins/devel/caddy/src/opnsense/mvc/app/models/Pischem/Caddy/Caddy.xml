@@ -38,8 +38,9 @@
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField">
-                <ValidationMessage>Please enter a valid API key.</ValidationMessage>
             </TlsDnsApiKey>
+            <TlsDnsSecretApiKey type="TextField">
+            </TlsDnsSecretApiKey>
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>
