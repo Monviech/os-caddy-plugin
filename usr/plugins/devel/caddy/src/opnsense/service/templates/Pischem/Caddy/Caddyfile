@@ -74,7 +74,7 @@
         {% endfor %}
     {% endfor %}
 
-    {% if dnsProvider and dnsApiKey and dynDnsDomains|length > 0 %}
+    {% if dnsProvider and dnsProvider != "none" and dnsApiKey and dynDnsDomains|length > 0 %}
         dynamic_dns {
             {% if dnsProvider in ['porkbun', 'desec'] %}
                 provider {{ dnsProvider }} {
@@ -88,11 +88,11 @@
             {% else %}
                 provider {{ dnsProvider }} {{ dnsApiKey }}
             {% endif %}
-        domains {
-            {% for domain in dynDnsDomains %}
-            {{ domain }}
-            {% endfor %}
-        }
+            domains {
+                {% for domain in dynDnsDomains %}
+                {{ domain }}
+                {% endfor %}
+            }
         {% if dynDnsSimpleHttp %}
         ip_source simple_http {{ dynDnsSimpleHttp }}
         {% endif %}
@@ -124,7 +124,7 @@
 
 # Reverse Proxy Configuration
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey) %}
-    {% if dnsChallenge == "1" and dnsProvider != "none" and dnsApiKey %}
+    {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" and dnsApiKey %}
         {% if dnsProvider in ['porkbun', 'desec'] %}
             tls {
                 dns {{ dnsProvider }} {
@@ -141,7 +141,8 @@
                 dns {{ dnsProvider }} {{ dnsApiKey }}
             }
         {% endif %}
-    {% elif customCert %}
+    {% endif %}
+    {% if customCert %}
         tls /usr/local/etc/caddy/certificates/temp/{{ customCert }}.pem /usr/local/etc/caddy/certificates/temp/{{ customCert }}.key
     {% endif %}
 {% endmacro %}
