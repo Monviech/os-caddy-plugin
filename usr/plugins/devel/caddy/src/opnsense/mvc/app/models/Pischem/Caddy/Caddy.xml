@@ -35,6 +35,7 @@
                     <ionos>IONOS</ionos>
                     <desec>Desec</desec>
                     <porkbun>Porkbun</porkbun>
+                    <route53>Route53</route53>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField">
