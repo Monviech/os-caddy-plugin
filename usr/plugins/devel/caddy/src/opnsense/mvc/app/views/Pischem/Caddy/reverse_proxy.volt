@@ -96,7 +96,7 @@
 
     <!-- Reverse Proxy Tab -->
     <div id="domainsTab" class="tab-pane fade in active">
-        <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
+        <div style="padding-left: 16px;">
             <!-- Reverse Proxy -->
             <h1>Domains</h1>
             <div style="display: block;"> <!-- Common container -->
@@ -131,7 +131,7 @@
                 </table>
             </div>
         </div>
-        <div style="background-color: white; padding: 10px; margin-top: 20px; border: 1px solid #ddd;">
+        <div style="padding-left: 16px;">
             <!-- Subdomains -->
             <h1>Subdomains</h1>
             <div style="display: block;"> <!-- Common container -->
@@ -168,7 +168,7 @@
 
     <!-- Handle Tab -->
     <div id="handlesTab" class="tab-pane fade">
-        <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
+        <div style="padding-left: 16px;">
             <h1>Handlers</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle">
@@ -209,7 +209,7 @@
     <!-- New Combined Access Tab -->
     <div id="accessTab" class="tab-pane fade">
         <!-- Access Lists Section -->
-        <div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
+        <div style="padding-left: 16px;">
             <h1>Access Lists</h1>
             <div style="display: block;">
                 <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList">
@@ -239,7 +239,7 @@
         </div>
 
         <!-- Basic Auth Section -->
-        <div style="background-color: white; padding: 10px; margin-top: 20px; border: 1px solid #ddd;">
+        <div style="padding-left: 16px;">
             <h1>Basic Auth</h1>
             <div style="display: block;">
                 <table id="basicAuthGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogBasicAuth">
@@ -269,14 +269,20 @@
 </div>
 
 <!-- Reconfigure Button -->
-<div style="margin-top: 20px; width: 100%; background-color: white; padding: 5px; border: 1px solid #ddd;">
-    <button class="btn btn-primary" id="reconfigureAct"
-        data-endpoint="/api/caddy/service/reconfigure"
-        data-label="{{ lang._('Apply') }}"
-        data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
-        type="button"
-    ><b>Apply</b></button>
-</div>
+<section class="page-content-main">
+    <div class="content-box">
+        <div class="col-md-12">
+            <br/>
+            <button class="btn btn-primary" id="reconfigureAct"
+                    data-endpoint="/api/caddy/service/reconfigure"
+                    data-label="{{ lang._('Apply') }}"
+                    data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
+                    type="button"
+            ></button>
+            <br/><br/>
+        </div>
+    </div>
+</section>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':'DialogReverseProxy','label':lang._('Edit Reverse Proxy Domain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':'DialogSubdomain','label':lang._('Edit Reverse Proxy Subdomain')])}}
