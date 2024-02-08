@@ -11,8 +11,8 @@
 - Automatic Let's Encrypt and ZeroSSL Certificates without configuration with HTTP-01 and TLS-ALPN-01
 - ACME DNS-01 challenge with configuration (requires supported DNS Provider)
 - Dynamic DNS (DynDns) with configuration (requires supported DNS Provider)
-- Supported DNS Providers:
-- ```cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, vultr, ionos, desec, porkbun```
+- Supported DNS Providers in GUI:
+- ```cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, vultr, ionos, desec, porkbun, route53```
 - Use custom certificates from OPNsense certificate store
 - Normal domains, wildcard domains and subdomains
 - Access Lists to restrict access based on static networks
@@ -34,10 +34,10 @@
 
 # How to install:
 ##### DISCLAIMER: Even though I use this productively on multiple OPNsense Firewalls (and also a HA pair with config sync), I give no guarantee whatsoever. Please read the license file for the full disclaimer. Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-##### Tested by myself on DEC740 Hardware with OPNsense CE 23.7.12-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
+##### Tested on DEC740 Hardware with OPNsense CE 24.1.1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
 ##### Caddy Version:
 - ```v2.7.6 h1:w0NymbG2m9PcvKWsrXO6EEkY9Ru4FJK8uQbYcev1p3A=```
-- ```SHA256 (/usr/local/bin/caddy) = 68973bbae59c3ba8d5210168c01fce661f36645699fd722d90032177a83d1d1a```
+- ```SHA256 (/usr/local/bin/caddy) = 9722999d0c5a6bb9d82217d384f744f61f746086526112fc38c775bef619a440```
 
 Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
 ```
@@ -46,7 +46,7 @@ fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.p
 ```
 pkg update
 ```
-- **Attention** - If you have other (community) repositories installed that serve the caddy binary, some features might not work. Make sure you get caddy-2.7.6_2 from my repository. There are extra features compiled in.
+- **Attention** - If you have other (community) repositories installed that serve the caddy binary, some features might not work. Make sure you get caddy-2.7.6_3 from my repository. There are extra features compiled in.
 - Afterwards the "os-caddy" plugin can be installed from the OPNsense System - Firmware - Plugins, search for "os-caddy".
 
 # How to use Caddy after the installation:

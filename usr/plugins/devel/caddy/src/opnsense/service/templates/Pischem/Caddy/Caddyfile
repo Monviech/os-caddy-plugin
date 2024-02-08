@@ -76,13 +76,16 @@
 
     {% if dnsProvider and dnsProvider != "none" and dnsApiKey and dynDnsDomains|length > 0 %}
         dynamic_dns {
-            {% if dnsProvider in ['porkbun', 'desec'] %}
+            {% if dnsProvider in ['porkbun', 'desec', 'route53'] %}
                 provider {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
                         api_key {{ dnsApiKey }}
                         api_secret_key {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'desec' %}
                         token {{ dnsApiKey }}
+                    {% elif dnsProvider == 'route53' %}
+                        access_key_id {{ dnsApiKey }}
+                        secret_access_key {{ dnsSecretApiKey }}
                     {% endif %}
                 }
             {% else %}
@@ -125,7 +128,7 @@
 # Reverse Proxy Configuration
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey) %}
     {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" and dnsApiKey %}
-        {% if dnsProvider in ['porkbun', 'desec'] %}
+        {% if dnsProvider in ['porkbun', 'desec', 'route53'] %}
             tls {
                 dns {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
@@ -133,6 +136,9 @@
                         api_secret_key {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'desec' %}
                         token "{{ dnsApiKey }}"
+                    {% elif dnsProvider == 'route53' %}
+                        access_key_id {{ dnsApiKey }}
+                        secret_access_key {{ dnsSecretApiKey }}
                     {% endif %}
                 }
             }

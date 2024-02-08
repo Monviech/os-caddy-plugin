@@ -9,14 +9,13 @@
         <id>caddy.general.TlsDnsApiKey</id>
         <label>DNS API Key</label>
         <type>text</type>
-        <help><![CDATA[This is the standard field for the API Key. Enter the API key for the selected DNS provider. Leave this empty if no DNS provider is set.]]></help>
+        <help><![CDATA[This is the standard field for the API Key. Enter the API key for the selected DNS provider. For Route53 enter your "access_key_id" here. For Porkbun enter your "api_key" here. Leave this empty if no DNS provider is set.]]></help>
     </field>
     <field>
         <id>caddy.general.TlsDnsSecretApiKey</id>
         <label>DNS Secret API Key</label>
         <type>text</type>
-        <help><![CDATA[A few DNS providers like porkbun also need a Secret API Key set. Leave this empty if other or no DNS providers are set.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[For Route53 enter your "secret_access_key" here. For Porkbun enter your "api_secret_key" here. Leave this empty if other or no DNS providers are set.]]></help>
     </field>
     <field>
         <id>caddy.general.DynDnsSimpleHttp</id>

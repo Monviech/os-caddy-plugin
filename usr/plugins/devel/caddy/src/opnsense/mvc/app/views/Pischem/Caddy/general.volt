@@ -30,36 +30,32 @@
 </ul>
 
 <!-- Tab Content -->
-<div style="background-color: white; padding: 10px; border: 1px solid #ddd;">
-    <div class="tab-content">
-
-        <!-- General Tab -->
-        <div id="generalTab" class="tab-pane active">
-            <div class="content">
-                <h1>General Settings</h1>
-                {{ partial("layout_partials/base_form", ['fields': generalForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
-            </div>
-        </div>
-
-        <!-- DNS Provider Tab -->
-        <div id="dnsProviderTab" class="tab-pane">
-            <div class="content">
-                <h1>DNS Provider Settings</h1>
-                {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
-            </div>
-        </div>
+<div class="tab-content content-box">
+    <!-- General Tab -->
+    <div id="generalTab" class="tab-pane fade in active">
+        {{ partial("layout_partials/base_form", ['fields': generalForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+    </div>
+    <!-- DNS Provider Tab -->
+    <div id="dnsProviderTab" class="tab-pane fade">
+        {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
 </div>
 
-<div style="margin-top: 20px; width: 100%; background-color: white; padding: 5px; border: 1px solid #ddd;">
-    <!-- Reconfigure Button with Pre-Action -->
-    <button class="btn btn-primary" id="reconfigureAct"
-            data-endpoint="/api/caddy/service/reconfigure"
-            data-label="{{ lang._('Apply') }}"
-            data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
-            type="button"
-    ><b>Apply</b></button>
-</div>
+<section class="page-content-main">
+    <div class="content-box">
+        <div class="col-md-12">
+            <br/>
+            <!-- Reconfigure Button with Pre-Action -->
+            <button class="btn btn-primary" id="reconfigureAct"
+                    data-endpoint="/api/caddy/service/reconfigure"
+                    data-label="{{ lang._('Apply') }}"
+                    data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
+                    type="button"
+            ></button>
+            <br/><br/>
+        </div>
+    </div>
+</section>
 
 <script type="text/javascript">
     $(document).ready(function() {
