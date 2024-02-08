@@ -36,7 +36,7 @@
         {{ partial("layout_partials/base_form", ['fields': generalForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
     <!-- DNS Provider Tab -->
-    <div id="dnsProviderTab" class="tab-pane fade in">
+    <div id="dnsProviderTab" class="tab-pane fade">
         {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
 </div>
