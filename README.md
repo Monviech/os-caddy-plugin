@@ -92,7 +92,7 @@ pkg update
 - `HTTP Access Log`: Enable the HTTP request logging for this domain and its subdomains. This option is mostly for troubleshooting since it will log every single request.
 - `Description`: The description is mandatory. Create descriptions for each domain. Since there could be multiples of the same domain with different ports, do it like this: `foo.example.com` and `foo.example.com.8443`.
 
-## Tab Reverse Proxy - Subdomains
+## Reverse Proxy - Subdomains
 
 - Refer to the options of Domains.
 
