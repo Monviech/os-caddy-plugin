@@ -217,7 +217,7 @@
     {% else %}
     log {
         output file /var/log/caddy/access/{{ reverse['@uuid'] }}.log {
-            roll_keep_for {{ generalSettings.LogAccessPlainKeep }}d
+            roll_keep_for {{ generalSettings.LogAccessPlainKeep|default("10") }}d
         }        
     }
     {% endif %}
