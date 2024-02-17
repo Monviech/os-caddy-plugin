@@ -49,7 +49,6 @@
         <id>caddy.general.LogAccessPlainKeep</id>
         <label>Keep Plain Access Logs for (days)</label>
         <type>text</type>
-        <hint>10</hint>
         <help><![CDATA[How many days to keep the JSON access logs.]]></help>
         <advanced>true</advanced>
     </field>
