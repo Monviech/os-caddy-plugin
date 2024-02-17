@@ -8,7 +8,7 @@
         root /usr/local/etc/caddy
     }
     log {
-        {% if generalSettings.LogAccessPlain == "0" %}
+        {% if generalSettings.LogAccessPlain|default("0") == "0" %}
         {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
         {% if reverse.enabled|default("0") == "1" and reverse.AccessLog|default("0") == "1" %}
         include http.log.access.{{ reverse['@uuid'] }}
@@ -212,7 +212,7 @@
 # Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
 {{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
     {% if reverse.AccessLog|default("0") == "1" %}
-    {% if generalSettings.LogAccessPlain == "0" %}
+    {% if generalSettings.LogAccessPlain|default("0") == "0" %}
     log {{ reverse['@uuid'] }}
     {% else %}
     log {
