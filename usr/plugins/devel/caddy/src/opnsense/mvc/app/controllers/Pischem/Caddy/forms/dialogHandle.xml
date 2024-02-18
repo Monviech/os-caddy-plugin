@@ -48,6 +48,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>handle.ToPath</id>
+        <label>Backend Path</label>
+        <type>text</type>
+        <help><![CDATA[Enter a path prefix like '/guacamole' that should be prepended to the backend request because the application demands it.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>handle.HttpTls</id>
         <label>TLS</label>
         <type>checkbox</type>
