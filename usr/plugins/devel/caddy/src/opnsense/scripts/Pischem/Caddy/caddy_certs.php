@@ -2,8 +2,8 @@
 <?php
 
 /*
+ *    Copyright (C) 2023-2024 Cedrik Pischem
  *    Copyright (C) 2015 Deciso B.V.
- *    Copyright (C) 2023 Cedrik Pischem
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -84,5 +84,4 @@ function extract_and_save_certificates($configObj, $temp_dir) {
 }
 
 extract_and_save_certificates($configObj, $temp_dir);
-echo "Certificates, keys, CA chains, and CA certificates extracted to $temp_dir\n";
 ?>

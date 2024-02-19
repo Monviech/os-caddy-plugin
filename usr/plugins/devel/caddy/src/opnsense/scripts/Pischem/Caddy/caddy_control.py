@@ -26,42 +26,57 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
-
 import subprocess
 import json
 import sys
 
 def run_service_command(action, action_message):
     result = {"message": action_message}
-    if action == "test":
-        # For the test action, just return a test message
-        result["status"] = "ok"
-        result["message"] = "Test action executed successfully"
-        return json.dumps(result)
     
-    try:
-        subprocess.run(["service", "caddy", action], check=True)
-        result["status"] = "ok"
-    except subprocess.CalledProcessError as e:
-        result["status"] = "failed"
-        result["message"] = str(e)
+    if action == "validate":
+        try:
+            # Reload Caddyfile template
+            # subprocess.run(["configctl", "template", "reload", "Pischem/Caddy"], check=True)
+            # Call Setup script
+            subprocess.run(["/usr/local/opnsense/scripts/Pischem/Caddy/setup.sh"], check=True)
+            # Validate the Caddyfile with explicit --config flag, capturing both stdout and stderr
+            validation_output = subprocess.check_output(["caddy", "validate", "--config", "/usr/local/etc/caddy/Caddyfile"], stderr=subprocess.STDOUT, text=True)
+            if "Valid configuration" in validation_output:
+                result["status"] = "ok"
+                result["message"] = "Caddy configuration is valid."
+            else:
+                # Search for the specific error message
+                error_msg = next((line for line in validation_output.split('\n') if line.startswith("Error:")), "Caddy configuration is not valid.")
+                result["status"] = "failed"
+                result["message"] = error_msg
+        except subprocess.CalledProcessError as e:
+            # Extracting only the specific "Error: ..." line from the output
+            error_msg = next((line for line in e.output.split('\n') if line.startswith("Error:")), "Validation failed.")
+            result["status"] = "failed"
+            result["message"] = error_msg
+    else:
+        try:
+            subprocess.run(["service", "caddy", action], check=True)
+            result["status"] = "ok"
+        except subprocess.CalledProcessError as e:
+            result["status"] = "failed"
+            result["message"] = str(e)
 
     return json.dumps(result)
 
-# Add 'test' to actions
+# Updated actions dictionary
 actions = {
     "start": "onestart",
     "stop": "onestop",
     "restart": "onerestart",
-    "test": "test"  # Test action
+    "validate": "validate"  # Validate action
 }
 
 if __name__ == "__main__":
     action = sys.argv[1]  # Get the action from the command-line argument
     if action in actions:
         service_action = actions[action]
-        message = f"{action.capitalize()}ing Caddy service"
+        message = f"{action.capitalize()}ing Caddy service" if action != "validate" else "Validating Caddy configuration"
         print(run_service_command(service_action, message))
     else:
         print(json.dumps({"status": "failed", "message": f"Unknown action: {action}"}))
-

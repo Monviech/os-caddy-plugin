@@ -65,7 +65,6 @@
                 <MinimumValue>1</MinimumValue>
                 <ValidationMessage>Please enter a valid number of 1 or larger.</ValidationMessage>
             </LogAccessPlainKeep>
-
             <DynDnsSimpleHttp type="UrlField">
                 <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
             </DynDnsSimpleHttp>

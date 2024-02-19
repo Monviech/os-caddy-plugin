@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2024 Cedrik Pischem
+ # Copyright (c) 2023-2024 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -92,26 +92,75 @@
             // Refresh selectpicker for these dropdowns
             $('.selectpicker').selectpicker('refresh');
 
-            // Initialize the Reconfigure button with a pre-action
+            // Function to show alerts with Bootstrap modals for user feedback
+            function showAlert(message, title = "Configuration Validation Failed") {
+                if ($("#alertModal").length === 0) {
+                    $("body").append(
+                        `<div class="modal fade" id="alertModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">${title}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">${message}</div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+                    );
+                } else {
+                    $("#alertModal .modal-title").text(title);
+                    $("#alertModal .modal-body").html(message);
+                }
+                $("#alertModal").modal('show');
+            }
+
+            // Modify the Reconfigure button to include validation in onPreAction
             $("#reconfigureAct").SimpleActionButton({
                 onPreAction: function() {
-                    const dfd = $.Deferred();
+                    const dfObj = $.Deferred();
 
-                    // Save the form data
-                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function(){
-                        dfd.resolve();  // Resolve the Deferred object after successful save
+                    // Step 1: Save the form data
+                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
+                        // Form save successful, proceed to validation
+                        $.ajax({
+                            url: "/api/caddy/service/validate",
+                            type: "GET",
+                            dataType: "json",
+                            success: function(data) {
+                                if (data && data['status'].toLowerCase() === 'ok') {
+                                    // If configuration is valid, resolve the Deferred object to proceed
+                                    dfObj.resolve();
+                                } else {
+                                    // If configuration is invalid, show alert and reject the Deferred object
+                                    showAlert(data['message']);
+                                    dfObj.reject();
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                // On AJAX error, show alert and reject the Deferred object
+                                showAlert("Validation request failed: " + error);
+                                dfObj.reject();
+                            }
+                        });
                     }, function() {
-                        dfd.reject();   // Reject the Deferred object on failure
+                        // Form save failed, reject the Deferred object
+                        showAlert("Failed to save configuration.");
+                        dfObj.reject();
                     });
 
-                    return dfd.promise();  // Return the promise
+                    return dfObj.promise();
                 },
                 onAction: function(data, status) {
                     if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
                         // Update only the service control UI for 'caddy'
                         updateServiceControlUI('caddy');
                     } else {
-                    // Handle any errors or unsuccessful actions
                         console.error("Action was not successful or an error occurred:", data);
                     }
                 }
