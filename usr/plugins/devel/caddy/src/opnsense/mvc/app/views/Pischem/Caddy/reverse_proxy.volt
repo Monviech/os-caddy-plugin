@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2024 Cedrik Pischem
+ # Copyright (c) 2023-2024 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -69,7 +69,63 @@
             del:'/api/caddy/ReverseProxy/delBasicAuth/',
         });
 
+        // Function to show the alert of the validation in a user friendly popup
+        function showAlert(message, title = "Alert") {
+            if ($("#alertModal").length === 0) {
+                $("body").append(
+                    `<div class="modal fade" id="alertModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">${title}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">${message}</div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                );
+            } else {
+                $("#alertModal .modal-title").text(title);
+                $("#alertModal .modal-body").html(message);
+            }
+            $("#alertModal").modal('show');
+        }
+
+        // Adjusting the Reconfigure button to include validation in onPreAction
         $("#reconfigureAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+
+                // Perform configuration validation
+                $.ajax({
+                    url: "/api/caddy/service/validate",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        if (data && data['status'].toLowerCase() === 'ok') {
+                            // If configuration is valid, resolve the Deferred object to proceed
+                            dfObj.resolve();
+                        } else {
+                            // If configuration is invalid, show alert and reject the Deferred object
+                            showAlert(data['message'], "Validation Failed");
+                            dfObj.reject();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // On AJAX error, show alert and reject the Deferred object
+                        showAlert("Validation request failed: " + error, "Error");
+                        dfObj.reject();
+                    }
+                });
+
+                return dfObj.promise();
+            },
             onAction: function(data, status) {
                 // Check if the action was successful
                 if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
@@ -80,7 +136,6 @@
                 }
             }
         });
-
         // Initialize the service control UI for 'caddy'
         updateServiceControlUI('caddy');
     });
