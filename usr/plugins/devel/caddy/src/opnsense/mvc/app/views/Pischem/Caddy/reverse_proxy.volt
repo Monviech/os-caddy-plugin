@@ -237,6 +237,7 @@
                             <th data-column-id="HandlePath" data-type="string">Handle Path</th>
                             <th data-column-id="ToDomain" data-type="string">Backend Domain</th>
                             <th data-column-id="ToPort" data-type="string">Backend Port</th>
+                            <th data-column-id="ToPath" data-type="string">Backend Path</th>
                             <th data-column-id="HttpTls" data-type="boolean" data-formatter="boolean" data-visible="false">TLS</th>
                             <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">TLS CA</th>
                             <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">TLS Server Name</th>

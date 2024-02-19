@@ -109,7 +109,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchHandleAction()
     {
-        return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'subdomain', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'HttpTls', 'HttpTlsTrustedCaCerts', 'HttpTlsServerName', 'HttpNtlm', 'Description']);
+        return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'subdomain', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'ToPath', 'HttpTls', 'HttpTlsTrustedCaCerts', 'HttpTlsServerName', 'HttpNtlm', 'Description']);
     }
 
     public function setHandleAction($uuid)

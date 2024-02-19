@@ -244,6 +244,10 @@
                     <EnableWellKnown>Y</EnableWellKnown>
                     <EnableRanges>N</EnableRanges>
                 </ToPort>
+                <ToPath type="TextField">
+                    <Mask>/^(\/.*)?$/u</Mask>
+                    <ValidationMessage>Please enter a valid 'Backend Path' that starts with '/'.</ValidationMessage>
+                </ToPath>
                 <HttpTls type="BooleanField">
                     <Default>0</Default>
                 </HttpTls>
