@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2023 Cedrik Pischem
+ *    Copyright (C) 2023-2024 Cedrik Pischem
  *
  *    All rights reserved.
  *
@@ -35,17 +35,16 @@ use Phalcon\Messages\Message;
 
 class Caddy extends BaseModel
 {
-
     // 1. Check domain-port combinations
     // 2. Check subdomain-port combinations
     private function checkForUniquePortCombos($items, $messages, $type = 'domain')
     {
         $combos = [];
         foreach ($items as $item) {
+            $key = $item->__reference; // Dynamic key based on item reference
             $fromDomainOrSubdomain = (string) $item->FromDomain;
             $fromPort = (string) $item->FromPort;
 
-            // Default ports are treated as a special case
             if ($fromPort === '') {
                 $defaultPorts = ['80', '443'];
             } else {
@@ -58,17 +57,10 @@ class Caddy extends BaseModel
 
                 // Check for duplicate combinations
                 if (isset($combos[$comboKey])) {
-                    $domainField = $type === 'domain' ? "reverse.FromDomain" : "subdomain.FromDomain";
-                    $portField = $type === 'domain' ? "reverse.FromPort" : "subdomain.FromPort";
-
+                    // Use dynamic $key for message referencing
                     $messages->appendMessage(new Message(
-                        gettext("Duplicate entry: The combination of $type '$fromDomainOrSubdomain' and port '$port' is already used. Each $type and port pairing must be unique."),
-                        $domainField,
-                        "Duplicate" . ucfirst($type) . "Port"
-                    ));
-                    $messages->appendMessage(new Message(
-                        gettext("Duplicate entry: This port is already used for the $type '$fromDomainOrSubdomain'. Please choose a different port or $type."),
-                        $portField,
+                        "Duplicate entry: The combination of $type '$fromDomainOrSubdomain' and port '$port' is already used. Each $type and port pairing must be unique.",
+                        $type === 'domain' ? $key . ".FromDomain" : $key . ".FromDomain", // Adjusted to use dynamic key
                         "Duplicate" . ucfirst($type) . "Port"
                     ));
                 } else {
@@ -79,15 +71,6 @@ class Caddy extends BaseModel
     }
 
     // 3. Check that subdomains are under a wildcard or exact domain
-    private function endsWith($haystack, $needle)
-    {
-        $length = strlen($needle);
-        if ($length == 0) {
-            return true;
-        }
-        return (substr($haystack, -$length) === $needle);
-    }
-
     private function checkSubdomainsAgainstDomains($subdomains, $domains, $messages)
     {
         $wildcardDomainList = [];
@@ -95,7 +78,6 @@ class Caddy extends BaseModel
             if ((string) $domain->enabled === '1') {
                 $domainName = (string) $domain->FromDomain;
                 if (str_starts_with($domainName, '*.')) {
-                    // Map wildcard domain to its base (e.g., '*.example.com' -> 'example.com')
                     $wildcardBase = substr($domainName, 2);
                     $wildcardDomainList[$wildcardBase] = $domainName;
                 }
@@ -105,26 +87,41 @@ class Caddy extends BaseModel
         foreach ($subdomains as $subdomain) {
             if ((string) $subdomain->enabled === '1') {
                 $subdomainName = (string) $subdomain->FromDomain;
-                $subdomainBase = implode('.', array_slice(explode('.', $subdomainName), -2));
-
-                // Check if subdomain's base domain has a corresponding wildcard domain
                 $isValid = false;
-                    foreach ($wildcardDomainList as $baseDomain => $wildcardDomain) {
-                        if ($this->endsWith($subdomainName, $baseDomain)) {
-                            $isValid = true;
-                            break;
-                        }
+                foreach ($wildcardDomainList as $baseDomain => $wildcardDomain) {
+                    if ($this->endsWith($subdomainName, $baseDomain)) {
+                        $isValid = true;
+                        break;
                     }
+                }
 
                 if (!$isValid) {
+                    $key = $subdomain->__reference; // Dynamic key based on subdomain reference
                     $messages->appendMessage(new Message(
-                        gettext("Invalid subdomain configuration: '$subdomainName' does not fall under any configured wildcard domain."),
-                        "subdomain.FromDomain",
+                        "Invalid subdomain configuration: '$subdomainName' does not fall under any configured wildcard domain.",
+                        $key . ".FromDomain", // Use dynamic key for message referencing
                         "InvalidSubdomain"
                     ));
                 }
             }
         }
+    }
+
+    /**
+     * Checks if a string (haystack) ends with another string (needle).
+     *
+     * @param string $haystack The string to search in.
+     * @param string $needle The substring to search for at the end of $haystack.
+     * @return bool Returns true if $haystack ends with $needle, false otherwise.
+     */
+    private function endsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        if ($length == 0) {
+            return true;
+        }
+
+        return (substr($haystack, -$length) === $needle);
     }
 
     // 4. Check for conflicts between wildcard and base domains
@@ -140,18 +137,20 @@ class Caddy extends BaseModel
                 if (str_starts_with($domainName, '*.')) {
                     $baseDomain = substr($domainName, 2);
                     if (isset($domainList[$baseDomain])) {
+                        $key = $domain->__reference; // Dynamic key based on domain reference
                         $messages->appendMessage(new Message(
-                            gettext("Invalid domain configuration: Cannot create wildcard domain '$domainName' because base domain '$baseDomain' exists."),
-                            "reverse.FromDomain",
+                            "Invalid domain configuration: Cannot create wildcard domain '$domainName' because base domain '$baseDomain' exists.",
+                            $key . ".FromDomain", // Use dynamic key for message referencing
                             "WildcardBaseConflict"
                         ));
                     }
                 } else {
                     $wildcardDomain = '*.' . $domainName;
                     if (isset($domainList[$wildcardDomain])) {
+                        $key = $domain->__reference; // Dynamic key based on domain reference
                         $messages->appendMessage(new Message(
-                            gettext("Invalid domain configuration: Cannot create base domain '$domainName' because wildcard domain '$wildcardDomain' exists."),
-                            "reverse.FromDomain",
+                            "Invalid domain configuration: Cannot create base domain '$domainName' because wildcard domain '$wildcardDomain' exists.",
+                            $key . ".FromDomain", // Use dynamic key for message referencing
                             "BaseWildcardConflict"
                         ));
                     }
@@ -164,20 +163,15 @@ class Caddy extends BaseModel
     public function performValidation($validateFullModel = false)
     {
         $messages = parent::performValidation($validateFullModel);
-
         // 1. Check domain-port combinations
         $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages, 'domain');
-
         // 2. Check subdomain-port combinations
         $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages, 'subdomain');
-
         // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
-
         // 4. Check for conflicts between wildcard and base domains
         $this->checkForWildcardAndBaseDomainConflicts($this->reverseproxy->reverse->iterateItems(), $messages);
 
         return $messages;
-
     }
 }
