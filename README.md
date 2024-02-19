@@ -177,6 +177,7 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 - Additionally, you can create an access list to limit access to the GUI only from trusted IP addresses (recommended). Add that access list to the domain `opn.example.com` in advanced mode. Also, enable `Abort Connections` in the `General` Settings to abort all connections immediately that don't match the access list or the handler.
 
 # Troubleshooting
+- You can always test if your current Caddyfile is valid by invoking `https://yourOPNsenseIP/api/caddy/service/validate` - This is also done automatically each time `Apply` is pressed.
 - Check `/var/log/caddy/caddy.log` file to find errors. There is also a Caddy Log File in the GUI.
 - A good indicator that Caddy is indeed running is this log entry: `serving initial configuration`
 - If the Caddy configuration file is invalid, you can see a cycling log without the `serving initial configuration`. If that's the case, stop Caddy, and try to troubleshoot in the SSH shell. Run Caddy with `caddy run --config /usr/local/etc/caddy/Caddyfile` and look for the error message. That this happens is rare, though I couldn't test all possible configuration combinations.
