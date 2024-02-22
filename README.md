@@ -12,7 +12,7 @@
 - ACME DNS-01 challenge with configuration (requires supported DNS Provider)
 - Dynamic DNS (DynDns) with configuration (requires supported DNS Provider)
 - Supported DNS Providers in GUI:
-- ```cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, vultr, ionos, desec, porkbun, route53```
+- ```cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, ionos, desec, porkbun, route53```
 - Use custom certificates from OPNsense certificate store
 - Normal domains, wildcard domains and subdomains
 - Access Lists to restrict access based on static networks
