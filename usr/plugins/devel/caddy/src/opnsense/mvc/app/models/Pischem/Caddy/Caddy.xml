@@ -35,12 +35,13 @@
                     <desec>Desec</desec>
                     <porkbun>Porkbun</porkbun>
                     <route53>Route53</route53>
+                    <acmedns>ACME-DNS</acmedns>
                 </OptionValues>
             </TlsDnsProvider>
-            <TlsDnsApiKey type="TextField">
-            </TlsDnsApiKey>
-            <TlsDnsSecretApiKey type="TextField">
-            </TlsDnsSecretApiKey>
+            <TlsDnsApiKey type="TextField"/>
+            <TlsDnsSecretApiKey type="TextField"/>
+            <TlsDnsOptionalField1 type="TextField"/>
+            <TlsDnsOptionalField2 type="TextField"/>
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>

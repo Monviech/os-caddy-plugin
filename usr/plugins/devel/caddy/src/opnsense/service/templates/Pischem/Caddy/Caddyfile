@@ -53,6 +53,8 @@
     {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
     {% set dnsApiKey = helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first %}
     {% set dnsSecretApiKey = helpers.toList('Pischem.caddy.general.TlsDnsSecretApiKey') | first %}
+    {% set dnsOptionalField1 = helpers.toList('Pischem.caddy.general.TlsDnsOptionalField1') | first %}
+    {% set dnsOptionalField2 = helpers.toList('Pischem.caddy.general.TlsDnsOptionalField2') | first %}
     {% set dynDnsSimpleHttp = generalSettings.DynDnsSimpleHttp %}
     {% set dynDnsInterface = generalSettings.DynDnsInterface %}
     {% set dynDnsCheckInterval = generalSettings.DynDnsCheckInterval %}
@@ -77,7 +79,7 @@
         {% endfor %}
     {% endfor %}
 
-    {% if dnsProvider and dnsProvider != "none" and dnsApiKey and dynDnsDomains|length > 0 %}
+    {% if dnsProvider and dnsProvider != "none" and dnsProvider != "acmedns" and dnsApiKey and dynDnsDomains|length > 0 %}
         dynamic_dns {
             {% if dnsProvider in ['porkbun', 'desec', 'route53'] %}
                 provider {{ dnsProvider }} {
@@ -131,7 +133,7 @@
 # Reverse Proxy Configuration
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey) %}
     {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" and dnsApiKey %}
-        {% if dnsProvider in ['porkbun', 'desec', 'route53'] %}
+        {% if dnsProvider in ['porkbun', 'desec', 'route53', 'acmedns'] %}
             tls {
                 dns {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
@@ -142,6 +144,11 @@
                     {% elif dnsProvider == 'route53' %}
                         access_key_id {{ dnsApiKey }}
                         secret_access_key {{ dnsSecretApiKey }}
+                    {% elif dnsProvider == 'acmedns' %}
+                        username {{ dnsApiKey }}
+                        password {{ dnsSecretApiKey }}
+                        subdomain {{ dnsOptionalField1 }}
+                        server_url {{ dnsOptionalField2 }}
                     {% endif %}
                 }
             }
@@ -228,6 +235,8 @@
     {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
     {% set dnsApiKey = helpers.toList('Pischem.caddy.general.TlsDnsApiKey') | first %}
     {% set dnsSecretApiKey = helpers.toList('Pischem.caddy.general.TlsDnsSecretApiKey') | first %}
+    {% set dnsOptionalField1 = helpers.toList('Pischem.caddy.general.TlsDnsOptionalField1') | first %}
+    {% set dnsOptionalField2 = helpers.toList('Pischem.caddy.general.TlsDnsOptionalField2') | first %}
     {% set customCert = reverse.CustomCertificate|default("") %}
     {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
     {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey) }}
