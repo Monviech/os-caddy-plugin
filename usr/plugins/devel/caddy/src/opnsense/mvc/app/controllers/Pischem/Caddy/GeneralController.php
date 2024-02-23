@@ -1,8 +1,8 @@
 <?php
 
 /**
+ *    Copyright (C) 2023-2024 Cedrik Pischem
  *    Copyright (C) 2015 Deciso B.V.
- *    Copyright (C) 2024 Cedrik Pischem
  *
  *    All rights reserved.
  *
@@ -41,5 +41,7 @@ class GeneralController extends IndexController
         $this->view->pick('Pischem/Caddy/general');
         $this->view->generalForm = $this->getForm("general");
         $this->view->dnsproviderForm = $this->getForm("dnsprovider");
+        $this->view->dynamicdnsForm = $this->getForm("dynamicdns");
+        $this->view->logsettingsForm = $this->getForm("logsettings");
     }
 }
