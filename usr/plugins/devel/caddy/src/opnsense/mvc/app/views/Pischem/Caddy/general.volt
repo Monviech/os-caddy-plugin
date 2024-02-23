@@ -27,6 +27,8 @@
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
     <li><a data-toggle="tab" href="#dnsProviderTab">DNS Provider</a></li>
+    <li><a data-toggle="tab" href="#dynamicDnsTab">Dynamic DNS</a></li>
+    <li><a data-toggle="tab" href="#logSettingsTab">Log Settings</a></li>
 </ul>
 
 <!-- Tab Content -->
@@ -38,6 +40,14 @@
     <!-- DNS Provider Tab -->
     <div id="dnsProviderTab" class="tab-pane fade">
         {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+    </div>
+    <!-- DNS Provider Tab -->
+    <div id="dynamicDnsTab" class="tab-pane fade">
+        {{ partial("layout_partials/base_form", ['fields': dynamicdnsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+    </div>
+    <!-- DNS Provider Tab -->
+    <div id="logSettingsTab" class="tab-pane fade">
+        {{ partial("layout_partials/base_form", ['fields': logsettingsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
 </div>
 
@@ -52,6 +62,12 @@
                     data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
                     type="button"
             ></button>
+            <button class="btn btn-primary" id="saveSettings"
+                    data-endpoint="/api/caddy/general/set"
+                    data-label="{{ lang._('Save') }}"
+                    type="button"
+                    style="margin-left: 2px;"
+            >{{ lang._('Save') }}</button>
             <br/><br/>
         </div>
     </div>
@@ -120,50 +136,55 @@
                 $("#alertModal").modal('show');
             }
 
-            // Modify the Reconfigure button to include validation in onPreAction
+            // Reconfigure the serve, additional validation with a validation API is made beforehand
             $("#reconfigureAct").SimpleActionButton({
                 onPreAction: function() {
                     const dfObj = $.Deferred();
 
-                    // Step 1: Save the form data
-                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
-                        // Form save successful, proceed to validation
-                        $.ajax({
-                            url: "/api/caddy/service/validate",
-                            type: "GET",
-                            dataType: "json",
-                            success: function(data) {
-                                if (data && data['status'].toLowerCase() === 'ok') {
-                                    // If configuration is valid, resolve the Deferred object to proceed
-                                    dfObj.resolve();
-                                } else {
-                                    // If configuration is invalid, show alert and reject the Deferred object
-                                    showAlert(data['message']);
-                                    dfObj.reject();
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                // On AJAX error, show alert and reject the Deferred object
-                                showAlert("Validation request failed: " + error);
+                    // Directly proceed to validation
+                    $.ajax({
+                        url: "/api/caddy/service/validate",
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            if (data && data['status'].toLowerCase() === 'ok') {
+                                // If configuration is valid, resolve the Deferred object to proceed
+                                dfObj.resolve();
+                            } else {
+                                // If configuration is invalid, show alert using showAlert
+                                showAlert(data['message'], "Validation Error");
                                 dfObj.reject();
                             }
-                        });
-                    }, function() {
-                        // Form save failed, reject the Deferred object
-                        showAlert("Failed to save configuration.");
-                        dfObj.reject();
+                        },
+                        error: function(xhr, status, error) {
+                            // On AJAX error, show alert using showAlert
+                            showAlert("Validation request failed: " + error, "Validation Error");
+                            dfObj.reject();
+                        }
                     });
 
                     return dfObj.promise();
                 },
                 onAction: function(data, status) {
                     if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                        // Update only the service control UI for 'caddy'
+                        // Configuration is valid and applied, possibly refresh UI or notify user
                         updateServiceControlUI('caddy');
                     } else {
-                        console.error("Action was not successful or an error occurred:", data);
+                        // Handle errors or unsuccessful application
+                        showAlert("An error occurred while applying the configuration.", "Error");
                     }
                 }
+            });
+
+            // Adding Save functionality, so saving can be done independantly from applying
+            $("#saveSettings").click(function() {
+                saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
+                    // Callback function on successful save, optional
+                    showAlert("Configuration saved successfully.", "Save Successful");
+                }, function() {
+                    // Callback function on save failure
+                    showAlert("Failed to save configuration.", "Error");
+                });
             });
 
             // Initialize the service control UI for 'caddy'

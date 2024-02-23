@@ -19,38 +19,15 @@
         <help><![CDATA[Select the auto HTTPS option. "On" (default) creates automatic certificates using Let's Encrypt or ZeroSSL without needing any configuration.]]></help>
     </field>
     <field>
-        <id>caddy.general.accesslist</id>
-        <label>Trusted Proxies</label>
-        <type>dropdown</type>
-        <help><![CDATA[Select an Access List of Trusted Proxies. If Caddy is not the first server being connected to by your clients (for example when a CDN is in front of Caddy), you may configure trusted_proxies with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the Domains your Trusted Proxy connects to.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>caddy.general.abort</id>
         <label>Abort Connections</label>
         <type>checkbox</type>
         <help><![CDATA[Abort all connections that don't have a matching handle or access list. This option doesn't conflict with Let's Encrypt. Disable it for troubleshooting purposes, e.g., testing if the Reverse Proxy Domain works and the Certificate has been installed. For production use, enabling this option is recommended.]]></help>
     </field>
     <field>
-        <id>caddy.general.LogCredentials</id>
-        <label>Log Credentials</label>
-        <type>checkbox</type>
-        <help><![CDATA[Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>caddy.general.LogAccessPlain</id>
-        <label>Log HTTP Access in JSON Format</label>
-        <type>checkbox</type>
-        <help><![CDATA[Log HTTP access in a standard JSON logfile per domain, e.g for processing by CrowdSec. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enabling this will make the HTTP Access Log dissappear from the standard "Log File" in the GUI. They can be found in the filesystem "/var/log/caddy/access/"]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>caddy.general.LogAccessPlainKeep</id>
-        <label>Keep HTTP Access JSON Logs for (days)</label>
-        <hint>10</hint> 
-        <type>text</type>
-        <help><![CDATA[How many days to keep the JSON access logs.]]></help>
-        <advanced>true</advanced>
+        <id>caddy.general.accesslist</id>
+        <label>Trusted Proxies</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select an Access List of Trusted Proxies. If Caddy is not the first server being connected to by your clients (for example when a CDN is in front of Caddy), you may configure trusted_proxies with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the Domains your Trusted Proxy connects to.]]></help>
     </field>
 </form>
