@@ -66,6 +66,7 @@
                     data-endpoint="/api/caddy/general/set"
                     data-label="{{ lang._('Save') }}"
                     type="button"
+                    style="margin-left: 2px;"
             >{{ lang._('Save') }}</button>
             <br/><br/>
         </div>
