@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 #
-# Copyright (c) 2023 Cedrik Pischem
+# Copyright (c) 2023-2024 Cedrik Pischem
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
