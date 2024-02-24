@@ -1,8 +1,8 @@
 <?php
 
 /**
+ *    Copyright (C) 2023-2024 Cedrik Pischem
  *    Copyright (C) 2015 Deciso B.V.
- *    Copyright (C) 2023 Cedrik Pischem
  *
  *    All rights reserved.
  *
@@ -37,7 +37,6 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'caddy';
     protected static $internalModelClass = 'Pischem\Caddy\Caddy';
-
 
     /*ReverseProxy Section*/
 
