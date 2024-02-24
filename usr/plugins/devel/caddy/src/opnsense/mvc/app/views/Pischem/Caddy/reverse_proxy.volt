@@ -80,7 +80,7 @@
             // Use fadeIn to make the message appear smoothly
             messageArea.fadeIn(500, function() {
                 // After the message has faded in, keep it visible for 5 seconds
-                $(this).delay(3000).fadeOut(500, function() {
+                $(this).delay(5000).fadeOut(500, function() {
                     // Optionally clear the message after fading out to prepare for the next message
                     $(this).html('');
                 });
