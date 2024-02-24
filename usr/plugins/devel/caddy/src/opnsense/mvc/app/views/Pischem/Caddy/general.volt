@@ -25,58 +25,6 @@
  #}
 
 
-<!-- Tab Navigation -->
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
-    <li><a data-toggle="tab" href="#dnsProviderTab">DNS Provider</a></li>
-    <li><a data-toggle="tab" href="#dynamicDnsTab">Dynamic DNS</a></li>
-    <li><a data-toggle="tab" href="#logSettingsTab">Log Settings</a></li>
-</ul>
-
-<!-- Tab Content -->
-<div class="tab-content content-box">
-    <!-- General Tab -->
-    <div id="generalTab" class="tab-pane fade in active">
-        {{ partial("layout_partials/base_form", ['fields': generalForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
-    </div>
-    <!-- DNS Provider Tab -->
-    <div id="dnsProviderTab" class="tab-pane fade">
-        {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
-    </div>
-    <!-- DNS Provider Tab -->
-    <div id="dynamicDnsTab" class="tab-pane fade">
-        {{ partial("layout_partials/base_form", ['fields': dynamicdnsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
-    </div>
-    <!-- DNS Provider Tab -->
-    <div id="logSettingsTab" class="tab-pane fade">
-        {{ partial("layout_partials/base_form", ['fields': logsettingsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
-    </div>
-</div>
-
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <br/>
-            <!-- Reconfigure Button with Pre-Action -->
-            <button class="btn btn-primary" id="reconfigureAct"
-                    data-endpoint="/api/caddy/service/reconfigure"
-                    data-label="{{ lang._('Apply') }}"
-                    data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
-                    type="button"
-            ></button>
-            <button class="btn btn-primary" id="saveSettings"
-                    data-endpoint="/api/caddy/general/set"
-                    data-label="{{ lang._('Save') }}"
-                    type="button"
-                    style="margin-left: 2px;"
-            >{{ lang._('Save') }}</button>
-            <br/><br/>
-            <!-- Message Area for error/success messages -->
-        <div id="messageArea" class="alert" style="display: none;"></div>
-        </div>
-    </div>
-</section>
-
 <script type="text/javascript">
     $(document).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
@@ -193,3 +141,55 @@
         });
     });
 </script>
+
+<!-- Tab Navigation -->
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
+    <li><a data-toggle="tab" href="#dnsProviderTab">DNS Provider</a></li>
+    <li><a data-toggle="tab" href="#dynamicDnsTab">Dynamic DNS</a></li>
+    <li><a data-toggle="tab" href="#logSettingsTab">Log Settings</a></li>
+</ul>
+
+<!-- Tab Content -->
+<div class="tab-content content-box">
+    <!-- General Tab -->
+    <div id="generalTab" class="tab-pane fade in active">
+        {{ partial("layout_partials/base_form", ['fields': generalForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+    </div>
+    <!-- DNS Provider Tab -->
+    <div id="dnsProviderTab" class="tab-pane fade">
+        {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+    </div>
+    <!-- DNS Provider Tab -->
+    <div id="dynamicDnsTab" class="tab-pane fade">
+        {{ partial("layout_partials/base_form", ['fields': dynamicdnsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+    </div>
+    <!-- DNS Provider Tab -->
+    <div id="logSettingsTab" class="tab-pane fade">
+        {{ partial("layout_partials/base_form", ['fields': logsettingsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+    </div>
+</div>
+
+<section class="page-content-main">
+    <div class="content-box">
+        <div class="col-md-12">
+            <br/>
+            <!-- Reconfigure Button with Pre-Action -->
+            <button class="btn btn-primary" id="reconfigureAct"
+                    data-endpoint="/api/caddy/service/reconfigure"
+                    data-label="{{ lang._('Apply') }}"
+                    data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
+                    type="button"
+            ></button>
+            <button class="btn btn-primary" id="saveSettings"
+                    data-endpoint="/api/caddy/general/set"
+                    data-label="{{ lang._('Save') }}"
+                    type="button"
+                    style="margin-left: 2px;"
+            >{{ lang._('Save') }}</button>
+            <br/><br/>
+            <!-- Message Area for error/success messages -->
+        <div id="messageArea" class="alert alert-info" style="display: none;"></div>
+        </div>
+    </div>
+</section>
