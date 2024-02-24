@@ -74,16 +74,17 @@
         function showAlert(message, type = "error") {
             var alertClass = type === "error" ? "alert-danger" : "alert-success";
             var messageArea = $("#messageArea");
-            // Prepare the message area by clearing previous classes and setting the new one
+
+            // Stop any current animation, clear the queue, and immediately hide the element
+            messageArea.stop(true, true).hide();
+
+            // Now set the class and message
             messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
-    
-            // Use fadeIn to make the message appear smoothly
-            messageArea.fadeIn(500, function() {
-                // After the message has faded in, keep it visible for 5 seconds
-                $(this).delay(5000).fadeOut(500, function() {
-                    // Optionally clear the message after fading out to prepare for the next message
-                    $(this).html('');
-                });
+
+            // Use fadeIn to make the message appear smoothly, then fadeOut after a delay
+            messageArea.fadeIn(500).delay(5000).fadeOut(500, function() {
+                // Clear the message after fading out to ensure it's clean for the next message
+                $(this).html('');
             });
         }
 
@@ -144,6 +145,7 @@
 </ul>
 
 <div class="tab-content content-box">
+
     <!-- Reverse Proxy Tab -->
     <div id="domainsTab" class="tab-pane fade in active">
         <div style="padding-left: 16px;">
@@ -332,7 +334,7 @@
             ></button>
             <br/><br/>
             <!-- Message Area for error/success messages -->
-            <div id="messageArea" class="alert" style="display: none;"></div>
+            <div id="messageArea" class="alert alert-info" style="display: none;"></div>
             <!-- Message Area to hint user to apply changes when data is changed in bootgrids -->
             <div id="ConfigurationChangeMessage" class="alert alert-info" style="display: none;">
             Please don't forget to apply the configuration.
