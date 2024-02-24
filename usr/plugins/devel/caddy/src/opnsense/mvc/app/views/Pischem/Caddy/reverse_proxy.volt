@@ -24,6 +24,7 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
+
 <script>
     $(document).ready(function() {
         $("#reverseProxyGrid").UIBootgrid({
@@ -69,33 +70,28 @@
             del:'/api/caddy/ReverseProxy/delBasicAuth/',
         });
 
-        // Function to show the alert of the validation in a user friendly popup
-        function showAlert(message, title = "Alert") {
-            if ($("#alertModal").length === 0) {
-                $("body").append(
-                    `<div class="modal fade" id="alertModal" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">${title}</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">${message}</div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                );
-            } else {
-                $("#alertModal .modal-title").text(title);
-                $("#alertModal .modal-body").html(message);
-            }
-            $("#alertModal").modal('show');
+        // Function to show alerts in the HTML message area
+        function showAlert(message, type = "error") {
+            var alertClass = type === "error" ? "alert-danger" : "alert-success";
+            var messageArea = $("#messageArea");
+
+            // Stop any current animation, clear the queue, and immediately hide the element
+            messageArea.stop(true, true).hide();
+
+            // Now set the class and message
+            messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
+
+            // Use fadeIn to make the message appear smoothly, then fadeOut after a delay
+            messageArea.fadeIn(500).delay(5000).fadeOut(500, function() {
+                // Clear the message after fading out to ensure it's clean for the next message
+                $(this).html('');
+            });
         }
+
+        // Hide message area when starting new actions
+        $('input, select, textarea').on('change', function() {
+            $("#messageArea").hide();
+        });        
 
         // Adjusting the Reconfigure button to include validation in onPreAction
         $("#reconfigureAct").SimpleActionButton({
@@ -130,6 +126,7 @@
                 // Check if the action was successful
                 if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
                     // Update only the service control UI for 'caddy'
+                    showAlert("Configuration applied successfully.", "Apply Success");
                     updateServiceControlUI('caddy');
                 } else {
                     console.error("Action was not successful or an error occurred:", data);
@@ -155,7 +152,7 @@
             <!-- Reverse Proxy -->
             <h1>Domains</h1>
             <div style="display: block;"> <!-- Common container -->
-                <table id="reverseProxyGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogReverseProxy">
+                <table id="reverseProxyGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogReverseProxy" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
@@ -190,7 +187,7 @@
             <!-- Subdomains -->
             <h1>Subdomains</h1>
             <div style="display: block;"> <!-- Common container -->
-                <table id="reverseSubdomainGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubdomain">
+                <table id="reverseSubdomainGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubdomain" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
@@ -226,7 +223,7 @@
         <div style="padding-left: 16px;">
             <h1>Handlers</h1>
             <div style="display: block;"> <!-- Common container -->
-                <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle">
+                <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
@@ -268,7 +265,7 @@
         <div style="padding-left: 16px;">
             <h1>Access Lists</h1>
             <div style="display: block;">
-                <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList">
+                <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
@@ -298,7 +295,7 @@
         <div style="padding-left: 16px;">
             <h1>Basic Auth</h1>
             <div style="display: block;">
-                <table id="basicAuthGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogBasicAuth">
+                <table id="basicAuthGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogBasicAuth" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
@@ -336,6 +333,12 @@
                     type="button"
             ></button>
             <br/><br/>
+            <!-- Message Area for error/success messages -->
+            <div id="messageArea" class="alert alert-info" style="display: none;"></div>
+            <!-- Message Area to hint user to apply changes when data is changed in bootgrids -->
+            <div id="ConfigurationChangeMessage" class="alert alert-info" style="display: none;">
+            Please don't forget to apply the configuration.
+            </div>
         </div>
     </div>
 </section>

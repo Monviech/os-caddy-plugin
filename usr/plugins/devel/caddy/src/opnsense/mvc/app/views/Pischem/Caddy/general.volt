@@ -23,6 +23,125 @@
  # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  # POSSIBILITY OF SUCH DAMAGE.
  #}
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
+        mapDataToFormUI(data_get_map).done(function(data){
+            // console.log("Fetched data:", data); // Log the fetched data
+            var generalSettings = data.frm_GeneralSettings.caddy.general;
+
+            // Populate TlsAutoHttps dropdown
+            var tlsAutoHttpsSelect = $('#caddy\\.general\\.TlsAutoHttps');
+            tlsAutoHttpsSelect.empty(); // Clear existing options
+            $.each(generalSettings.TlsAutoHttps, function(key, option) {
+                if (key !== "") {  // Filter out the unwanted "None" option
+                    tlsAutoHttpsSelect.append(new Option(option.value, key, false, option.selected === 1));
+                }
+            });
+
+            // Populate TlsDnsProvider dropdown
+            var tlsDnsProviderSelect = $('#caddy\\.general\\.TlsDnsProvider');
+            tlsDnsProviderSelect.empty(); // Clear existing options
+            $.each(generalSettings.TlsDnsProvider, function(key, option) {
+                if (key !== "") {  // Filter out the unwanted "None" option
+                    tlsDnsProviderSelect.append(new Option(option.value, key, false, option.selected === 1));
+                }
+            });
+
+            // Populate Trusted Proxies dropdown
+            var accesslistSelect = $('#caddy\\.general\\.accesslist');
+            accesslistSelect.empty(); // Clear existing options
+            $.each(generalSettings.accesslist, function(key, option) {
+                accesslistSelect.append(new Option(option.value, key, false, option.selected === 1));
+            });
+
+            // Refresh selectpicker for these dropdowns
+            $('.selectpicker').selectpicker('refresh');
+
+            // Function to show alerts in the HTML message area
+            function showAlert(message, type = "error") {
+                var alertClass = type === "error" ? "alert-danger" : "alert-success";
+                var messageArea = $("#messageArea");
+
+                // Stop any current animation, clear the queue, and immediately hide the element
+                messageArea.stop(true, true).hide();
+
+                // Now set the class and message
+                messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
+
+                // Use fadeIn to make the message appear smoothly, then fadeOut after a delay
+                messageArea.fadeIn(500).delay(5000).fadeOut(500, function() {
+                    // Clear the message after fading out to ensure it's clean for the next message
+                    $(this).html('');
+                });
+            }
+
+            // Hide message area when starting new actions
+            $('input, select, textarea').on('change', function() {
+                $("#messageArea").hide();
+            });
+            
+            // Reconfigure the serve, additional validation with a validation API is made beforehand
+            $("#reconfigureAct").SimpleActionButton({
+                onPreAction: function() {
+                    const dfObj = $.Deferred();
+
+                    // Directly proceed to validation
+                    $.ajax({
+                        url: "/api/caddy/service/validate",
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            if (data && data['status'].toLowerCase() === 'ok') {
+                                // If configuration is valid, resolve the Deferred object to proceed
+                                dfObj.resolve();
+                            } else {
+                                // If configuration is invalid, show alert using showAlert
+                                showAlert(data['message'], "Validation Error");
+                                dfObj.reject();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // On AJAX error, show alert using showAlert
+                            showAlert("Validation request failed: " + error, "Validation Error");
+                            dfObj.reject();
+                        }
+                    });
+
+                    return dfObj.promise();
+                },
+                onAction: function(data, status) {
+                    if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
+                        // Configuration is valid and applied, possibly refresh UI or notify user
+                        showAlert("Configuration applied successfully.", "Apply Success");
+                        updateServiceControlUI('caddy');
+                    } else {
+                        // Handle errors or unsuccessful application
+                        showAlert("An error occurred while applying the configuration.", "Error");
+                    }
+                }
+            });
+
+            // Adding Save functionality, so saving can be done independantly from applying
+            $("#saveSettings").click(function() {
+                saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
+                    // Callback function on successful save, optional
+                    showAlert("Configuration saved successfully. Please don't forget to apply the configuration.", "Save Successful");
+                }, function() {
+                    // Callback function on save failure
+                    showAlert("Failed to save configuration.", "Error");
+                });
+            });
+
+            // Initialize the service control UI for 'caddy'
+            updateServiceControlUI('caddy');
+
+        });
+    });
+</script>
+
 <!-- Tab Navigation -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
@@ -69,127 +188,8 @@
                     style="margin-left: 2px;"
             >{{ lang._('Save') }}</button>
             <br/><br/>
+            <!-- Message Area for error/success messages -->
+        <div id="messageArea" class="alert alert-info" style="display: none;"></div>
         </div>
     </div>
 </section>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
-        mapDataToFormUI(data_get_map).done(function(data){
-            // console.log("Fetched data:", data); // Log the fetched data
-            var generalSettings = data.frm_GeneralSettings.caddy.general;
-
-            // Populate TlsAutoHttps dropdown
-            var tlsAutoHttpsSelect = $('#caddy\\.general\\.TlsAutoHttps');
-            tlsAutoHttpsSelect.empty(); // Clear existing options
-            $.each(generalSettings.TlsAutoHttps, function(key, option) {
-                if (key !== "") {  // Filter out the unwanted "None" option
-                    tlsAutoHttpsSelect.append(new Option(option.value, key, false, option.selected === 1));
-                }
-            });
-
-            // Populate TlsDnsProvider dropdown
-            var tlsDnsProviderSelect = $('#caddy\\.general\\.TlsDnsProvider');
-            tlsDnsProviderSelect.empty(); // Clear existing options
-            $.each(generalSettings.TlsDnsProvider, function(key, option) {
-                if (key !== "") {  // Filter out the unwanted "None" option
-                    tlsDnsProviderSelect.append(new Option(option.value, key, false, option.selected === 1));
-                }
-            });
-
-            // Populate Trusted Proxies dropdown
-            var accesslistSelect = $('#caddy\\.general\\.accesslist');
-            accesslistSelect.empty(); // Clear existing options
-            $.each(generalSettings.accesslist, function(key, option) {
-                accesslistSelect.append(new Option(option.value, key, false, option.selected === 1));
-            });
-
-            // Refresh selectpicker for these dropdowns
-            $('.selectpicker').selectpicker('refresh');
-
-            // Function to show alerts with Bootstrap modals for user feedback
-            function showAlert(message, title = "Configuration Validation Failed") {
-                if ($("#alertModal").length === 0) {
-                    $("body").append(
-                        `<div class="modal fade" id="alertModal" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">${title}</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">${message}</div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`
-                    );
-                } else {
-                    $("#alertModal .modal-title").text(title);
-                    $("#alertModal .modal-body").html(message);
-                }
-                $("#alertModal").modal('show');
-            }
-
-            // Reconfigure the serve, additional validation with a validation API is made beforehand
-            $("#reconfigureAct").SimpleActionButton({
-                onPreAction: function() {
-                    const dfObj = $.Deferred();
-
-                    // Directly proceed to validation
-                    $.ajax({
-                        url: "/api/caddy/service/validate",
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            if (data && data['status'].toLowerCase() === 'ok') {
-                                // If configuration is valid, resolve the Deferred object to proceed
-                                dfObj.resolve();
-                            } else {
-                                // If configuration is invalid, show alert using showAlert
-                                showAlert(data['message'], "Validation Error");
-                                dfObj.reject();
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            // On AJAX error, show alert using showAlert
-                            showAlert("Validation request failed: " + error, "Validation Error");
-                            dfObj.reject();
-                        }
-                    });
-
-                    return dfObj.promise();
-                },
-                onAction: function(data, status) {
-                    if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                        // Configuration is valid and applied, possibly refresh UI or notify user
-                        updateServiceControlUI('caddy');
-                    } else {
-                        // Handle errors or unsuccessful application
-                        showAlert("An error occurred while applying the configuration.", "Error");
-                    }
-                }
-            });
-
-            // Adding Save functionality, so saving can be done independantly from applying
-            $("#saveSettings").click(function() {
-                saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
-                    // Callback function on successful save, optional
-                    showAlert("Configuration saved successfully.", "Save Successful");
-                }, function() {
-                    // Callback function on save failure
-                    showAlert("Failed to save configuration.", "Error");
-                });
-            });
-
-            // Initialize the service control UI for 'caddy'
-            updateServiceControlUI('caddy');
-
-        });
-    });
-</script>
