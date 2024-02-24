@@ -23,6 +23,8 @@
  # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  # POSSIBILITY OF SUCH DAMAGE.
  #}
+
+
 <!-- Tab Navigation -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
@@ -69,6 +71,8 @@
                     style="margin-left: 2px;"
             >{{ lang._('Save') }}</button>
             <br/><br/>
+            <!-- Message Area for error/success messages -->
+            <div id="messageArea" class="alert" style="display: none;"></div>
         </div>
     </div>
 </section>
@@ -108,34 +112,28 @@
             // Refresh selectpicker for these dropdowns
             $('.selectpicker').selectpicker('refresh');
 
-            // Function to show alerts with Bootstrap modals for user feedback
-            function showAlert(message, title = "Configuration Validation Failed") {
-                if ($("#alertModal").length === 0) {
-                    $("body").append(
-                        `<div class="modal fade" id="alertModal" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">${title}</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">${message}</div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`
-                    );
-                } else {
-                    $("#alertModal .modal-title").text(title);
-                    $("#alertModal .modal-body").html(message);
-                }
-                $("#alertModal").modal('show');
+            // Function to show alerts in the HTML message area
+            function showAlert(message, type = "error") {
+                var alertClass = type === "error" ? "alert-danger" : "alert-success";
+                var messageArea = $("#messageArea");
+                // Prepare the message area by clearing previous classes and setting the new one
+                messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
+    
+                // Use fadeIn to make the message appear smoothly
+                messageArea.fadeIn(500, function() {
+                    // After the message has faded in, keep it visible for 5 seconds
+                    $(this).delay(5000).fadeOut(500, function() {
+                        // Optionally clear the message after fading out to prepare for the next message
+                        $(this).html('');
+                    });
+                });
             }
 
+            // Hide message area when starting new actions
+            $('input, select, textarea').on('change', function() {
+                $("#messageArea").hide();
+            });
+            
             // Reconfigure the serve, additional validation with a validation API is made beforehand
             $("#reconfigureAct").SimpleActionButton({
                 onPreAction: function() {
@@ -168,6 +166,7 @@
                 onAction: function(data, status) {
                     if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
                         // Configuration is valid and applied, possibly refresh UI or notify user
+                        showAlert("Configuration applied successfully.", "Error");
                         updateServiceControlUI('caddy');
                     } else {
                         // Handle errors or unsuccessful application
@@ -180,7 +179,7 @@
             $("#saveSettings").click(function() {
                 saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
                     // Callback function on successful save, optional
-                    showAlert("Configuration saved successfully.", "Save Successful");
+                    showAlert("Configuration saved successfully. Please don't forget to apply the configuration.", "Save Successful");
                 }, function() {
                     // Callback function on save failure
                     showAlert("Failed to save configuration.", "Error");
