@@ -1,8 +1,8 @@
 <?php
 
 /**
+ *    Copyright (C) 2023-2024 Cedrik Pischem
  *    Copyright (C) 2015 Deciso B.V.
- *    Copyright (C) 2023 Cedrik Pischem
  * 
  *    All rights reserved.
  *
@@ -28,7 +28,6 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
 
 namespace Pischem\Caddy\Api;
 

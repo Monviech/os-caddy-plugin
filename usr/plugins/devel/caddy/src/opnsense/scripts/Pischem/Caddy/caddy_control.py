@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 #
-# Copyright (c) 2023 Cedrik Pischem
+# Copyright (c) 2023-2024 Cedrik Pischem
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -35,8 +35,6 @@ def run_service_command(action, action_message):
     
     if action == "validate":
         try:
-            # Reload Caddyfile template
-            # subprocess.run(["configctl", "template", "reload", "Pischem/Caddy"], check=True)
             # Call Setup script
             subprocess.run(["/usr/local/opnsense/scripts/Pischem/Caddy/setup.sh"], check=True)
             # Validate the Caddyfile with explicit --config flag, capturing both stdout and stderr

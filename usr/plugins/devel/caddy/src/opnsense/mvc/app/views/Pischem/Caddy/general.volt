@@ -24,7 +24,6 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
-
 <script type="text/javascript">
     $(document).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};

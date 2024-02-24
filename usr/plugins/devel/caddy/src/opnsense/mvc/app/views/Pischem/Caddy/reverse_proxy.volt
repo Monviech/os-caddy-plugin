@@ -24,7 +24,6 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
-
 <script>
     $(document).ready(function() {
         $("#reverseProxyGrid").UIBootgrid({

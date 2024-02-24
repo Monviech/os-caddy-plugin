@@ -1,6 +1,6 @@
 <model>
     <mount>//Pischem/caddy</mount>
-    <description>A GUI model for configuring a basic reverse proxy in the Caddy web server.</description>
+    <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
     <version>1.1.2</version>
     <items>
         <general>
@@ -200,7 +200,7 @@
             </subdomain>
             <handle type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <reverse type="ModelRelationField">
