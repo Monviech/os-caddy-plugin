@@ -166,7 +166,7 @@
                 onAction: function(data, status) {
                     if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
                         // Configuration is valid and applied, possibly refresh UI or notify user
-                        showAlert("Configuration applied successfully.", "Error");
+                        showAlert("Configuration applied successfully.", "Apply Success");
                         updateServiceControlUI('caddy');
                     } else {
                         // Handle errors or unsuccessful application
