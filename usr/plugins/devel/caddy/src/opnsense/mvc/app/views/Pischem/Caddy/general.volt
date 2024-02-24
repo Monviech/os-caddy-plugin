@@ -72,7 +72,7 @@
             >{{ lang._('Save') }}</button>
             <br/><br/>
             <!-- Message Area for error/success messages -->
-            <div id="messageArea" class="alert" style="display: none;"></div>
+        <div id="messageArea" class="alert" style="display: none;"></div>
         </div>
     </div>
 </section>
