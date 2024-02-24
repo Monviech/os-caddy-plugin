@@ -29,7 +29,6 @@
  *
  */
 
-
 namespace Pischem\Caddy;
 
 use OPNsense\Base\IndexController;
