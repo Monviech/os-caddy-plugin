@@ -3,7 +3,7 @@
         <id>caddy.general.TlsDnsProvider</id>
         <label>DNS Provider</label>
         <type>dropdown</type>
-        <help><![CDATA[Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You mostly need this for Wildcard Certificates, and for Dynamic DNS. To use the DNS-01 Challenge and Dynamic DNS, enable the checkbox in a Reverse Proxy Domain or Subdomain.]]></help>
+        <help><![CDATA[Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You mostly need this for Wildcard Certificates, and for Dynamic DNS. To use the DNS-01 Challenge and Dynamic DNS, enable the checkbox in a Reverse Proxy Domain or Subdomain. For more information, read the documentation for your DNS Provider: https://github.com/caddy-dns]]></help>
     </field>
     <field>
         <id>caddy.general.TlsDnsApiKey</id>
@@ -15,48 +15,48 @@
         <id>caddy.general.TlsDnsSecretApiKey</id>
         <label>DNS Secret API Key</label>
         <type>text</type>
-        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: Route53 "secret_access_key", Porkbun "api_secret_key", ACME-DNS "password".]]></help>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: Route53 "secret_access_key", Porkbun "api_secret_key", ACME-DNS "password", Azure "client_id", OpenStack Designate "tenant_id", OVH "application_key", Namecheap "user", PowerDNS "api_token", DDNS "username", Metaname "account_reference", Linode "api_url", Tencent Cloud "secret_key", Dinahosting "password", Hexonet "password", Mail-in-a-Box "email_address".]]></help>
     </field>
     <field>
         <id>caddy.general.TlsDnsOptionalField1</id>
         <label>DNS API Optional Field 1</label>
         <type>text</type>
-        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: ACME-DNS "subdomain".]]></help>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: ACME-DNS "subdomain", Azure "client_secret", OpenStack Designate "identity_api_version", OVH "application_secret", Namecheap "api_endpoint", DDNS "password", Linode "api_version", Mail-in-a-Box "password".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>caddy.general.TlsDnsOptionalField2</id>
         <label>DNS API Optional Field 2</label>
         <type>text</type>
-        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: ACME-DNS "server_url".]]></help>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: ACME-DNS "server_url", Azure "subscription_id", OpenStack Designate "password", OVH "consumer_key", Namecheap "client_ip", DDNS "password".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>caddy.general.TlsDnsOptionalField3</id>
         <label>DNS API Optional Field 3</label>
         <type>text</type>
-        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: .]]></help>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: Azure "resource_group_name", OpenStack Designate "username".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>caddy.general.TlsDnsOptionalField4</id>
         <label>DNS API Optional Field 4</label>
         <type>text</type>
-        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: .]]></help>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: OpenStack Designate "tenant_name".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>caddy.general.TlsDnsOptionalField5</id>
         <label>DNS API Optional Field 5</label>
         <type>text</type>
-        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: .]]></help>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: OpenStack Designate "auth_url".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>caddy.general.TlsDnsOptionalField6</id>
         <label>DNS API Optional Field 6</label>
         <type>text</type>
-        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: .]]></help>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here: OpenStack Designate "endpoint_type".]]></help>
         <advanced>true</advanced>
     </field>
 </form>
