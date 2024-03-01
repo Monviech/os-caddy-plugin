@@ -1,4 +1,4 @@
-<form>    
+<form>
     <field>
         <id>caddy.general.TlsDnsProvider</id>
         <label>DNS Provider</label>
@@ -9,13 +9,14 @@
         <id>caddy.general.TlsDnsApiKey</id>
         <label>DNS API Key</label>
         <type>text</type>
-        <help><![CDATA[This is the standard field for the API Key. If your DNS Provider has only 1 API Key, enter it here and leave all other fields empty. Some DNS Providers need special configuration here: Route53 "access_key_id", Porkbun "api_key", ACME-DNS "username", Google Cloud DNS "gcp_project", Azure "tenant_id", OpenStack Designate "region_name", Google Domains "access_token", OVH "endpoint", Namecheap "api_key", PowerDNS "server_url", DDNSS "api_token", Metaname "api_key", Linode "api_token", Tencent Cloud "secret_id", Dinahosting "username", Hexonet "username", Mail-in-a-Box "api_url".]]></help>
+        <help><![CDATA[This is the standard field for the API Key. There are more fields in "Advanced Mode". If your DNS Provider has only 1 API Key, enter it here and leave all other fields empty. Some DNS Providers need special configuration here: Route53 "access_key_id", Porkbun "api_key", ACME-DNS "username", Google Cloud DNS "gcp_project", Azure "tenant_id", OpenStack Designate "region_name", Google Domains "access_token", OVH "endpoint", Namecheap "api_key", PowerDNS "server_url", DDNSS "api_token", Metaname "api_key", Linode "api_token", Tencent Cloud "secret_id", Dinahosting "username", Hexonet "username", Mail-in-a-Box "api_url".]]></help>
     </field>
     <field>
         <id>caddy.general.TlsDnsSecretApiKey</id>
         <label>DNS Secret API Key</label>
         <type>text</type>
         <help><![CDATA[Leave empty if your DNS Provider isn't specified here: Route53 "secret_access_key", Porkbun "api_secret_key", ACME-DNS "password", Azure "client_id", OpenStack Designate "tenant_id", OVH "application_key", Namecheap "user", PowerDNS "api_token", DDNSS "username", Metaname "account_reference", Linode "api_url", Tencent Cloud "secret_key", Dinahosting "password", Hexonet "password", Mail-in-a-Box "email_address".]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>caddy.general.TlsDnsOptionalField1</id>
