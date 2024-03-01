@@ -85,20 +85,75 @@
 
     {% if dnsProvider and dnsProvider != "none" and dnsProvider != "acmedns" and dnsApiKey and dynDnsDomains|length > 0 %}
         dynamic_dns {
-            {% if dnsProvider in ['porkbun', 'desec', 'route53'] %}
+            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'googleclouddns', 'azure', 'openstack-designate', 'google-domains', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'metaname', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
                 provider {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
-                        api_key {{ dnsApiKey }}
-                        api_secret_key {{ dnsSecretApiKey }}
+                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}api_secret_key {{ dnsSecretApiKey }}{% endif %}
                     {% elif dnsProvider == 'desec' %}
-                        token {{ dnsApiKey }}
+                        {% if dnsApiKey %}token {{ dnsApiKey }}{% endif %}
                     {% elif dnsProvider == 'route53' %}
-                        access_key_id {{ dnsApiKey }}
-                        secret_access_key {{ dnsSecretApiKey }}
+                        {% if dnsApiKey %}access_key_id {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}secret_access_key {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'googleclouddns' %}
+                        {% if dnsApiKey %}gcp_project {{ dnsApiKey }}{% endif %}
+                    {% elif dnsProvider == 'azure' %}
+                        {% if dnsApiKey %}tenant_id {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}client_id {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}client_secret {{ dnsOptionalField1 }}{% endif %}
+                        {% if dnsOptionalField2 %}subscription_id {{ dnsOptionalField2 }}{% endif %}
+                        {% if dnsOptionalField3 %}resource_group_name {{ dnsOptionalField3 }}{% endif %}
+                    {% elif dnsProvider == 'openstack-designate' %}
+                        {% if dnsApiKey %}region_name {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}tenant_id {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}identity_api_version {{ dnsOptionalField1 }}{% endif %}
+                        {% if dnsOptionalField2 %}password {{ dnsOptionalField2 }}{% endif %}
+                        {% if dnsOptionalField3 %}username {{ dnsOptionalField3 }}{% endif %}
+                        {% if dnsOptionalField4 %}tenant_name {{ dnsOptionalField4 }}{% endif %}
+                        {% if dnsOptionalField5 %}auth_url {{ dnsOptionalField5 }}{% endif %}
+                    {% elif dnsProvider == 'google-domains' %}
+                        {% if dnsApiKey %}access_token {{ dnsApiKey }}{% endif %}
+                    {% elif dnsProvider == 'ovh' %}
+                        {% if dnsApiKey %}endpoint {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}application_key {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}application_secret {{ dnsOptionalField1 }}{% endif %}
+                        {% if dnsOptionalField2 %}consumer_key {{ dnsOptionalField2 }}{% endif %}
+                    {% elif dnsProvider == 'namecheap' %}
+                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}{% endif %}
+                        {% if dnsOptionalField2 %}client_ip {{ dnsOptionalField2 }}{% endif %}
+                    {% elif dnsProvider == 'powerdns' %}
+                        {% if dnsApiKey %}server_url {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}api_token {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'ddnss' %}
+                        {% if dnsApiKey %}api_token {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}username {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}{% endif %}
+                    {% elif dnsProvider == 'metaname' %}
+                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}account_reference {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'linode' %}
+                        {% if dnsApiKey %}api_token {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}api_url {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}api_version {{ dnsOptionalField1 }}{% endif %}
+                    {% elif dnsProvider == 'tencentcloud' %}
+                        {% if dnsApiKey %}secret_id {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'dinahosting' %}
+                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'hexonet' %}
+                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'mailinabox' %}
+                        {% if dnsApiKey %}api_url {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}email_address {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}{% endif %}
                     {% endif %}
                 }
             {% else %}
-                provider {{ dnsProvider }} {{ dnsApiKey }}
+                 {% if dnsApiKey %}provider {{ dnsProvider }} {{ dnsApiKey }} {% endif %}
             {% endif %}
             domains {
                 {% for domain in dynDnsDomains %}
@@ -143,26 +198,80 @@
     {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" and dnsApiKey %}
         {% if dnsProvider in ['porkbun', 'desec', 'route53', 'acmedns'] %}
             tls {
-                dns {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
-                        api_key {{ dnsApiKey }}
-                        api_secret_key {{ dnsSecretApiKey }}
+                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}api_secret_key {{ dnsSecretApiKey }}{% endif %}
                     {% elif dnsProvider == 'desec' %}
-                        token "{{ dnsApiKey }}"
+                        {% if dnsApiKey %}token "{{ dnsApiKey }}"{% endif %}
                     {% elif dnsProvider == 'route53' %}
-                        access_key_id {{ dnsApiKey }}
-                        secret_access_key {{ dnsSecretApiKey }}
+                        {% if dnsApiKey %}access_key_id {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}secret_access_key {{ dnsSecretApiKey }}{% endif %}
                     {% elif dnsProvider == 'acmedns' %}
-                        username {{ dnsApiKey }}
-                        password {{ dnsSecretApiKey }}
-                        subdomain {{ dnsOptionalField1 }}
-                        server_url {{ dnsOptionalField2 }}
+                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}subdomain {{ dnsOptionalField1 }}{% endif %}
+                        {% if dnsOptionalField2 %}server_url {{ dnsOptionalField2 }}{% endif %}
+                    {% elif dnsProvider == 'googleclouddns' %}
+                        {% if dnsApiKey %}gcp_project {{ dnsApiKey }}{% endif %}
+                    {% elif dnsProvider == 'azure' %}
+                        {% if dnsApiKey %}tenant_id {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}client_id {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}client_secret {{ dnsOptionalField1 }}{% endif %}
+                        {% if dnsOptionalField2 %}subscription_id {{ dnsOptionalField2 }}{% endif %}
+                        {% if dnsOptionalField3 %}resource_group_name {{ dnsOptionalField3 }}{% endif %}
+                    {% elif dnsProvider == 'openstack-designate' %}
+                        {% if dnsApiKey %}region_name {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}tenant_id {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}identity_api_version {{ dnsOptionalField1 }}{% endif %}
+                        {% if dnsOptionalField2 %}password {{ dnsOptionalField2 }}{% endif %}
+                        {% if dnsOptionalField3 %}username {{ dnsOptionalField3 }}{% endif %}
+                        {% if dnsOptionalField4 %}tenant_name {{ dnsOptionalField4 }}{% endif %}
+                        {% if dnsOptionalField5 %}auth_url {{ dnsOptionalField5 }}{% endif %}
+                    {% elif dnsProvider == 'google-domains' %}
+                        {% if dnsApiKey %}access_token {{ dnsApiKey }}{% endif %}
+                    {% elif dnsProvider == 'ovh' %}
+                        {% if dnsApiKey %}endpoint {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}application_key {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}application_secret {{ dnsOptionalField1 }}{% endif %}
+                        {% if dnsOptionalField2 %}consumer_key {{ dnsOptionalField2 }}{% endif %}
+                    {% elif dnsProvider == 'namecheap' %}
+                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}{% endif %}
+                        {% if dnsOptionalField2 %}client_ip {{ dnsOptionalField2 }}{% endif %}
+                    {% elif dnsProvider == 'powerdns' %}
+                        {% if dnsApiKey %}server_url {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}api_token {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'ddnss' %}
+                        {% if dnsApiKey %}api_token {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}username {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}{% endif %}
+                    {% elif dnsProvider == 'metaname' %}
+                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}account_reference {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'linode' %}
+                        {% if dnsApiKey %}api_token {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}api_url {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}api_version {{ dnsOptionalField1 }}{% endif %}
+                    {% elif dnsProvider == 'tencentcloud' %}
+                        {% if dnsApiKey %}secret_id {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'dinahosting' %}
+                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'hexonet' %}
+                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
+                    {% elif dnsProvider == 'mailinabox' %}
+                        {% if dnsApiKey %}api_url {{ dnsApiKey }}{% endif %}
+                        {% if dnsSecretApiKey %}email_address {{ dnsSecretApiKey }}{% endif %}
+                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}{% endif %}
                     {% endif %}
                 }
             }
         {% else %}
             tls {
-                dns {{ dnsProvider }} {{ dnsApiKey }}
+                {% if dnsApiKey %}provider {{ dnsProvider }} {{ dnsApiKey }} {% endif %}
             }
         {% endif %}
     {% endif %}
