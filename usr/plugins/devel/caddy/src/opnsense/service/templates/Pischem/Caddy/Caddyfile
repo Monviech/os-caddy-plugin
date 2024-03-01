@@ -85,75 +85,77 @@
 
     {% if dnsProvider and dnsProvider != "none" and dnsProvider != "acmedns" and dnsApiKey and dynDnsDomains|length > 0 %}
         dynamic_dns {
-            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'googleclouddns', 'azure', 'openstack-designate', 'google-domains', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'metaname', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
+            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'metaname', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
                 provider {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}api_secret_key {{ dnsSecretApiKey }}{% endif %}
+                        api_key {{ dnsApiKey }}
+                        api_secret_key {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'desec' %}
-                        {% if dnsApiKey %}token {{ dnsApiKey }}{% endif %}
+                        token {{ dnsApiKey }}
                     {% elif dnsProvider == 'route53' %}
-                        {% if dnsApiKey %}access_key_id {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}secret_access_key {{ dnsSecretApiKey }}{% endif %}
+                        access_key_id {{ dnsApiKey }}
+                        secret_access_key {{ dnsSecretApiKey }}
+                    {% elif dnsProvider == 'alidns' %}
+                        access_key_id {{ dnsApiKey }}
+                        access_key_secret {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'googleclouddns' %}
-                        {% if dnsApiKey %}gcp_project {{ dnsApiKey }}{% endif %}
+                        gcp_project {{ dnsApiKey }}
                     {% elif dnsProvider == 'azure' %}
-                        {% if dnsApiKey %}tenant_id {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}client_id {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}client_secret {{ dnsOptionalField1 }}{% endif %}
-                        {% if dnsOptionalField2 %}subscription_id {{ dnsOptionalField2 }}{% endif %}
-                        {% if dnsOptionalField3 %}resource_group_name {{ dnsOptionalField3 }}{% endif %}
+                        tenant_id {{ dnsApiKey }}
+                        client_id {{ dnsSecretApiKey }}
+                        client_secret {{ dnsOptionalField1 }}
+                        subscription_id {{ dnsOptionalField2 }}
+                        resource_group_name {{ dnsOptionalField3 }}
                     {% elif dnsProvider == 'openstack-designate' %}
-                        {% if dnsApiKey %}region_name {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}tenant_id {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}identity_api_version {{ dnsOptionalField1 }}{% endif %}
-                        {% if dnsOptionalField2 %}password {{ dnsOptionalField2 }}{% endif %}
-                        {% if dnsOptionalField3 %}username {{ dnsOptionalField3 }}{% endif %}
-                        {% if dnsOptionalField4 %}tenant_name {{ dnsOptionalField4 }}{% endif %}
-                        {% if dnsOptionalField5 %}auth_url {{ dnsOptionalField5 }}{% endif %}
-                    {% elif dnsProvider == 'google-domains' %}
-                        {% if dnsApiKey %}access_token {{ dnsApiKey }}{% endif %}
+                        region_name {{ dnsApiKey }}
+                        tenant_id {{ dnsSecretApiKey }}
+                        identity_api_version {{ dnsOptionalField1 }}
+                        password {{ dnsOptionalField2 }}
+                        username {{ dnsOptionalField3 }}
+                        tenant_name {{ dnsOptionalField4 }}
+                        auth_url {{ dnsOptionalField5 }}
+                        endpoint_type {{ dnsOptionalField6 }}
                     {% elif dnsProvider == 'ovh' %}
-                        {% if dnsApiKey %}endpoint {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}application_key {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}application_secret {{ dnsOptionalField1 }}{% endif %}
-                        {% if dnsOptionalField2 %}consumer_key {{ dnsOptionalField2 }}{% endif %}
+                        endpoint {{ dnsApiKey }}
+                        application_key {{ dnsSecretApiKey }}
+                        application_secret {{ dnsOptionalField1 }}
+                        consumer_key {{ dnsOptionalField2 }}
                     {% elif dnsProvider == 'namecheap' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}{% endif %}
-                        {% if dnsOptionalField2 %}client_ip {{ dnsOptionalField2 }}{% endif %}
+                        api_key {{ dnsApiKey }}
+                        user {{ dnsSecretApiKey }}
+                        api_endpoint {{ dnsOptionalField1 }}
+                        client_ip {{ dnsOptionalField2 }}
                     {% elif dnsProvider == 'powerdns' %}
-                        {% if dnsApiKey %}server_url {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}api_token {{ dnsSecretApiKey }}{% endif %}
+                        server_url {{ dnsApiKey }}
+                        api_token {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'ddnss' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}username {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}{% endif %}
+                        api_token {{ dnsApiKey }}
+                        username {{ dnsSecretApiKey }}
+                        password {{ dnsOptionalField1 }}
                     {% elif dnsProvider == 'metaname' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}account_reference {{ dnsSecretApiKey }}{% endif %}
+                        api_key {{ dnsApiKey }}
+                        account_reference {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'linode' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}api_url {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}api_version {{ dnsOptionalField1 }}{% endif %}
+                        api_token {{ dnsApiKey }}
+                        api_url {{ dnsSecretApiKey }}
+                        api_version {{ dnsOptionalField1 }}
                     {% elif dnsProvider == 'tencentcloud' %}
-                        {% if dnsApiKey %}secret_id {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}{% endif %}
+                        secret_id {{ dnsApiKey }}
+                        secret_key {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'dinahosting' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
+                        username {{ dnsApiKey }}
+                        password {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'hexonet' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
+                        username {{ dnsApiKey }}
+                        password {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'mailinabox' %}
-                        {% if dnsApiKey %}api_url {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}email_address {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}{% endif %}
+                        api_url {{ dnsApiKey }}
+                        email_address {{ dnsSecretApiKey }}
+                        password {{ dnsOptionalField1 }}
                     {% endif %}
                 }
             {% else %}
-                 {% if dnsApiKey %}provider {{ dnsProvider }} {{ dnsApiKey }} {% endif %}
+                provider {{ dnsProvider }} {{ dnsApiKey }}
             {% endif %}
             domains {
                 {% for domain in dynDnsDomains %}
@@ -196,82 +198,85 @@
 # Reverse Proxy Configuration
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey) %}
     {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" and dnsApiKey %}
-        {% if dnsProvider in ['porkbun', 'desec', 'route53', 'acmedns'] %}
+        {% if dnsProvider in ['porkbun', 'desec', 'route53', 'acmedns', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'metaname', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
             tls {
+                dns {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}api_secret_key {{ dnsSecretApiKey }}{% endif %}
+                        api_key {{ dnsApiKey }}
+                        api_secret_key {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'desec' %}
-                        {% if dnsApiKey %}token "{{ dnsApiKey }}"{% endif %}
+                        token {{ dnsApiKey }}
                     {% elif dnsProvider == 'route53' %}
-                        {% if dnsApiKey %}access_key_id {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}secret_access_key {{ dnsSecretApiKey }}{% endif %}
+                        access_key_id {{ dnsApiKey }}
+                        secret_access_key {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'acmedns' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}subdomain {{ dnsOptionalField1 }}{% endif %}
-                        {% if dnsOptionalField2 %}server_url {{ dnsOptionalField2 }}{% endif %}
+                        username {{ dnsApiKey }}
+                        password {{ dnsSecretApiKey }}
+                        subdomain {{ dnsOptionalField1 }}
+                        server_url {{ dnsOptionalField2 }}
+                    {% elif dnsProvider == 'alidns' %}
+                        access_key_id {{ dnsApiKey }}
+                        access_key_secret {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'googleclouddns' %}
-                        {% if dnsApiKey %}gcp_project {{ dnsApiKey }}{% endif %}
+                        gcp_project {{ dnsApiKey }}
                     {% elif dnsProvider == 'azure' %}
-                        {% if dnsApiKey %}tenant_id {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}client_id {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}client_secret {{ dnsOptionalField1 }}{% endif %}
-                        {% if dnsOptionalField2 %}subscription_id {{ dnsOptionalField2 }}{% endif %}
-                        {% if dnsOptionalField3 %}resource_group_name {{ dnsOptionalField3 }}{% endif %}
+                        tenant_id {{ dnsApiKey }}
+                        client_id {{ dnsSecretApiKey }}
+                        client_secret {{ dnsOptionalField1 }}
+                        subscription_id {{ dnsOptionalField2 }}
+                        resource_group_name {{ dnsOptionalField3 }}
                     {% elif dnsProvider == 'openstack-designate' %}
-                        {% if dnsApiKey %}region_name {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}tenant_id {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}identity_api_version {{ dnsOptionalField1 }}{% endif %}
-                        {% if dnsOptionalField2 %}password {{ dnsOptionalField2 }}{% endif %}
-                        {% if dnsOptionalField3 %}username {{ dnsOptionalField3 }}{% endif %}
-                        {% if dnsOptionalField4 %}tenant_name {{ dnsOptionalField4 }}{% endif %}
-                        {% if dnsOptionalField5 %}auth_url {{ dnsOptionalField5 }}{% endif %}
-                    {% elif dnsProvider == 'google-domains' %}
-                        {% if dnsApiKey %}access_token {{ dnsApiKey }}{% endif %}
+                        region_name {{ dnsApiKey }}
+                        tenant_id {{ dnsSecretApiKey }}
+                        identity_api_version {{ dnsOptionalField1 }}
+                        password {{ dnsOptionalField2 }}
+                        username {{ dnsOptionalField3 }}
+                        tenant_name {{ dnsOptionalField4 }}
+                        auth_url {{ dnsOptionalField5 }}
+                        endpoint_type {{ dnsOptionalField6 }}
                     {% elif dnsProvider == 'ovh' %}
-                        {% if dnsApiKey %}endpoint {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}application_key {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}application_secret {{ dnsOptionalField1 }}{% endif %}
-                        {% if dnsOptionalField2 %}consumer_key {{ dnsOptionalField2 }}{% endif %}
+                        endpoint {{ dnsApiKey }}
+                        application_key {{ dnsSecretApiKey }}
+                        application_secret {{ dnsOptionalField1 }}
+                        consumer_key {{ dnsOptionalField2 }}
                     {% elif dnsProvider == 'namecheap' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}{% endif %}
-                        {% if dnsOptionalField2 %}client_ip {{ dnsOptionalField2 }}{% endif %}
+                        api_key {{ dnsApiKey }}
+                        user {{ dnsSecretApiKey }}
+                        api_endpoint {{ dnsOptionalField1 }}
+                        client_ip {{ dnsOptionalField2 }}
                     {% elif dnsProvider == 'powerdns' %}
-                        {% if dnsApiKey %}server_url {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}api_token {{ dnsSecretApiKey }}{% endif %}
+                        server_url {{ dnsApiKey }}
+                        api_token {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'ddnss' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}username {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}{% endif %}
+                        api_token {{ dnsApiKey }}
+                        username {{ dnsSecretApiKey }}
+                        password {{ dnsOptionalField1 }}
                     {% elif dnsProvider == 'metaname' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}account_reference {{ dnsSecretApiKey }}{% endif %}
+                        api_key {{ dnsApiKey }}
+                        account_reference {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'linode' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}api_url {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}api_version {{ dnsOptionalField1 }}{% endif %}
+                        api_token {{ dnsApiKey }}
+                        api_url {{ dnsSecretApiKey }}
+                        api_version {{ dnsOptionalField1 }}
                     {% elif dnsProvider == 'tencentcloud' %}
-                        {% if dnsApiKey %}secret_id {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}{% endif %}
+                        secret_id {{ dnsApiKey }}
+                        secret_key {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'dinahosting' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
+                        username {{ dnsApiKey }}
+                        password {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'hexonet' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}{% endif %}
+                        username {{ dnsApiKey }}
+                        password {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'mailinabox' %}
-                        {% if dnsApiKey %}api_url {{ dnsApiKey }}{% endif %}
-                        {% if dnsSecretApiKey %}email_address {{ dnsSecretApiKey }}{% endif %}
-                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}{% endif %}
+                        api_url {{ dnsApiKey }}
+                        email_address {{ dnsSecretApiKey }}
+                        password {{ dnsOptionalField1 }}
                     {% endif %}
                 }
             }
         {% else %}
             tls {
-                {% if dnsApiKey %}provider {{ dnsProvider }} {{ dnsApiKey }} {% endif %}
+                dns {{ dnsProvider }} {{ dnsApiKey }}
             }
         {% endif %}
     {% endif %}
