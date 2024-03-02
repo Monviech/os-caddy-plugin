@@ -58,6 +58,21 @@
 
             // Refresh selectpicker for these dropdowns
             $('.selectpicker').selectpicker('refresh');
+            
+            // Listen for changes on the TlsDnsProvider dropdown
+            tlsDnsProviderSelect.on('change', function() {
+                var selectedProvider = $(this).val();
+                // Hide both forms initially
+                $('#dnsProviderCloudflareForm').hide();
+                $('#dnsProviderAzureForm').hide();
+
+                // Determine which DNS Provider form to show based on the selected value
+                if(selectedProvider === "cloudflare") {
+                    $('#dnsProviderCloudflareForm').show();
+                } else if(selectedProvider === "azure") {
+                    $('#dnsProviderAzureForm').show();
+                }
+            }).trigger('change'); // Trigger change to set initial visibility
 
             // Function to show alerts in the HTML message area
             function showAlert(message, type = "error") {
@@ -157,7 +172,16 @@
     </div>
     <!-- DNS Provider Tab -->
     <div id="dnsProviderTab" class="tab-pane fade">
+        <!-- Default DNS Provider Form -->
         {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        <!-- Cloudflare DNS Provider Form -->
+        <div id="dnsProviderCloudflareForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidercloudflareForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Azure DNS Provider Form -->
+        <div id="dnsProviderAzureForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderazureForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
     </div>
     <!-- Dynamic DNS Tab -->
     <div id="dynamicDnsTab" class="tab-pane fade">
@@ -168,6 +192,7 @@
         {{ partial("layout_partials/base_form", ['fields': logsettingsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
 </div>
+
 
 <section class="page-content-main">
     <div class="content-box">
