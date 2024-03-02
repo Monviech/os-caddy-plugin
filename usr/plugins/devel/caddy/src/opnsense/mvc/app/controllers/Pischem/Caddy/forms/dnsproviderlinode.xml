@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>api_token</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Linode api_token here. https://github.com/caddy-dns/linode]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>api_url</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Linode api_url here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>api_version</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Linode api_version here.]]></help>
+    </field>
+</form>
