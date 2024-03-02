@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>api_token</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Duck DNS api_token here. https://github.com/caddy-dns/duckdns]]></help>
+    </field>
+</form>
