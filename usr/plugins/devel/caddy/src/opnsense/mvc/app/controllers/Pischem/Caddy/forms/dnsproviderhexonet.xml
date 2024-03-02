@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>username</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Hexonet username here. https://github.com/caddy-dns/hexonet]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>password</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Hexonet password here.]]></help>
+    </field>
+</form>
