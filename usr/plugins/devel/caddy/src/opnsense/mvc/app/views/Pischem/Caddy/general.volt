@@ -174,13 +174,126 @@
     <div id="dnsProviderTab" class="tab-pane fade">
         <!-- Default DNS Provider Form -->
         {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
-        <!-- Cloudflare DNS Provider Form -->
+        <!-- Additional DNS Provider Forms in the specified order -->
+        <!-- Cloudflare -->
         <div id="dnsProviderCloudflareForm" style="display: none;">
             {{ partial("layout_partials/base_form", ['fields': dnsprovidercloudflareForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
         </div>
-        <!-- Azure DNS Provider Form -->
+        <!-- DuckDNS -->
+        <div id="dnsProviderDuckdnsForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderduckdnsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- DigitalOcean -->
+        <div id="dnsProviderDigitaloceanForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderdigitaloceanForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- DNSPod -->
+        <div id="dnsProviderDnspodForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderdnspodForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Hetzner -->
+        <div id="dnsProviderHetznerForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderhetznerForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- GoDaddy -->
+        <div id="dnsProviderGodaddyForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidergodaddyForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Gandi -->
+        <div id="dnsProviderGandiForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidergandiForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- IONOS -->
+        <div id="dnsProviderIonosForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderionosForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- deSEC -->
+        <div id="dnsProviderDesecForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderdesecForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Porkbun -->
+        <div id="dnsProviderPorkbunForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderporkbunForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Route 53 -->
+        <div id="dnsProviderRoute53Form" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderroute53Form, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- ACME-DNS -->
+        <div id="dnsProviderAcmednsForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovideracmednsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Netlify -->
+        <div id="dnsProviderNetlifyForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidernetlifyForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- NameSilo -->
+        <div id="dnsProviderNamesiloForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidernamesiloForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Njalla -->
+        <div id="dnsProviderNjallaForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidernjallaForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Vercel -->
+        <div id="dnsProviderVercelForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidervercelForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Google Cloud DNS -->
+        <div id="dnsProviderGoogleclouddnsForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidergoogleclouddnsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- AliDNS -->
+        <div id="dnsProviderAlidnsForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovideralidnsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- PowerDNS -->
+        <div id="dnsProviderPowerdnsForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderpowerdnsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Tencent Cloud -->
+        <div id="dnsProviderTencentcloudForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidertencentcloudForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Dinahosting -->
+        <div id="dnsProviderDinahostingForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderdinahostingForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Metaname -->
+        <div id="dnsProviderMetanameForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidermetanameForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Hexonet -->
+        <div id="dnsProviderHexonetForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderhexonetForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- DDNSS -->
+        <div id="dnsProviderDdnssForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderddnssForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Linode -->
+        <div id="dnsProviderLinodeForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderlinodeForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Mail-in-a-Box -->
+        <div id="dnsProviderMailinaboxForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidermailinaboxForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- OVH -->
+        <div id="dnsProviderOvhForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsproviderovhForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Namecheap -->
+        <div id="dnsProviderNamecheapForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovidernamecheapForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- Azure -->
         <div id="dnsProviderAzureForm" style="display: none;">
             {{ partial("layout_partials/base_form", ['fields': dnsproviderazureForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+        </div>
+        <!-- OpenStack Designate -->
+        <div id="dnsProviderOpenstackDesignateForm" style="display: none;">
+            {{ partial("layout_partials/base_form", ['fields': dnsprovideropenstackdesignateForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
         </div>
     </div>
     <!-- Dynamic DNS Tab -->
@@ -192,7 +305,6 @@
         {{ partial("layout_partials/base_form", ['fields': logsettingsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
 </div>
-
 
 <section class="page-content-main">
     <div class="content-box">
