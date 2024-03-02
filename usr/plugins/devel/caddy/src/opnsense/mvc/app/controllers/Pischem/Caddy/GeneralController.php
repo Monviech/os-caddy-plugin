@@ -43,5 +43,9 @@ class GeneralController extends IndexController
         $this->view->dnsproviderForm = $this->getForm("dnsprovider");
         $this->view->dynamicdnsForm = $this->getForm("dynamicdns");
         $this->view->logsettingsForm = $this->getForm("logsettings");
+        
+        // Assign additional Forms for each supported DNS Provider
+        $this->view->dnsprovidercloudflareForm = $this->getForm("dnsprovidercloudflare");
+        $this->view->dnsproviderazureForm = $this->getForm("dnsproviderazure");
     }
 }
