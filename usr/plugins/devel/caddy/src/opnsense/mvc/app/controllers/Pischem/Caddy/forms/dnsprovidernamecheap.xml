@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>api_key</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Namecheap api_key here. https://github.com/caddy-dns/namecheap]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>user</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Namecheap user here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>api_endpoint</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Namecheap api_endpoint here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField2</id>
+        <label>client_ip</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Namecheap client_ip here.]]></help>
+    </field>
+</form>
