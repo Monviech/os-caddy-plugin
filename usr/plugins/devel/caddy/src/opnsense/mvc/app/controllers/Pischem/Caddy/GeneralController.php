@@ -44,8 +44,37 @@ class GeneralController extends IndexController
         $this->view->dynamicdnsForm = $this->getForm("dynamicdns");
         $this->view->logsettingsForm = $this->getForm("logsettings");
         
-        // Assign additional Forms for each supported DNS Provider
+        // Assign additional Forms for each supported DNS Provider 
+        // in the order of the DNS Provider select picker for maintainability
         $this->view->dnsprovidercloudflareForm = $this->getForm("dnsprovidercloudflare");
+        $this->view->dnsproviderduckdnsForm = $this->getForm("dnsproviderduckdns");
+        $this->view->dnsproviderdigitaloceanForm = $this->getForm("dnsproviderdigitalocean");
+        $this->view->dnsproviderdnspodForm = $this->getForm("dnsproviderdnspod");
+        $this->view->dnsproviderhetznerForm = $this->getForm("dnsproviderhetzner");
+        $this->view->dnsprovidergodaddyForm = $this->getForm("dnsprovidergodaddy");
+        $this->view->dnsprovidergandiForm = $this->getForm("dnsprovidergandi");
+        $this->view->dnsproviderionosForm = $this->getForm("dnsproviderionos");
+        $this->view->dnsproviderdesecForm = $this->getForm("dnsproviderdesec");
+        $this->view->dnsproviderporkbunForm = $this->getForm("dnsproviderporkbun");
+        $this->view->dnsproviderroute53Form = $this->getForm("dnsproviderroute53");
+        $this->view->dnsprovideracmednsForm = $this->getForm("dnsprovideracmedns");
+        $this->view->dnsprovidernetlifyForm = $this->getForm("dnsprovidernetlify");
+        $this->view->dnsprovidernamesiloForm = $this->getForm("dnsprovidernamesilo");
+        $this->view->dnsprovidernjallaForm = $this->getForm("dnsprovidernjalla");
+        $this->view->dnsprovidervercelForm = $this->getForm("dnsprovidervercel");
+        $this->view->dnsprovidergoogleclouddnsForm = $this->getForm("dnsprovidergoogleclouddns");
+        $this->view->dnsprovideralidnsForm = $this->getForm("dnsprovideralidns");
+        $this->view->dnsproviderpowerdnsForm = $this->getForm("dnsproviderpowerdns");
+        $this->view->dnsprovidertencentcloudForm = $this->getForm("dnsprovidertencentcloud");
+        $this->view->dnsproviderdinahostingForm = $this->getForm("dnsproviderdinahosting");
+        $this->view->dnsprovidermetanameForm = $this->getForm("dnsprovidermetaname");
+        $this->view->dnsproviderhexonetForm = $this->getForm("dnsproviderhexonet");
+        $this->view->dnsproviderddnssForm = $this->getForm("dnsproviderddnss");
+        $this->view->dnsproviderlinodeForm = $this->getForm("dnsproviderlinode");
+        $this->view->dnsprovidermailinaboxForm = $this->getForm("dnsprovidermailinabox");
+        $this->view->dnsproviderovhForm = $this->getForm("dnsproviderovh");
+        $this->view->dnsprovidernamecheapForm = $this->getForm("dnsprovidernamecheap");
         $this->view->dnsproviderazureForm = $this->getForm("dnsproviderazure");
+        $this->view->dnsprovideropenstackdesignateForm = $this->getForm("dnsprovideropenstackdesignate");
     }
 }
