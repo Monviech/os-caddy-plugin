@@ -1,0 +1,50 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>region_name</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OpenStack Designate region_name here. https://github.com/caddy-dns/openstack-designate]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>tenant_id</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OpenStack Designate tenant_id here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>identity_api_version</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OpenStack Designate identity_api_version here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField2</id>
+        <label>password</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OpenStack Designate password here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField3</id>
+        <label>username</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OpenStack Designate username here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField4</id>
+        <label>tenant_name</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OpenStack Designate tenant_name here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField5</id>
+        <label>auth_url</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OpenStack Designate auth_url here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField6</id>
+        <label>endpoint_type</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OpenStack Designate endpoint_type here.]]></help>
+    </field>
+</form>
