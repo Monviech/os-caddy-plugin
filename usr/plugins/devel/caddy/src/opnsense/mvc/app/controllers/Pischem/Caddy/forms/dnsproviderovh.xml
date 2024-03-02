@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>endpoint</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OVH endpoint here. https://github.com/caddy-dns/ovh]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>application_key</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OVH application_key here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>application_secret</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OVH application_secret here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField2</id>
+        <label>consumer_key</label>
+        <type>text</type>
+        <help><![CDATA[Enter your OVH consumer_key here.]]></help>
+    </field>
+</form>
