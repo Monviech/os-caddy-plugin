@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>access_key_id</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Alibaba Cloud DNS access_key_id here. https://github.com/caddy-dns/alidns]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>access_key_secret</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Alibaba Cloud DNS access_key_secret here.]]></help>
+    </field>
+</form>
