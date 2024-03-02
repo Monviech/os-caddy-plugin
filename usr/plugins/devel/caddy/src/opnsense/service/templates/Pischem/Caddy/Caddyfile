@@ -85,7 +85,7 @@
 
     {% if dnsProvider and dnsProvider != "none" and dnsProvider != "acmedns" and dnsApiKey and dynDnsDomains|length > 0 %}
         dynamic_dns {
-            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'metaname', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
+            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
                 provider {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
                         api_key {{ dnsApiKey }}
@@ -132,9 +132,6 @@
                         api_token {{ dnsApiKey }}
                         username {{ dnsSecretApiKey }}
                         password {{ dnsOptionalField1 }}
-                    {% elif dnsProvider == 'metaname' %}
-                        api_key {{ dnsApiKey }}
-                        account_reference {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'linode' %}
                         api_token {{ dnsApiKey }}
                         api_url {{ dnsSecretApiKey }}
@@ -154,6 +151,8 @@
                         password {{ dnsOptionalField1 }}
                     {% endif %}
                 }
+            {% elif dnsProvider in ['metaname'] %}
+                provider {{ dnsProvider }} {{ dnsApiKey }} {{ dnsSecretApiKey }}
             {% else %}
                 provider {{ dnsProvider }} {{ dnsApiKey }}
             {% endif %}
@@ -196,9 +195,9 @@
 }
 
 # Reverse Proxy Configuration
-{% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey) %}
+{% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4, TlsDnsOptionalField5, TlsDnsOptionalField6) %}
     {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" and dnsApiKey %}
-        {% if dnsProvider in ['porkbun', 'desec', 'route53', 'acmedns', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'metaname', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
+        {% if dnsProvider in ['porkbun', 'desec', 'route53', 'acmedns', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
             tls {
                 dns {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
@@ -251,9 +250,6 @@
                         api_token {{ dnsApiKey }}
                         username {{ dnsSecretApiKey }}
                         password {{ dnsOptionalField1 }}
-                    {% elif dnsProvider == 'metaname' %}
-                        api_key {{ dnsApiKey }}
-                        account_reference {{ dnsSecretApiKey }}
                     {% elif dnsProvider == 'linode' %}
                         api_token {{ dnsApiKey }}
                         api_url {{ dnsSecretApiKey }}
@@ -273,6 +269,10 @@
                         password {{ dnsOptionalField1 }}
                     {% endif %}
                 }
+            }
+        {% elif dnsProvider in ['metaname'] %}
+            tls {
+                dns {{ dnsProvider }} {{ dnsApiKey }} {{ dnsSecretApiKey }}
             }
         {% else %}
             tls {
@@ -354,18 +354,9 @@
     }
     {% endif %}
     {% endif %}
-    {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
-    {% set dnsApiKey = generalSettings.TlsDnsApiKey %}
-    {% set dnsSecretApiKey = generalSettings.TlsDnsSecretApiKey %}
-    {% set dnsOptionalField1 = generalSettings.TlsDnsOptionalField1 %}
-    {% set dnsOptionalField2 = generalSettings.TlsDnsOptionalField2 %}
-    {% set dnsOptionalField3 = generalSettings.TlsDnsOptionalField3 %}
-    {% set dnsOptionalField4 = generalSettings.TlsDnsOptionalField4 %}
-    {% set dnsOptionalField5 = generalSettings.TlsDnsOptionalField5 %}
-    {% set dnsOptionalField6 = generalSettings.TlsDnsOptionalField6 %}
     {% set customCert = reverse.CustomCertificate|default("") %}
     {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
-    {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey) }}
+    {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4, TlsDnsOptionalField5, TlsDnsOptionalField6) }}
     
     {% if not reverse.accesslist %}
         {% set basicauth_uuids = reverse.basicauth %}
