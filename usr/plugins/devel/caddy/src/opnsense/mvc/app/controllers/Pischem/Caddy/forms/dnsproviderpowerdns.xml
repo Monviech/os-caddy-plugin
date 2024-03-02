@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>server_url</label>
+        <type>text</type>
+        <help><![CDATA[Enter your PowerDNS server_url here. https://github.com/caddy-dns/alidns]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>api_token</label>
+        <type>text</type>
+        <help><![CDATA[Enter your PowerDNS api_token here.]]></help>
+    </field>
+</form>
