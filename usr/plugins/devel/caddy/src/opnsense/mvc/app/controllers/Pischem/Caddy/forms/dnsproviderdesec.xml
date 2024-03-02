@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>token</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Desec token here. https://github.com/caddy-dns/desec]]></help>
+    </field>
+</form>
