@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>username</label>
+        <type>text</type>
+        <help><![CDATA[Enter your ACME-DNS username here. https://github.com/caddy-dns/acmedns]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>password</label>
+        <type>text</type>
+        <help><![CDATA[Enter your ACME-DNS password here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>subdomain</label>
+        <type>text</type>
+        <help><![CDATA[Enter your ACME-DNS subdomain here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField2</id>
+        <label>server_url</label>
+        <type>text</type>
+        <help><![CDATA[Enter your ACME-DNS server_url here.]]></help>
+    </field>
+</form>
