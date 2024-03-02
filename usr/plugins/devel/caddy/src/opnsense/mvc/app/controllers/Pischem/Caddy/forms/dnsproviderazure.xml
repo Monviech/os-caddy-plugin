@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>tenant_id</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Azure tenant_id here. https://github.com/caddy-dns/azure]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>client_id</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Azure client_id here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>client_secret</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Azure client_secret here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField2</id>
+        <label>subscription_id</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Azure subscription_id here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField3</id>
+        <label>resource_group_name</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Azure resource_group_name here.]]></help>
+    </field>
+</form>
