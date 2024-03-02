@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>username</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Dinahosting username here. https://github.com/caddy-dns/dinahosting]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>password</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Dinahosting password here.]]></help>
+    </field>
+</form>
