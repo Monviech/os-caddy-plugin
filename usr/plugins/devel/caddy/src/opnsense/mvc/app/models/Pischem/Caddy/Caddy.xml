@@ -40,7 +40,6 @@
                     <googleclouddns>Google Cloud DNS</googleclouddns>
                     <azure>Azure</azure>
                     <openstack-designate>OpenStack Designate</openstack-designate>
-                    <google-domains>Google Domains</google-domains>
                     <ovh>OVH</ovh>
                     <namecheap>Namecheap</namecheap>
                     <netlify>Netlify</netlify>
