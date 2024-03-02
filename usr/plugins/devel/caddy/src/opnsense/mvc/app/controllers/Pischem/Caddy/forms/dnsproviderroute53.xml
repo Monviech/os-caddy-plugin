@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>max_retries</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Route53 max_retries here. https://github.com/caddy-dns/route53]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>aws_profile</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Route53 aws_profile here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>region</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Route53 region here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField2</id>
+        <label>access_key_id</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Route53 access_key_id here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField3</id>
+        <label>secret_access_key</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Route53 secret_access_key here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField4</id>
+        <label>token</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Route53 token here.]]></help>
+    </field>
+</form>
