@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>personal_access_token</label>
+        <type>text</type>
+        <help><![CDATA[Enter your NETLIFY personal_access_token here. https://github.com/caddy-dns/netlify]]></help>
+    </field>
+</form>
