@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>api_token</label>
+        <type>text</type>
+        <help><![CDATA[Enter your ddnss api_token here. https://github.com/caddy-dns/ddnss]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>username</label>
+        <type>text</type>
+        <help><![CDATA[Enter your ddnss username here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>password</label>
+        <type>text</type>
+        <help><![CDATA[Enter your ddnss password here.]]></help>
+    </field>
+</form>
