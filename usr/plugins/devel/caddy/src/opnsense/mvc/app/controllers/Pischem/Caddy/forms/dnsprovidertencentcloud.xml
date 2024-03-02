@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>secret_id</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Tencent Cloud DNS secret_id here. https://github.com/caddy-dns/tencentcloud]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>secret_key</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Tencent Cloud DNS secret_key here.]]></help>
+    </field>
+</form>
