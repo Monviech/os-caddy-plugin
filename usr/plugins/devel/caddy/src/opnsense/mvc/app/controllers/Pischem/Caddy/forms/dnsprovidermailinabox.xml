@@ -3,7 +3,7 @@
         <id>caddy.general.TlsDnsApiKey</id>
         <label>api_url</label>
         <type>text</type>
-        <help><![CDATA[Enter your Mail-In-A-Box api_url here. https://github.com/caddy-dns/linode]]></help>
+        <help><![CDATA[Enter your Mail-In-A-Box api_url here. https://github.com/caddy-dns/mailinabox]]></help>
     </field>
     <field>
         <id>caddy.general.TlsDnsSecretApiKey</id>
