@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>api_key</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Metaname api_key here. https://github.com/caddy-dns/metaname]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>account_reference</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Metaname account_reference here.]]></help>
+    </field>
+</form>
