@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>api_url</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Mail-In-A-Box api_url here. https://github.com/caddy-dns/linode]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>email_address</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Mail-In-A-Box email_address here.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>password</label>
+        <type>text</type>
+        <help><![CDATA[Enter your Mail-In-A-Box password here.]]></help>
+    </field>
+</form>
