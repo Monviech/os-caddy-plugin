@@ -59,20 +59,55 @@
             // Refresh selectpicker for these dropdowns
             $('.selectpicker').selectpicker('refresh');
             
-            // Listen for changes on the TlsDnsProvider dropdown
-            tlsDnsProviderSelect.on('change', function() {
-                var selectedProvider = $(this).val();
-                // Hide both forms initially
-                $('#dnsProviderCloudflareForm').hide();
-                $('#dnsProviderAzureForm').hide();
+            // Define a mapping from DNS provider names to their corresponding form IDs
+            var dnsProviderFormMap = {
+                'cloudflare': '#dnsProviderCloudflareForm',
+                'duckdns': '#dnsProviderDuckdnsForm',
+                'digitalocean': '#dnsProviderDigitaloceanForm',
+                'dnspod': '#dnsProviderDnspodForm',
+                'hetzner': '#dnsProviderHetznerForm',
+                'godaddy': '#dnsProviderGodaddyForm',
+                'gandi': '#dnsProviderGandiForm',
+                'ionos': '#dnsProviderIonosForm',
+                'desec': '#dnsProviderDesecForm',
+                'porkbun': '#dnsProviderPorkbunForm',
+                'route53': '#dnsProviderRoute53Form',
+                'acmedns': '#dnsProviderAcmednsForm',
+                'netlify': '#dnsProviderNetlifyForm',
+                'namesilo': '#dnsProviderNamesiloForm',
+                'njalla': '#dnsProviderNjallaForm',
+                'vercel': '#dnsProviderVercelForm',
+                'googleclouddns': '#dnsProviderGoogleclouddnsForm',
+                'alidns': '#dnsProviderAlidnsForm',
+                'powerdns': '#dnsProviderPowerdnsForm',
+                'tencentcloud': '#dnsProviderTencentcloudForm',
+                'dinahosting': '#dnsProviderDinahostingForm',
+                'metaname': '#dnsProviderMetanameForm',
+                'hexonet': '#dnsProviderHexonetForm',
+                'ddnss': '#dnsProviderDdnssForm',
+                'linode': '#dnsProviderLinodeForm',
+                'mailinabox': '#dnsProviderMailinaboxForm',
+                'ovh': '#dnsProviderOvhForm',
+                'namecheap': '#dnsProviderNamecheapForm',
+                'azure': '#dnsProviderAzureForm',
+                'openstack-designate': '#dnsProviderOpenstackDesignateForm'
+                // Add any additional DNS providers here
+            };
 
-                // Determine which DNS Provider form to show based on the selected value
-                if(selectedProvider === "cloudflare") {
-                    $('#dnsProviderCloudflareForm').show();
-                } else if(selectedProvider === "azure") {
-                    $('#dnsProviderAzureForm').show();
+            // Listen for changes on the TlsDnsProvider dropdown
+            $('#caddy\\.general\\.TlsDnsProvider').on('change', function() {
+                // Hide all forms initially
+                Object.values(dnsProviderFormMap).forEach(function(formId) {
+                    $(formId).hide();
+                });
+
+                // Show the form corresponding to the selected DNS provider
+                var selectedProvider = $(this).val();
+                var selectedFormId = dnsProviderFormMap[selectedProvider];
+                if (selectedFormId) {
+                    $(selectedFormId).show();
                 }
-            }).trigger('change'); // Trigger change to set initial visibility
+            }).trigger('change'); // Ensure correct form is shown on initial load
 
             // Function to show alerts in the HTML message area
             function showAlert(message, type = "error") {
