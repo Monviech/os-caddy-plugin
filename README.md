@@ -11,8 +11,7 @@
 - Automatic Let's Encrypt and ZeroSSL Certificates without configuration with HTTP-01 and TLS-ALPN-01
 - ACME DNS-01 challenge with configuration (requires supported DNS Provider)
 - Dynamic DNS (DynDns) with configuration (requires supported DNS Provider)
-- Supported DNS Providers in GUI:
-- ```cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, ionos, desec, porkbun, route53, acmedns```
+- Supported DNS Providers in GUI: https://github.com/Monviech/os-caddy-plugin/issues/113
 - Use custom certificates from OPNsense certificate store
 - Normal domains, wildcard domains and subdomains
 - Access Lists to restrict access based on static networks
