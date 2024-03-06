@@ -46,8 +46,12 @@ fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.p
 ```
 pkg update
 ```
-- **Attention** - If you have other (community) repositories installed that serve the caddy binary, some features might not work. Make sure you get caddy-2.7.6_3 from my repository. There are extra features compiled in.
-- Afterwards the "os-caddy" plugin can be installed from the OPNsense System - Firmware - Plugins, search for "os-caddy".
+
+# How to remove
+
+- Remove the os-caddy package from the OPNsense plugins by deinstalling it in the GUI
+- Remove the os-caddy repository by deleting the repo in:
+```rm /usr/local/etc/pkg/repos/os-caddy-plugin.conf```
 
 ## Prepare Caddy for use after the installation
 
@@ -66,19 +70,29 @@ pkg update
 - `Auto HTTPS`: `On (default)` creates automatic Let's Encrypt Certificates for all Domains that don't have more specific options set, like custom certificates.
 - `Trusted Proxies`: Leave empty if you don't use a CDN in front of your OPNsense. If you use Cloudflare or another CDN provider, create an access list with the IP addresses of that CDN and add it here. Add the same Access List to the domain this CDN tries to reach.
 - `Abort Connections`: This option, when enabled, aborts all connections to the Reverse Proxy Domain that don't match any specified handler or access list. This setting doesn't affect Let's Encrypt's ability to issue certificates, ensuring secure connections regardless of the option's status. If unchecked, the Reverse Proxy Domain remains accessible even without a matching handler, allowing for connectivity and certificate checks, even in the absence of a configured Backend Server. When using Access Lists, enabling this option is recommended to reject unauthorized connections outright. Without this option, unmatched IP addresses will encounter an empty page instead of an explicit rejection, though the Access Lists continue to function and restrict access.
-- `Log Credentials`: Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.
-- `Log Access in Plain Format`: Don't send HTTP(S) access logs to the central OPNsense logging facility but save them in plain Caddy JSON format in a subdirectory instead. Only effective for Reverse Proxy Domains that have HTTP Access Log enabled. The feature is intended to have access log files processed by e.g. CrowdSec. They can be found in `/var/log/caddy/access`.
-- `Keep Plain Access Logs for (days)`: How many days until the plain format log files are deleted.
 
 ## General Settings - DNS Provider
-- `DNS Provider`: Choose either `none (default)` for normal HTTP ACME or a DNS Provider to enable the `DNS-01` ACME challenge and Dynamic DNS (DynDns). If your provider is missing, please note that all easy to add providers have already been built in, the remaining providers all want unique special configurations that are mostly out of scope.
-- `DNS API Key`: Leave empty if you don't use a DNS Provider, or put your `API Key` here.
-- `DNS Secret API Key`: This field is used by porkbun in addition to the DNS API Key.
+- `DNS Provider`: Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is optional, since certificates will be requested from Let's Encrypt via HTTP-01 or TLS-ALPN-01 Challenge when this option is unset. You mostly need this for Wildcard Certificates, and for Dynamic DNS. To use the DNS-01 Challenge and Dynamic DNS, enable the checkbox in a Reverse Proxy Domain or Subdomain. For more information: https://github.com/caddy-dns
+- `DNS API Standard Field`: This is the standard field for the API Key. Field can be left empty if optional: Cloudflare "api_token", Duckdns "api_token", DigitalOcean "auth_token", DNSPod "auth_token", Hetzner "api_token", Godaddy "api_token", Gandi "bearer_token", IONOS "api_token", deSEC "token", Route53 "access_key_id", Porkbun "api_key", ACME-DNS "username", Netlify "personal_access_token", Namesilo "api_token", Njalla "api_token", Vercel "api_token",  Google Cloud DNS "gcp_project", Alidns "access_key_id", Azure "tenant_id", OpenStack Designate "region_name", OVH "endpoint", Namecheap "api_key", PowerDNS "server_url", DDNSS "api_token", Metaname "api_key", Linode "api_token", Tencent Cloud "secret_id", Dinahosting "username", Hexonet "username", Mail-in-a-Box "api_url".
+- `DNS API Additional Field 1`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Duckdns "override_domain", Route53 "secret_access_key", Porkbun "api_secret_key", ACME-DNS "password", Alidns "access_key_secret", Azure "client_id", OpenStack Designate "tenant_id", OVH "application_key", Namecheap "user", PowerDNS "api_token", DDNSS "username", Metaname "account_reference", Linode "api_url", Tencent Cloud "secret_key", Dinahosting "password", Hexonet "password", Mail-in-a-Box "email_address".
+- `DNS API Additional Field 2`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "max_retries", ACME-DNS "subdomain", Azure "client_secret", OpenStack Designate "identity_api_version", OVH "application_secret", Namecheap "api_endpoint", DDNSS "password", Linode "api_version", Mail-in-a-Box "password".
+- `DNS API Additional Field 3`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "aws_profile", ACME-DNS "server_url", Azure "subscription_id", OpenStack Designate "password", OVH "consumer_key", Namecheap "client_ip", DDNS "password".
+- `DNS API Additional Field 4`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "region", Azure "resource_group_name", OpenStack Designate "username".
+- `DNS API Additional Field 5`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "token", OpenStack Designate "tenant_name".
+- `DNS API Additional Field 6`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: OpenStack Designate "auth_url".
+- `DNS API Additional Field 7`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: OpenStack Designate "endpoint_type".
+
+## General Settings - Dynamic DNS
 - `DynDns Check Http`: Optionally, enter an URL to test the current IP address of the firewall via HTTP procotol. Generally, this is not needed. Caddy uses default providers to test the current IP addresses. If you rather use your own, enter the https:// link to an IP address testing website.
 - `DynDns Check Interface`: Optionally, select an interface to extract the current IP address of the firewall. Attention, all IP addresses will be read from this interface. Only choose this option if you know the implications.
 - `DynDns Check Interval`: Interval to poll for changes of the IP address. The default is 5 minutes. Can be a number between 1 to 1440 minutes. 
 - `DynDns IP Version`: Leave on None to set IPv4 A-Records and IPv6 AAAA-Records. Select "Ipv4 only" for setting A-Records. Select "IPv6 only" for setting AAAA-Records.
 - `DynDns TTL`: Set the TTL (time to live) for DNS Records. The default is 1 hour. Can be a number between 1 to 24 hours.
+
+## General Settings - Log Settings
+- `Log Credentials`: Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.
+- `Log Access in Plain Format`: Don't send HTTP(S) access logs to the central OPNsense logging facility but save them in plain Caddy JSON format in a subdirectory instead. Only effective for Reverse Proxy Domains that have HTTP Access Log enabled. The feature is intended to have access log files processed by e.g. CrowdSec. They can be found in `/var/log/caddy/access`.
+- `Keep Plain Access Logs for (days)`: How many days until the plain format log files are deleted.
 
 ## Reverse Proxy - Domains
 - Press `+` to create a new Reverse Proxy Domain
@@ -95,7 +109,11 @@ pkg update
 
 ## Reverse Proxy - Subdomains
 
-- Refer to the options of Domains.
+## Reverse Proxy - Subdomains
+- Press `+` to create a new Reverse Proxy Subdomain
+- `Reverse Proxy Domain` - Choose a wildcard domain you prepared in "Reverse Proxy - Domains", it has to be formatted like `*.example.com`
+- `Reverse Proxy Subdomain` - Create a name that is seated under the Wildcard domain, for example `foo.example.com` and `bar.example.com`.
+- For the other options refer to Domains.
 
 ## Reverse Proxy - Handler
 Please note that the order that handlers are saved in the scope of each domain or domain/subdomain can influence functionality - The first matching handler wins. So if you put /ui* in front of a more specific handler like /ui/opnsense, the /ui* will match first and /ui/opnsense won't ever match (in the scope of their domain). Right now there isn't an easy way to move the position of handlers in the grid, so you have to clone them if you want to change their order, and delete the old entries afterwards. Most of the time, creating just one empty catch-all handler is the best choice. The template logic makes sure that catch-all handlers are always placed last, after all other handlers.
@@ -202,7 +220,8 @@ https://docs.opnsense.org/development/api.html
 
 All API Actions can be found in the [API controller files](https://github.com/Monviech/os-caddy-plugin/tree/main/usr/plugins/devel/caddy/src/opnsense/mvc/app/controllers/Pischem/Caddy/Api)
 
-Example:
+Examples:
 - /api/caddy/ReverseProxy/get
 - /api/caddy/General/get
 - /api/caddy/service/status
+- /api/caddy/service/validate
