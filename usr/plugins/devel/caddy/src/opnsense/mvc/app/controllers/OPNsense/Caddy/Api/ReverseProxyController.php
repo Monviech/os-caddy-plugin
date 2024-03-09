@@ -29,14 +29,14 @@
  *
  */
 
-namespace Pischem\Caddy\Api;
+namespace OPNsense\Caddy\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
 class ReverseProxyController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'caddy';
-    protected static $internalModelClass = 'Pischem\Caddy\Caddy';
+    protected static $internalModelClass = 'OPNsense\Caddy\Caddy';
     protected static $internalModelUseSafeDelete = true;
 
     /*ReverseProxy Section*/
@@ -136,8 +136,8 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase("reverseproxy.handle", $uuid, $enabled);
     }
-    
-    
+
+
     /* AccessList Section */
 
     public function searchAccessListAction()
@@ -164,8 +164,8 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         return $this->delBase("reverseproxy.accesslist", $uuid);
     }
-    
-    
+
+
     /* BasicAuth Section */
 
     public function searchBasicAuthAction()
@@ -192,7 +192,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         if ($this->request->isPost()) {
             $postData = $this->request->getPost();
-    
+
             if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
                 $plainPassword = $postData['basicauth']['basicauthpass'];
                 $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
