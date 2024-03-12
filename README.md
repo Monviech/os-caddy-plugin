@@ -33,12 +33,6 @@
 
 # How to install
 
-DISCLAIMER: Even though I use this productively on multiple OPNsense Firewalls (and also a HA pair with config sync), I give no guarantee whatsoever. Please read the license file for the full disclaimer. Most code is in line with OPNsense integrated functions. Some parts were developed with the use of AI assistance (ChatGPT4 and Copilot).
-Tested on DEC740 Hardware with OPNsense CE 24.1.1-amd64, and on DEC2750 Hardware in HA with OPNsense BE 23.10.1-amd64.
-Caddy Version:
-- ```v2.7.6 h1:w0NymbG2m9PcvKWsrXO6EEkY9Ru4FJK8uQbYcev1p3A=```
-- ```SHA256 (/usr/local/bin/caddy) = 9722999d0c5a6bb9d82217d384f744f61f746086526112fc38c775bef619a440```
-
 Connect to your OPNsense via SSH, select option 8 to get into the shell, and invoke the following commands:
 ```
 fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.pischem.com/repo-config/os-caddy-plugin.conf
@@ -46,6 +40,8 @@ fetch -o /usr/local/etc/pkg/repos/os-caddy-plugin.conf https://os-caddy-plugin.p
 ```
 pkg update
 ```
+Afterwards install os-caddy from the Plugins in the GUI.
+The caddy_custom.pkg comes automatically from the OPNsense Repository if your OPNsense Firewall is compatible.
 
 # How to remove
 
