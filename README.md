@@ -1,3 +1,9 @@
+# Important Information
+
+- This plugin is part now of OPNsense plugins. https://github.com/opnsense/plugins/tree/master/www/caddy
+- Future updates (Version 1.5.2+) will be served directly from the OPNsense repository. Version 1.5.1_1 is the last version served through this repository.
+- After you have received Version 1.5.2 from the OPNsense repository, delete this repository. [# How to remove](https://github.com/Monviech/os-caddy-plugin/edit/main/README.md#how-to-remove)
+
 # Caddy Plugin for OPNsense
 
 - This project provides a simple yet powerful plugin for [OPNsense](https://github.com/opnsense) to enable support for [Caddy](https://github.com/caddyserver/caddy).
